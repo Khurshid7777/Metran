@@ -8,6 +8,8 @@
 
 **Без установки (готовый файл).** Скачайте [`release/abg-trainer.html`](release/abg-trainer.html) (кнопка «Download raw file» на GitHub) и откройте двойным щелчком в браузере — приложение работает полностью офлайн. Файл можно передать на телефон (Android Chrome, iOS Safari) и открыть оттуда.
 
+**Онлайн-ссылка (claude.ai Artifact).** Приложение опубликовано как страница claude.ai: https://claude.ai/artifact/3ngkJUvbmn7X9uNWREHaR2 (по умолчанию открыта только владельцу; доступ другим — через меню Share на странице). Файл для публикации — `release/abg-trainer-artifact.html` (тот же код без собственных `<html>/<head>`), его создаёт `npm run build`. PDF-сертификат и экспорт CSV/JSON в этом режиме сохраняются через подтверждение claude.ai.
+
 **Из исходников** (нужен Node.js 20+):
 
 ```bash

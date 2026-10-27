@@ -1,4 +1,5 @@
 import { jsPDF } from 'jspdf';
+import { saveFile, type SaveOutcome } from '../storage/save';
 
 /** All texts are translated by the caller; this module only lays them out. */
 export interface CertificateData {
@@ -118,7 +119,7 @@ export async function certificatePdf(d: CertificateData): Promise<jsPDF> {
   return pdf;
 }
 
-export async function downloadCertificate(d: CertificateData, filename: string): Promise<void> {
+export async function downloadCertificate(d: CertificateData, filename: string): Promise<SaveOutcome> {
   const pdf = await certificatePdf(d);
-  pdf.save(filename);
+  return saveFile(filename, pdf.output('blob'), 'application/pdf');
 }
