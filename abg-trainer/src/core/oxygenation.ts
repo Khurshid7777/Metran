@@ -60,6 +60,9 @@ export function oxygenationStep(ctx: Ctx): { step: Step; values: OxygenationValu
 
   if (arterial && input.pO2 !== undefined) {
     const PaO2 = input.pO2;
+    const lowNorm = (norms.categories[age] as { PaO2Air: number[] }).PaO2Air[0];
+    if (!neonate && PaO2 < o.severeHypoxemia) flags.push({ code: 'hypoxemia_severe', severity: 'critical', params: { PaO2, FiO2 } });
+    else if (PaO2 < lowNorm) flags.push({ code: 'hypoxemia', severity: 'warning', params: { PaO2, lo: lowNorm } });
     values.PAO2 = alveolarPO2(FiO2, Patm, input.pCO2, o.waterVapour, o.RQ);
     values.Aa = values.PAO2 - PaO2;
     if (age === 'adult' && FiO2 <= o.airFiO2Max && input.ageYears !== undefined) {

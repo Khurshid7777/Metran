@@ -32,7 +32,10 @@ describe('общие флаги', () => {
   it('критический pH, калий, температура, проба', () => {
     expect(codes({ pH: 6.9, pCO2: 40 })).toContain('critical_ph');
     expect(codes({ K: 2.5 })).toContain('hypokalemia');
-    expect(codes({ K: 6.5 })).toContain('hyperkalemia');
+    expect(codes({ K: 6.2 })).toContain('hyperkalemia');
+    expect(codes({ K: 6.6 })).toContain('hyperkalemia_severe');
+    expect(codes({ K: 3.2 })).toContain('hypokalemia_mild');
+    expect(codes({ K: 2.2 })).toContain('hypokalemia_severe');
     expect(codes({ temperature: 34 })).toContain('temperature');
     expect(codes({ sampleType: 'capillary' })).toContain('capillary_sample');
     expect(codes({ sampleType: 'cord_vein' })).toContain('cord_vein_sample');

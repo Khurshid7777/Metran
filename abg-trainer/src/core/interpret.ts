@@ -3,6 +3,7 @@ import differentialsJson from '../content/differentials.json';
 import { anionGapStep, deltaStep } from './anionGap';
 import { compensationStep } from './compensation';
 import { osmolarStep } from './osmolar';
+import { labsStep } from './labs';
 import { oxygenationStep } from './oxygenation';
 import { categoryNorms, primaryStep } from './primary';
 import { stewartStep } from './stewart';
@@ -102,6 +103,11 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
   steps.push(oxy.step);
   flags.push(...oxy.step.flags);
 
+  // Step 10
+  const labs = labsStep(ctx);
+  steps.push(labs.step);
+  flags.push(...labs.step.flags);
+
   flags.push(...cordFlags(input, norms));
 
   const disorderTypes = disorders.map((d) => d.type);
@@ -131,7 +137,12 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     secondary,
     flags: dedupe(flags),
     differentials: differentials(disorderTypes, acidosisType, ag.agCorr !== undefined, input.ageCategory),
-    treatment: tr,
+    treatment: {
+      ...tr,
+      potassium: labs.potassium,
+      calcium: labs.calcium,
+      available: tr.available || Boolean(labs.potassium || labs.calcium),
+    },
     summary: [],
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },
   };

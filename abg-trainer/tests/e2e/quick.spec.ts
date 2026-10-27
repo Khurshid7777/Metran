@@ -19,7 +19,7 @@ test('быстрый ввод: Enter по полям, обязательный �
   await page.getByTestId('q-sample-venous').click();
   await page.getByTestId('q-run').click();
   await expect(page.getByTestId('q-result')).toContainText('Первичное нарушение: метаболический алкалоз.');
-  await expect(page.getByTestId('q-result')).toContainText('Гипокалиемия');
+  await expect(page.getByTestId('q-result')).toContainText('умеренная гипокалиемия');
   await page.getByTestId('q-details').click();
   await expect(page.getByTestId('in-HCO3')).toHaveValue('31,3');
   await expect(page.getByTestId('result')).toContainText('метаболический алкалоз');

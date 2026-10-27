@@ -19,7 +19,16 @@
     "cord": "ACOG Committee Opinion 348 / 2014 Neonatal Encephalopathy: pH < 7.0 and/or BE ≤ −12 pathological acidaemia. Therapeutic hypothermia criteria A: pH ≤ 7.0 or BE ≤ −16; pH 7.01–7.15 or BE −10…−15.9 require additional criteria (TOBY/NICHD, NICE IPG347, BAPM 2020).",
     "bicarbonate": "ILCOR/NRP 2020: no routine sodium bicarbonate in neonatal resuscitation; 4.2% (0.5 mmol/mL), slow infusion. Lactic acidosis: Surviving Sepsis Campaign 2021 (no bicarbonate if pH ≥ 7.2); BICAR-ICU, Lancet 2018 (pH ≤ 7.20). DKA: ADA 2024 consensus (bicarbonate only if pH < 7.0).",
     "lactate": "Surviving Sepsis Campaign 2021: lactate ≥ 2 hyperlactataemia, ≥ 4 high risk.",
-    "potassium": "Critical K+ < 3 or > 6 mmol/L (ТЗ)."
+    "potassium": "Critical K+ < 3 or > 6 mmol/L (ТЗ).",
+    "analyzer": "Radiometer ABL800 FLEX Reference Manual, ch. 6 Derived parameters: cHCO3-(P) — actual bicarbonate (use for Boston rules); cHCO3-(P,st) — standard; cBase(Ecf) = SBE; mOsm,c is calculated (not for osmolar gap); FiO2 = pO2 / [pO2(a)/FO2(I)].",
+    "haemoglobin": "WHO 2024 Guideline on haemoglobin cut-offs to define anaemia (6–23 mo <105, 24–59 mo <110, 5–11 y <115, 12–14 y <120, women <120, men <130 g/L); neonatal ranges: Nathan & Oski / Harriet Lane. Transfusion: TOP trial (Kirpalani, NEJM 2020) restrictive arm; children TAXI/TRIPICU 70 g/L; adults AABB 2023 (Carson, JAMA 2023): 70 g/L, 75 cardiac surgery, 80 orthopaedic surgery or cardiovascular disease.",
+    "cooximetry": "COHb: non-smoker < 3%, smoker ≤ 10%; hyperbaric oxygen to consider at COHb > 25% (> 15–20% in pregnancy) or neurological signs (ACEP 2017, UHMS). MetHb: normal < 2%, cyanosis ~10–15%, methylene blue 1–2 mg/kg if > 20% with symptoms or > 30% (avoid in G6PD deficiency).",
+    "potassiumCorrection": "Hypokalaemia grades 3.0–3.4 / 2.5–2.9 / < 2.5. Neonates and children IV KCl: max 0.2 mmol/kg/h (0.5 in ICU with ECG), ≤ 40 mmol/L peripheral, ≤ 80 central (NSW Neonatal ANMF; PCH Perth). Adults ≤ 10 mmol/h peripheral, 20 mmol/h central (UK SPC). Check Mg2+.",
+    "calcium": "Ionised Ca: term and unstable preterm treat < 1.1, stable preterm < 0.8 (RCH Melbourne; Worcestershire NHS); children and adults < 1.0 significant, < 0.8 severe. Calcium gluconate 10% 0.5 mL/kg (50 mg/kg) over 5–10 min with ECG (RCH Neonatal Medication Guidelines), max 20 mL; adults 10–20 mL over 10 min.",
+    "bilirubin": "≥ 35 weeks: AAP 2022 (Kemper et al., Pediatrics 2022;150:e2022058859) hour-specific nomogram — use the AAP tool (bilitool.org); escalation of care within 34 µmol/L of the exchange threshold. < 35 weeks: Maisels et al., J Perinatol 2012 operational thresholds by GA (lower end with risk factors).",
+    "glucose": "Neonates: BAPM 2017 (< 1.0 IV; < 2.0 act; < 2.5 with signs), PES 2015 (> 2.8 mmol/L first 48 h, > 3.3 after 48 h); hyperglycaemia > 8.3, insulin to consider > 14 (NICE NG154). Children: ISPAD level 1 < 3.9, level 2 < 3.0; DKA glucose > 11 with pH < 7.3 or HCO3 < 18 (ISPAD 2022). Adult ICU target 7.8–10, insulin > 10 (NICE-SUGAR, ADA).",
+    "lactateAge": "Adults SSC 2021 ≥ 2 / ≥ 4; children ≥ 2 (SSC paediatric 2020). Neonates: up to ~4 normal in the first 6 h, > 2.5 persistent is concerning; cord lactate > 6.2 associated with neurological abnormality.",
+    "venousSample": "Byrne et al., Respirology 2014: venous pH −0.03…−0.04, pCO2 +4.4 mmHg, HCO3 +1. Arterial-labelled sample likely venous: pO2 < 40–45 mmHg with sO2 < 75–80%, or sO2 vs SpO2 gap > 10%."
   },
   "categories": {
     "adult": {
@@ -242,7 +251,8 @@
     "venousSuspect": {
       "pO2": 45,
       "sO2": 80
-    }
+    },
+    "severeHypoxemia": 60
   },
   "treatment": {
     "bicarbFactor": 0.3,
@@ -275,5 +285,160 @@
       ]
     }
   },
-  "defaultPatm": 717
+  "defaultPatm": 717,
+  "labs": {
+    "hbLower": {
+      "preterm_0_7d": 130,
+      "term_0_7d": 135,
+      "neonate_1_4w": 100,
+      "infant_1_6m": 90,
+      "m6_23": 105,
+      "m24_59": 110,
+      "y5_11": 115,
+      "y12_14": 120,
+      "adult": 120,
+      "adultMale": 130
+    },
+    "transfusion": {
+      "topWeek1": [
+        110,
+        100
+      ],
+      "topWeek2": [
+        100,
+        85
+      ],
+      "topWeek3": [
+        85,
+        70
+      ],
+      "child": 70,
+      "adult": 70,
+      "adultCardiacSurgery": 75,
+      "adultCVD": 80
+    },
+    "COHb": {
+      "nonSmoker": 3,
+      "smoker": 10,
+      "hbo": 25
+    },
+    "MetHb": {
+      "normal": 2,
+      "cyanosis": 10,
+      "symptomatic": 20,
+      "treatAlways": 30
+    },
+    "K": {
+      "mild": 3.5,
+      "moderate": 3.0,
+      "severe": 2.5,
+      "hyperMild": 5.5,
+      "hyperModerate": 6.0,
+      "hyperSevere": 6.5,
+      "pedDoseMmolKg": 0.5,
+      "pedMaxRate": 0.2,
+      "pedMaxRateICU": 0.5,
+      "concPeripheral": 40,
+      "concCentral": 80,
+      "adultDoseMmol": 20,
+      "adultRatePeripheral": 10,
+      "adultRateCentral": 20
+    },
+    "iCa": {
+      "normal": [
+        1.15,
+        1.3
+      ],
+      "termTreat": 1.1,
+      "pretermStableTreat": 0.8,
+      "significant": 1.0,
+      "severe": 0.8,
+      "gluconateMlKg": 0.5,
+      "gluconateMaxMl": 20,
+      "adultGluconateMl": [
+        10,
+        20
+      ]
+    },
+    "glucose": {
+      "neoIV": 1.0,
+      "neoAct": 2.0,
+      "neoTarget48h": 2.8,
+      "neoTargetAfter": 3.3,
+      "neoHyper": 8.3,
+      "neoInsulin": 14,
+      "childL1": 3.9,
+      "childL2": 3.0,
+      "dka": 11,
+      "adultHypo": 3.9,
+      "adultSevere": 3.0,
+      "adultInsulin": 10
+    },
+    "lactate": {
+      "high": 2,
+      "severe": 4,
+      "neoEarlyHours": 6,
+      "neoEarly": 4,
+      "neoLate": 2.5,
+      "cord": 6.2
+    },
+    "bilirubinPreterm": [
+      {
+        "gaMax": 28,
+        "photo": [
+          86,
+          103
+        ],
+        "exchange": [
+          188,
+          239
+        ]
+      },
+      {
+        "gaMax": 30,
+        "photo": [
+          103,
+          137
+        ],
+        "exchange": [
+          205,
+          239
+        ]
+      },
+      {
+        "gaMax": 32,
+        "photo": [
+          137,
+          171
+        ],
+        "exchange": [
+          222,
+          274
+        ]
+      },
+      {
+        "gaMax": 34,
+        "photo": [
+          171,
+          205
+        ],
+        "exchange": [
+          257,
+          308
+        ]
+      },
+      {
+        "gaMax": 35,
+        "photo": [
+          205,
+          239
+        ],
+        "exchange": [
+          291,
+          325
+        ]
+      }
+    ],
+    "spo2Gap": 10
+  }
 }

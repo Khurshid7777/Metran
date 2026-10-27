@@ -99,7 +99,8 @@ export type StepId =
   | 'deltaRatio'
   | 'osmolar'
   | 'stewart'
-  | 'oxygenation';
+  | 'oxygenation'
+  | 'labs';
 
 export type StepStatus = 'done' | 'insufficient' | 'disabled';
 
@@ -147,6 +148,8 @@ export interface VentResult {
 
 export interface TreatmentResult {
   available: boolean;
+  potassium?: import('./labs').PotassiumPlan;
+  calcium?: import('./labs').CalciumPlan;
   bicarbonate?: BicarbResult;
   ventilation?: VentResult;
   hfoHints: string[];

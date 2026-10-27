@@ -26,6 +26,15 @@ describe('ввод анализа', () => {
     expect(res.primary).toBe('metabolic_alkalosis');
     expect(res.compensation).toBe('adequate');
     const codes = res.flags.map((f) => f.code);
-    expect(codes).toEqual(expect.arrayContaining(['hypokalemia', 'possibly_venous']));
+    expect(codes).toEqual(expect.arrayContaining(['hypokalemia', 'hypocalcemia', 'anemia']));
+    // sO2 81% is just above the "looks venous" threshold of 80%
+    expect(codes).not.toContain('possibly_venous');
+    const r2 = buildInput(draft({ pH: '7.465', pCO2: '44.1', pO2: '44.3', HCO3: '31.3', SaO2: '76' }));
+    expect(interpret(r2.input!).flags.map((f) => f.code)).toContain('possibly_venous');
+    // weight → educational K+ correction plan
+    const r3 = buildInput(draft({ pH: '7.465', pCO2: '44.1', HCO3: '31.3', K: '2.7', iCa: '0.86', weightKg: '70' }));
+    const tr = interpret(r3.input!).treatment!;
+    expect(tr.potassium).toMatchObject({ doseMmol: 20, maxRateMmolH: 10, perKg: false });
+    expect(tr.calcium).toMatchObject({ gluconateMl: 10, gluconateMlMax: 20 });
   });
 });

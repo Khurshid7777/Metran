@@ -115,9 +115,6 @@ export function generalFlags(ctx: Ctx): Flag[] {
   if (input.pH < norms.critical.pHLow || input.pH > norms.critical.pHHigh) {
     flags.push({ code: 'critical_ph', severity: 'critical', params: { pH: input.pH } });
   }
-  if (input.K !== undefined && (input.K < norms.electrolytes.K[0] || input.K > norms.electrolytes.K[1])) {
-    flags.push({ code: input.K < norms.electrolytes.K[0] ? 'hypokalemia' : 'hyperkalemia', severity: 'critical', params: { K: input.K } });
-  }
   if (input.temperature !== undefined) {
     const [lo, hi] = norms.temperatureRange;
     if (input.temperature < lo || input.temperature > hi) {

@@ -108,6 +108,36 @@ export function TreatmentBlock({ result }: { result: InterpretationResult }) {
           {v.outOfLimits && <p className="flag flag-warning">{t('treat.vent.limits', { lo: v.limits[0], hi: v.limits[1] })}</p>}
         </div>
       )}
+      {tr.potassium && (
+        <div className="treat-item" data-testid="treat-k">
+          <h4>{t('treat.k.title')}</h4>
+          <ul>
+            <li>{t('treat.k.dose', { dose: Math.round(tr.potassium.doseMmol * 10) / 10 })}</li>
+            <li>
+              {tr.potassium.perKg
+                ? t('treat.k.ratePed', {
+                    rate: Math.round(tr.potassium.maxRateMmolH * 10) / 10,
+                    icu: Math.round((tr.potassium.maxRateIcuMmolH ?? 0) * 10) / 10,
+                    h: Math.round(tr.potassium.minHours * 10) / 10,
+                  })
+                : t('treat.k.rateAdult', { rate: tr.potassium.maxRateMmolH, icu: tr.potassium.maxRateIcuMmolH ?? 0 })}
+            </li>
+            <li>{t('treat.k.conc', { p: tr.potassium.concPeripheral, c: tr.potassium.concCentral })}</li>
+          </ul>
+          <p className="muted">{t('treat.k.notes')}</p>
+        </div>
+      )}
+      {tr.calcium && (
+        <div className="treat-item" data-testid="treat-ca">
+          <h4>{t('treat.ca.title')}</h4>
+          <p>
+            {tr.calcium.perKg
+              ? t('treat.ca.dosePed', { ml: Math.round(tr.calcium.gluconateMl * 10) / 10 })
+              : t('treat.ca.doseAdult', { ml: tr.calcium.gluconateMl, max: tr.calcium.gluconateMlMax ?? tr.calcium.gluconateMl })}
+          </p>
+          <p className="muted">{t('treat.ca.notes')}</p>
+        </div>
+      )}
       {tr.hfoHints.length > 0 && (
         <div className="treat-item">
           <h4>{t('treat.hfo.title')}</h4>
