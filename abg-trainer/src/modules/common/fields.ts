@@ -4,6 +4,8 @@ import type { AbgInput } from '../../core/types';
 export interface FieldDef {
   name: keyof AbgInput;
   unit?: string;
+  /** Shown only for these age categories. */
+  ages?: string[];
   unitGroup?: 'gas' | 'albumin' | 'glucose' | 'urea' | 'fio2';
   digits: number;
 }
@@ -52,6 +54,22 @@ export const FIELD_GROUPS: { id: string; fields: FieldDef[] }[] = [
       { name: 'MAP', unit: 'cmH2O', digits: 0 },
       { name: 'PEEP', unit: 'cmH2O', digits: 0 },
       { name: 'Patm', unit: 'mmHg', digits: 0 },
+      { name: 'pO2FO2', unit: 'mmHg', digits: 0 },
+    ],
+  },
+  {
+    id: 'oximetry',
+    fields: [
+      { name: 'Hb', unit: 'gL', digits: 0 },
+      { name: 'FCOHb', unit: 'percent', digits: 1 },
+      { name: 'FMetHb', unit: 'percent', digits: 1 },
+    ],
+  },
+  {
+    id: 'neonatal',
+    fields: [
+      { name: 'ageHours', unit: 'hours', digits: 0, ages: ['preterm', 'term_neonate'] },
+      { name: 'bilirubin', unit: 'umol', digits: 0, ages: ['preterm', 'term_neonate'] },
     ],
   },
 ];

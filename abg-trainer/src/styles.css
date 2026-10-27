@@ -261,3 +261,19 @@ table.values td { font-variant-numeric: tabular-nums; }
 .sources summary { cursor: pointer; color: var(--accent); margin-top: 8px; }
 .sources .details { grid-template-columns: 1fr; }
 .source-ref { font-weight: normal !important; font-size: 0.875rem; }
+
+.calc-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 10px; padding: 3px; gap: 3px; background: var(--surface); }
+.segmented button { border: none; min-height: 40px; padding: 8px 16px; border-radius: 7px; }
+.segmented button.active { background: var(--accent); color: var(--accent-contrast); }
+.quick-context { display: flex; flex-direction: column; gap: 10px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; border-radius: 10px; }
+.chip-row.need { box-shadow: 0 0 0 2px var(--bad); padding: 4px; }
+.chip { border-radius: 999px; min-height: 40px; padding: 8px 14px; }
+.chip.on { background: var(--accent); color: var(--accent-contrast); border-color: var(--accent); font-weight: 600; }
+.quick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px 12px; }
+.qfield { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.qfield label { flex-direction: row; justify-content: space-between; align-items: baseline; gap: 6px; }
+.qfield .abl { font-weight: 600; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92rem; }
+.qfield .unit { font-size: 0.78rem; }
+.qfield input { font-size: 1.15rem; font-variant-numeric: tabular-nums; }

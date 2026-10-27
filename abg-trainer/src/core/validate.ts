@@ -27,6 +27,12 @@ export const INPUT_RANGES: Record<string, [number, number]> = {
   PEEP: [0, 25],
   Patm: [500, 800],
   temperature: [25, 43],
+  Hb: [30, 250],
+  FCOHb: [0, 60],
+  FMetHb: [0, 60],
+  bilirubin: [0, 900],
+  ageHours: [0, 720],
+  pO2FO2: [20, 700],
 };
 
 export function validateInput(input: AbgInput): InputError[] {

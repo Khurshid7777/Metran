@@ -54,6 +54,17 @@ export interface AbgInput {
   pO2?: number;
   SpO2?: number;
   SaO2?: number;
+  /** Total haemoglobin ctHb, g/L. */
+  Hb?: number;
+  /** Co-oximetry fractions, %. */
+  FCOHb?: number;
+  FMetHb?: number;
+  /** Total bilirubin ctBil, µmol/L. */
+  bilirubin?: number;
+  /** Postnatal age in hours (neonates, for bilirubin and glucose). */
+  ageHours?: number;
+  /** Analyzer's pO2(a)/FO2(I), mmHg — used to derive FiO2 when FiO2 is not entered. */
+  pO2FO2?: number;
   FiO2?: number;
   MAP?: number;
   PEEP?: number;

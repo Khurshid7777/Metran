@@ -10,6 +10,8 @@ test('навигация с клавиатуры', async ({ page }) => {
   await nav.focus();
   await page.keyboard.press('Enter');
   await expect(nav).toHaveAttribute('aria-current', 'page');
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('sampleType').selectOption('arterial');
   await page.getByTestId('in-pH').focus();
   await page.keyboard.type('7.28');
   await page.keyboard.press('Tab');
@@ -21,6 +23,8 @@ test('навигация с клавиатуры', async ({ page }) => {
 test('все поля ввода имеют подпись', async ({ page }) => {
   await page.goto('/');
   await page.getByTestId('nav-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('sampleType').selectOption('arterial');
   const unlabeled = await page.evaluate(() =>
     [...document.querySelectorAll('input, select')].filter((el) => {
       const id = el.id;
@@ -39,6 +43,8 @@ test('офлайн: один HTML-файл открывается без сет�
   });
   await page.goto(pathToFileURL(resolve('dist/index.html')).href);
   await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('sampleType').selectOption('arterial');
   await page.getByTestId('in-pH').fill('7,4');
   await page.getByTestId('in-pCO2').fill('40');
   await page.getByTestId('in-HCO3').fill('15');

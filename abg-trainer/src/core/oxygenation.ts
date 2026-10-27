@@ -46,6 +46,11 @@ export function oxygenationStep(ctx: Ctx): { step: Step; values: OxygenationValu
   const neonate = age === 'preterm' || age === 'term_neonate';
 
   if (input.pO2 !== undefined && !arterial) flags.push({ code: 'pao2_not_interpretable', severity: 'warning' });
+  // Labelled arterial but looks venous: low pO2 together with low saturation (the analyzer assumes arterial by default)
+  const vs = o.venousSuspect;
+  if (arterial && input.pO2 !== undefined && input.pO2 < vs.pO2 && input.SaO2 !== undefined && input.SaO2 < vs.sO2) {
+    flags.push({ code: 'possibly_venous', severity: 'warning', params: { pO2: input.pO2 } });
+  }
 
   if (input.FiO2 === undefined || (input.pO2 === undefined && input.SpO2 === undefined)) {
     return { values, step: { id: 'oxygenation', status: 'insufficient', explanationKey: 'step.oxygenation.insufficient', flags, details: {} } };

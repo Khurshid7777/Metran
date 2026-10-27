@@ -238,6 +238,10 @@
       "SFmild": 315,
       "SFmoderate": 235,
       "SFsevere": 148
+    },
+    "venousSuspect": {
+      "pO2": 45,
+      "sO2": 80
     }
   },
   "treatment": {
