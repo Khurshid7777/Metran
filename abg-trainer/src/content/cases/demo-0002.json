@@ -1,0 +1,34 @@
+{
+  "id": "demo-0002",
+  "ageCategory": "child",
+  "weightKg": 12,
+  "ageYears": 2,
+  "sampleType": "capillary",
+  "vignette": {
+    "ru": "Ребёнок 2 лет, гастроэнтерит, диарея 5 суток, вялость.",
+    "uz": "2 yoshli bola, gastroenterit, 5 kun diareya, holsizlik.",
+    "en": "2-year-old, gastroenteritis, diarrhoea for 5 days, lethargic."
+  },
+  "values": {
+    "pH": 7.27,
+    "pCO2": 26,
+    "HCO3": 11.8,
+    "BE": -14,
+    "Na": 136,
+    "Cl": 114,
+    "albumin": 38,
+    "lactate": 1.6
+  },
+  "expected": {
+    "primary": "metabolic_acidosis",
+    "secondary": []
+  },
+  "level": 2,
+  "tags": [
+    "gi",
+    "child"
+  ],
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "demo": true
+}

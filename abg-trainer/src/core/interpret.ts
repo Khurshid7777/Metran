@@ -125,7 +125,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     phStatus: prim.phStatus,
     primary: prim.primary,
     chronicity: comp.chronicity,
-    compensation: comp.compensation,
+    compensation: prim.mixedPair ? undefined : comp.compensation,
     acidosisType,
     disorders,
     secondary,

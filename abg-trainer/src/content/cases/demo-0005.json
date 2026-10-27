@@ -1,0 +1,37 @@
+{
+  "id": "demo-0005",
+  "ageCategory": "adult",
+  "weightKg": 80,
+  "ageYears": 34,
+  "sampleType": "arterial",
+  "vignette": {
+    "ru": "Пациент 34 лет, сахарный диабет 1 типа, рвота, дыхание Куссмауля.",
+    "uz": "34 yoshli bemor, 1-tur qandli diabet, qusish, Kussmaul nafasi.",
+    "en": "34-year-old, type 1 diabetes, vomiting, Kussmaul breathing."
+  },
+  "values": {
+    "pH": 7.16,
+    "pCO2": 18,
+    "HCO3": 6.4,
+    "BE": -22,
+    "Na": 132,
+    "Cl": 96,
+    "K": 5.6,
+    "albumin": 42,
+    "lactate": 2.2,
+    "glucose": 28,
+    "urea": 9,
+    "measuredOsm": 310
+  },
+  "expected": {
+    "primary": "metabolic_acidosis",
+    "secondary": []
+  },
+  "level": 2,
+  "tags": [
+    "dka"
+  ],
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "demo": true
+}

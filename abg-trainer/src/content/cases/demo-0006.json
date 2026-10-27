@@ -1,0 +1,35 @@
+{
+  "id": "demo-0006",
+  "ageCategory": "preterm",
+  "weightKg": 1.1,
+  "gestationalWeeks": 28,
+  "sampleType": "arterial",
+  "vignette": {
+    "ru": "Недоношенный 28 нед, 3-и сутки, ИВЛ после сурфактанта, FiO2 0,25.",
+    "uz": "28 haftalik chala tug'ilgan, 3-kun, surfaktantdan keyin SO'V, FiO2 0,25.",
+    "en": "Preterm 28 weeks, day 3, ventilated after surfactant, FiO2 0.25."
+  },
+  "values": {
+    "pH": 7.47,
+    "pCO2": 31,
+    "HCO3": 22.5,
+    "Na": 139,
+    "Cl": 109,
+    "albumin": 28,
+    "FiO2": 0.25,
+    "pO2": 92
+  },
+  "expected": {
+    "primary": "respiratory_alkalosis",
+    "chronicity": "acute",
+    "secondary": []
+  },
+  "level": 3,
+  "tags": [
+    "preterm",
+    "hyperoxia"
+  ],
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "demo": true
+}

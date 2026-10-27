@@ -1,0 +1,29 @@
+{
+  "id": "demo-0004",
+  "ageCategory": "term_neonate",
+  "weightKg": 3.4,
+  "sampleType": "cord_artery",
+  "vignette": {
+    "ru": "Пуповинная кровь, артерия. Отслойка плаценты, экстренное кесарево сечение.",
+    "uz": "Kindik qoni, arteriya. Yo'ldosh ko'chishi, shoshilinch kesar kesish.",
+    "en": "Cord blood, artery. Placental abruption, emergency caesarean section."
+  },
+  "values": {
+    "pH": 6.94,
+    "pCO2": 78,
+    "HCO3": 16.2,
+    "BE": -16
+  },
+  "expected": {
+    "primary": "mixed_acidosis",
+    "secondary": []
+  },
+  "level": 3,
+  "tags": [
+    "cord",
+    "neonate"
+  ],
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "demo": true
+}

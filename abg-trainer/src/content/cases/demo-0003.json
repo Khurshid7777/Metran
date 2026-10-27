@@ -1,0 +1,34 @@
+{
+  "id": "demo-0003",
+  "ageCategory": "adult",
+  "weightKg": 70,
+  "ageYears": 58,
+  "sampleType": "arterial",
+  "vignette": {
+    "ru": "Пациент 58 лет, ХОБЛ, обострение, сонлив.",
+    "uz": "58 yoshli bemor, SOO'K xurujlanishi, uyquchan.",
+    "en": "58-year-old, COPD exacerbation, drowsy."
+  },
+  "values": {
+    "pH": 7.28,
+    "pCO2": 72,
+    "HCO3": 33,
+    "Na": 139,
+    "Cl": 95,
+    "albumin": 36,
+    "FiO2": 0.28,
+    "pO2": 58
+  },
+  "expected": {
+    "primary": "respiratory_acidosis",
+    "chronicity": "acute_on_chronic",
+    "secondary": []
+  },
+  "level": 1,
+  "tags": [
+    "copd"
+  ],
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "demo": true
+}

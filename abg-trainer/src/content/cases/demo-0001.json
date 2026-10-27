@@ -1,0 +1,37 @@
+{
+  "id": "demo-0001",
+  "ageCategory": "term_neonate",
+  "weightKg": 3.2,
+  "sampleType": "arterial",
+  "vignette": {
+    "ru": "Доношенный новорождённый, 2-е сутки, транзиторное тахипноэ, нарастающая дыхательная недостаточность на CPAP.",
+    "uz": "Muddatida tug'ilgan chaqaloq, 2-kun, tranzitor taxipnoe, CPAP fonida kuchayib borayotgan nafas yetishmovchiligi.",
+    "en": "Term neonate, day 2, transient tachypnoea, worsening respiratory failure on CPAP."
+  },
+  "values": {
+    "pH": 7.18,
+    "pCO2": 62,
+    "HCO3": 22.5,
+    "Na": 138,
+    "Cl": 104,
+    "albumin": 30,
+    "lactate": 2.1,
+    "FiO2": 0.6,
+    "MAP": 14,
+    "pO2": 55
+  },
+  "expected": {
+    "primary": "respiratory_acidosis",
+    "secondary": [
+      "metabolic_acidosis"
+    ]
+  },
+  "level": 2,
+  "tags": [
+    "ventilation",
+    "neonate"
+  ],
+  "reviewedBy": "",
+  "reviewedAt": "",
+  "demo": true
+}
