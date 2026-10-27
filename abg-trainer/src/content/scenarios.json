@@ -1,0 +1,738 @@
+{
+  "ageText": {
+    "preterm": {
+      "ru": "Недоношенный, {ga} нед гестации, {weight} кг",
+      "uz": "Chala tug'ilgan, gestatsiya {ga} hafta, {weight} kg",
+      "en": "Preterm infant, {ga} weeks' gestation, {weight} kg"
+    },
+    "term_neonate": {
+      "ru": "Доношенный новорождённый, {days} сут, {weight} кг",
+      "uz": "Muddatida tug'ilgan chaqaloq, {days} kunlik, {weight} kg",
+      "en": "Term neonate, day {days}, {weight} kg"
+    },
+    "child": {
+      "ru": "Ребёнок {years} лет, {weight} кг",
+      "uz": "{years} yoshli bola, {weight} kg",
+      "en": "Child, {years} years, {weight} kg"
+    },
+    "adult": {
+      "ru": "Пациент {years} лет, {weight} кг",
+      "uz": "{years} yoshli bemor, {weight} kg",
+      "en": "Patient, {years} years, {weight} kg"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "met_acid_simple",
+      "level": 1,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        8,
+        18
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "Сепсис, гипотония, олигурия. Дышит самостоятельно, тахипноэ.",
+        "uz": "Sepsis, gipotoniya, oliguriya. Mustaqil nafas oladi, taxipnoe.",
+        "en": "Sepsis, hypotension, oliguria. Breathing spontaneously, tachypnoea."
+      }
+    },
+    {
+      "id": "met_alk_simple",
+      "level": 1,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_alkalosis",
+      "range": [
+        31,
+        40
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "metabolic_alkalosis",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "Многократная рвота в течение 3 суток, назогастральный зонд на сброс.",
+        "uz": "3 kun davomida ko'p marta qusish, nazogastral zond ochiq.",
+        "en": "Repeated vomiting for 3 days, nasogastric tube on free drainage."
+      }
+    },
+    {
+      "id": "resp_acid_acute",
+      "level": 1,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_acidosis",
+      "chronicity": "acute",
+      "range": [
+        60,
+        80
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "respiratory_acidosis",
+        "chronicity": "acute",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "Передозировка опиоидов, ЧД 6 в минуту, без ИВЛ.",
+        "uz": "Opioidlar dozasining oshib ketishi, NCh daqiqasiga 6, SO'V yo'q.",
+        "en": "Opioid overdose, respiratory rate 6/min, not ventilated."
+      }
+    },
+    {
+      "id": "resp_acid_chronic",
+      "level": 1,
+      "ages": [
+        "adult"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_acidosis",
+      "chronicity": "chronic",
+      "range": [
+        58,
+        80
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "respiratory_acidosis",
+        "chronicity": "chronic",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "ХОБЛ много лет, состояние стабильное, плановый осмотр.",
+        "uz": "Ko'p yillik SOO'K, holati barqaror, rejali ko'rik.",
+        "en": "Long-standing COPD, stable, routine review."
+      }
+    },
+    {
+      "id": "resp_alk_acute",
+      "level": 1,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_alkalosis",
+      "chronicity": "acute",
+      "range": [
+        20,
+        28
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "respiratory_alkalosis",
+        "chronicity": "acute",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "Выраженная боль после травмы, тревога, ЧД 34.",
+        "uz": "Jarohatdan keyingi kuchli og'riq, xavotir, NCh 34.",
+        "en": "Severe pain after trauma, anxiety, respiratory rate 34."
+      }
+    },
+    {
+      "id": "resp_alk_chronic",
+      "level": 1,
+      "ages": [
+        "adult"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_alkalosis",
+      "chronicity": "chronic",
+      "range": [
+        18,
+        27
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "respiratory_alkalosis",
+        "chronicity": "chronic",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "Цирроз печени, одышка несколько недель.",
+        "uz": "Jigar sirrozi, bir necha hafta davomida hansirash.",
+        "en": "Liver cirrhosis, dyspnoea for several weeks."
+      }
+    },
+    {
+      "id": "hagma_lactic",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child",
+        "term_neonate"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        9,
+        18
+      ],
+      "ag": "high",
+      "delta": [
+        1.0,
+        1.8
+      ],
+      "cause": "lactic",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": true
+      },
+      "vignette": {
+        "ru": "Септический шок, норадреналин, время наполнения капилляров 4 с.",
+        "uz": "Septik shok, noradrenalin, kapillyarlar to'lish vaqti 4 s.",
+        "en": "Septic shock on noradrenaline, capillary refill 4 s."
+      }
+    },
+    {
+      "id": "nagma_diarrhea",
+      "level": 2,
+      "ages": [
+        "child",
+        "term_neonate",
+        "adult"
+      ],
+      "samples": [
+        "arterial",
+        "capillary"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        10,
+        18
+      ],
+      "ag": "normal",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": false
+      },
+      "vignette": {
+        "ru": "Обильная водянистая диарея 4 суток, обезвоживание.",
+        "uz": "4 kun davomida ko'p suvli diareya, suvsizlanish.",
+        "en": "Profuse watery diarrhoea for 4 days, dehydration."
+      }
+    },
+    {
+      "id": "hagma_hypoalbumin",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        15,
+        19
+      ],
+      "ag": "high",
+      "delta": [
+        1.0,
+        1.6
+      ],
+      "albumin": [
+        12,
+        20
+      ],
+      "cause": "lactic",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": true
+      },
+      "vignette": {
+        "ru": "Длительная госпитализация, отёки, нефротический синдром; новый эпизод гипотонии.",
+        "uz": "Uzoq gospitalizatsiya, shishlar, nefrotik sindrom; gipotoniyaning yangi epizodi.",
+        "en": "Prolonged admission, oedema, nephrotic syndrome; new episode of hypotension."
+      }
+    },
+    {
+      "id": "met_acid_plus_resp_acid",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        10,
+        17
+      ],
+      "secondary": "respiratory_acidosis",
+      "ag": "high",
+      "delta": [
+        1.0,
+        1.8
+      ],
+      "cause": "lactic",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [
+          "respiratory_acidosis"
+        ],
+        "agElevated": true
+      },
+      "vignette": {
+        "ru": "Сепсис, нарастающая усталость дыхательных мышц, парадоксальное дыхание.",
+        "uz": "Sepsis, nafas mushaklarining kuchayib borayotgan charchashi, paradoksal nafas.",
+        "en": "Sepsis with progressive respiratory muscle fatigue, paradoxical breathing."
+      }
+    },
+    {
+      "id": "mixed_alkalosis",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "mixed_alkalosis",
+      "range": [
+        25,
+        32
+      ],
+      "range2": [
+        31,
+        37
+      ],
+      "ag": "normal",
+      "expected": {
+        "primary": "mixed_alkalosis",
+        "secondary": [],
+        "agElevated": false
+      },
+      "vignette": {
+        "ru": "Многократная рвота, затем интубация; минутная вентиляция избыточна.",
+        "uz": "Ko'p marta qusish, so'ngra intubatsiya; daqiqalik ventilyatsiya ortiqcha.",
+        "en": "Repeated vomiting, then intubated; minute ventilation excessive."
+      },
+      "ventilation": "conventional"
+    },
+    {
+      "id": "met_alk_plus_resp_acid",
+      "level": 2,
+      "ages": [
+        "adult"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_alkalosis",
+      "range": [
+        32,
+        40
+      ],
+      "secondary": "respiratory_acidosis",
+      "ag": "normal",
+      "expected": {
+        "primary": "metabolic_alkalosis",
+        "secondary": [
+          "respiratory_acidosis"
+        ],
+        "agElevated": false
+      },
+      "vignette": {
+        "ru": "Высокие дозы фуросемида при ХСН, сонливость после седации.",
+        "uz": "SYuE da furosemidning yuqori dozalari, sedatsiyadan keyin uyquchanlik.",
+        "en": "High-dose furosemide for heart failure, drowsy after sedation."
+      }
+    },
+    {
+      "id": "resp_acid_plus_met_acid",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_acidosis",
+      "range": [
+        62,
+        80
+      ],
+      "secondary": "metabolic_acidosis",
+      "ag": "high",
+      "delta": [
+        1.0,
+        1.8
+      ],
+      "cause": "lactic",
+      "expected": {
+        "primary": "mixed_acidosis",
+        "secondary": [],
+        "agElevated": true
+      },
+      "vignette": {
+        "ru": "Остановка дыхания на фоне аспирации, реанимационные мероприятия 5 минут.",
+        "uz": "Aspiratsiya fonida nafas to'xtashi, 5 daqiqa reanimatsiya choralari.",
+        "en": "Respiratory arrest after aspiration, 5 minutes of resuscitation."
+      }
+    },
+    {
+      "id": "hagma_plus_met_alk",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        15,
+        20
+      ],
+      "ag": "high",
+      "delta": [
+        2.8,
+        4.5
+      ],
+      "cause": "dka",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [
+          "metabolic_alkalosis"
+        ],
+        "agElevated": true
+      },
+      "vignette": {
+        "ru": "Диабетический кетоацидоз и многократная рвота в течение суток.",
+        "uz": "Diabetik ketoatsidoz va bir sutka davomida ko'p marta qusish.",
+        "en": "Diabetic ketoacidosis with repeated vomiting for 24 hours."
+      }
+    },
+    {
+      "id": "hagma_plus_nagma",
+      "level": 2,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        8,
+        14
+      ],
+      "ag": "high",
+      "delta": [
+        0.45,
+        0.75
+      ],
+      "cause": "dka",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": true,
+        "deltaClass": "mixed_ag"
+      },
+      "vignette": {
+        "ru": "ДКА, вторые сутки лечения, получил 4 л 0,9% NaCl.",
+        "uz": "DKA, davolashning ikkinchi kuni, 4 l 0,9% NaCl olgan.",
+        "en": "DKA, day 2 of treatment, received 4 L of 0.9% saline."
+      }
+    },
+    {
+      "id": "osm_gap_toxic",
+      "level": 2,
+      "ages": [
+        "adult"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        8,
+        16
+      ],
+      "ag": "high",
+      "delta": [
+        1.0,
+        1.8
+      ],
+      "cause": "toxic",
+      "osm": "high",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": true,
+        "osmElevated": true
+      },
+      "vignette": {
+        "ru": "Употребление суррогатов алкоголя, нарушение зрения.",
+        "uz": "Alkogol surrogatlarini iste'mol qilish, ko'rishning buzilishi.",
+        "en": "Ingestion of alcohol surrogates, visual disturbance."
+      }
+    },
+    {
+      "id": "triple_disorder",
+      "level": 3,
+      "ages": [
+        "adult"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_alkalosis",
+      "chronicity": "acute",
+      "range": [
+        24,
+        30
+      ],
+      "ag": "high",
+      "delta": [
+        3.0,
+        5.0
+      ],
+      "cause": "dka",
+      "expected": {
+        "primary": "respiratory_alkalosis",
+        "chronicity": "acute",
+        "secondary": [
+          "metabolic_acidosis",
+          "metabolic_alkalosis"
+        ],
+        "agElevated": true
+      },
+      "vignette": {
+        "ru": "ДКА, многократная рвота, пневмония с лихорадкой и тахипноэ.",
+        "uz": "DKA, ko'p marta qusish, isitma va taxipnoe bilan pnevmoniya.",
+        "en": "DKA, repeated vomiting, pneumonia with fever and tachypnoea."
+      }
+    },
+    {
+      "id": "neonate_rds",
+      "level": 3,
+      "ages": [
+        "term_neonate"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_acidosis",
+      "chronicity": "acute",
+      "range": [
+        60,
+        75
+      ],
+      "ag": "normal",
+      "oxygenation": "ino",
+      "expected": {
+        "primary": "respiratory_acidosis",
+        "chronicity": "acute",
+        "secondary": [],
+        "agElevated": false,
+        "oxyClass": "ino"
+      },
+      "vignette": {
+        "ru": "Мекониальная аспирация, ИВЛ, лабильная сатурация.",
+        "uz": "Mekoniy aspiratsiyasi, SO'V, labil saturatsiya.",
+        "en": "Meconium aspiration, ventilated, labile saturations."
+      },
+      "ventilation": "conventional"
+    },
+    {
+      "id": "preterm_resp_acid",
+      "level": 3,
+      "ages": [
+        "preterm"
+      ],
+      "samples": [
+        "arterial",
+        "capillary"
+      ],
+      "primary": "respiratory_acidosis",
+      "chronicity": "acute",
+      "range": [
+        66,
+        80
+      ],
+      "ag": "normal",
+      "expected": {
+        "primary": "respiratory_acidosis",
+        "chronicity": "acute",
+        "secondary": [],
+        "agElevated": false
+      },
+      "vignette": {
+        "ru": "РДС, сурфактант введён, конвенционная ИВЛ, частые апноэ.",
+        "uz": "RDS, surfaktant yuborilgan, konvension SO'V, tez-tez apnoe.",
+        "en": "RDS after surfactant, conventional ventilation, frequent apnoeas."
+      },
+      "ventilation": "conventional"
+    },
+    {
+      "id": "cord_asphyxia",
+      "level": 3,
+      "ages": [
+        "term_neonate"
+      ],
+      "samples": [
+        "cord_artery"
+      ],
+      "primary": "mixed_acidosis",
+      "range": [
+        62,
+        80
+      ],
+      "range2": [
+        9,
+        15
+      ],
+      "ag": "none",
+      "expected": {
+        "primary": "mixed_acidosis",
+        "secondary": []
+      },
+      "vignette": {
+        "ru": "Острая гипоксия в родах, брадикардия плода, Апгар 3/5.",
+        "uz": "Tug'ruqda o'tkir gipoksiya, homila bradikardiyasi, Apgar 3/5.",
+        "en": "Acute intrapartum hypoxia, fetal bradycardia, Apgar 3/5."
+      }
+    },
+    {
+      "id": "adult_ards",
+      "level": 3,
+      "ages": [
+        "adult"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "respiratory_acidosis",
+      "chronicity": "acute",
+      "range": [
+        56,
+        70
+      ],
+      "ag": "normal",
+      "oxygenation": "moderate",
+      "expected": {
+        "primary": "respiratory_acidosis",
+        "chronicity": "acute",
+        "secondary": [],
+        "agElevated": false,
+        "oxyClass": "moderate"
+      },
+      "vignette": {
+        "ru": "Вирусная пневмония, ИВЛ, PEEP 10, двусторонние инфильтраты.",
+        "uz": "Virusli pnevmoniya, SO'V, PEEP 10, ikki tomonlama infiltratlar.",
+        "en": "Viral pneumonia, ventilated, PEEP 10, bilateral infiltrates."
+      },
+      "ventilation": "conventional"
+    },
+    {
+      "id": "child_pards",
+      "level": 3,
+      "ages": [
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        12,
+        18
+      ],
+      "ag": "high",
+      "delta": [
+        1.0,
+        1.8
+      ],
+      "cause": "lactic",
+      "oxygenation": "severe",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": true,
+        "oxyClass": "severe"
+      },
+      "vignette": {
+        "ru": "Тяжёлая пневмония, ОРДС, высокочастотная ИВЛ.",
+        "uz": "Og'ir pnevmoniya, O'RDS, yuqori chastotali SO'V.",
+        "en": "Severe pneumonia, PARDS, high-frequency oscillation."
+      },
+      "ventilation": "hfo"
+    },
+    {
+      "id": "stewart_saline",
+      "level": 3,
+      "ages": [
+        "adult",
+        "child"
+      ],
+      "samples": [
+        "arterial"
+      ],
+      "primary": "metabolic_acidosis",
+      "range": [
+        14,
+        19
+      ],
+      "ag": "normal",
+      "albumin": [
+        18,
+        26
+      ],
+      "cause": "saline",
+      "expected": {
+        "primary": "metabolic_acidosis",
+        "secondary": [],
+        "agElevated": false
+      },
+      "vignette": {
+        "ru": "После обширной операции, 6 л 0,9% NaCl за сутки, гипоальбуминемия.",
+        "uz": "Katta operatsiyadan keyin, bir sutkada 6 l 0,9% NaCl, gipoalbuminemiya.",
+        "en": "After major surgery, 6 L of 0.9% saline in 24 hours, hypoalbuminaemia."
+      }
+    }
+  ]
+}

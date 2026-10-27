@@ -1,0 +1,60 @@
+{
+  "high_ag": {
+    "causes": [
+      { "key": "lactic", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "asphyxia", "ages": ["preterm", "term_neonate"] },
+      { "key": "iem", "ages": ["preterm", "term_neonate", "child"] },
+      { "key": "dka", "ages": ["child", "adult"] },
+      { "key": "starvation", "ages": ["child", "adult"] },
+      { "key": "renal", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "toxins", "ages": ["child", "adult"] }
+    ],
+    "checks": ["lactate", "glucoseKetones", "ureaCreatinine", "ammonia", "osmGap"]
+  },
+  "normal_ag": {
+    "causes": [
+      { "key": "diarrhea", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "saline", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "rta", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "stomas", "ages": ["term_neonate", "child", "adult"] },
+      { "key": "cai", "ages": ["child", "adult"] }
+    ],
+    "checks": ["urineAG", "salineVolume"]
+  },
+  "metabolic_alkalosis": {
+    "causes": [
+      { "key": "vomiting", "ages": ["term_neonate", "child", "adult"] },
+      { "key": "pyloric", "ages": ["term_neonate", "child"] },
+      { "key": "ngDrain", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "diuretics", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "posthypercapnic", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "mineralocorticoid", "ages": ["child", "adult"] },
+      { "key": "hypokalemia", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "bartter", "ages": ["term_neonate", "child", "adult"] }
+    ],
+    "checks": ["urineCl", "potassium", "bloodPressure"]
+  },
+  "respiratory_acidosis": {
+    "causes": [
+      { "key": "rds", "ages": ["preterm", "term_neonate"] },
+      { "key": "apnea", "ages": ["preterm"] },
+      { "key": "ventSettings", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "sedation", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "neuromuscular", "ages": ["child", "adult"] },
+      { "key": "obstruction", "ages": ["term_neonate", "child", "adult"] },
+      { "key": "lungDisease", "ages": ["preterm", "term_neonate", "child", "adult"] }
+    ],
+    "checks": ["ventilator", "xray", "neuro"]
+  },
+  "respiratory_alkalosis": {
+    "causes": [
+      { "key": "overventilation", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "sepsis", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "hypoxemia", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "cns", "ages": ["preterm", "term_neonate", "child", "adult"] },
+      { "key": "pain", "ages": ["child", "adult"] },
+      { "key": "liver", "ages": ["child", "adult"] }
+    ],
+    "checks": ["ventilator", "spo2", "temperature"]
+  }
+}

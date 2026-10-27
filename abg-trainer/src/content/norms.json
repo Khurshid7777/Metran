@@ -1,0 +1,70 @@
+{
+  "version": "2026-10-27",
+  "approvedBy": "",
+  "_note": "Стартовые значения из ТЗ. Перед релизом утверждаются клиническим руководителем. Значения с пометкой в _assumed не заданы в ТЗ явно и требуют утверждения.",
+  "_assumed": ["categories.preterm.HCO3", "categories.preterm.BE", "categories.preterm.pH[1]", "treatment.severeAcidosisPH", "treatment.lactateAcidosis", "ventilation.rateLimits", "electrolytes"],
+  "categories": {
+    "adult": {
+      "pH": [7.35, 7.45], "pCO2": [35, 45], "HCO3": [22, 26], "BE": [-2, 2],
+      "PaO2Air": [80, 100], "pCO2Target": [35, 45]
+    },
+    "child": {
+      "pH": [7.35, 7.45], "pCO2": [35, 45], "HCO3": [22, 26], "BE": [-2, 2],
+      "PaO2Air": [80, 100], "pCO2Target": [35, 45]
+    },
+    "term_neonate": {
+      "pH": [7.30, 7.45], "pCO2": [35, 45], "HCO3": [20, 26], "BE": [-4, 2],
+      "PaO2Air": [50, 80], "pCO2Target": [35, 45]
+    },
+    "preterm": {
+      "pH": [7.22, 7.45], "pHMin": 7.22, "pCO2": [45, 55], "pCO2Target": [45, 55],
+      "pCO2TargetBPD": [45, 65], "HCO3": [18, 26], "BE": [-6, 2],
+      "PaO2Air": [45, 65], "PaO2Target": [45, 65], "hyperoxiaFlagPaO2": 80
+    }
+  },
+  "cord": {
+    "arteryPHMin": 7.10,
+    "pathologicalPH": 7.0,
+    "pathologicalBE": -12,
+    "hypothermiaPH": 7.0,
+    "hypothermiaBE": -16
+  },
+  "consistencyTolerance": 0.10,
+  "compensationTolerance": 2,
+  "baseline": { "pCO2": 40, "HCO3": 24 },
+  "metAlkPCO2Ceiling": 55,
+  "AG": { "withoutK": [8, 12], "withK": [12, 16], "deltaBase": 12, "deltaBaseWithK": 16, "albuminRef": 40, "albuminFactor": 0.25 },
+  "deltaRatio": { "low": 0.4, "mid": 0.8, "high": 2.0 },
+  "osmolarGap": 10,
+  "stewart": { "naClRef": 38, "albuminRef": 42, "albuminFactor": 0.25, "umaThreshold": -2, "SIDa": [40, 42] },
+  "electrolytes": { "K": [3, 6], "Na": [135, 150], "iCaLow": 1.0, "lactateHigh": 2, "glucoseDKA": 14 },
+  "critical": { "pHLow": 7.0, "pHHigh": 7.6 },
+  "temperatureRange": [36, 38],
+  "oxygenation": {
+    "waterVapour": 47,
+    "RQ": 0.8,
+    "SpO2Max": 97,
+    "airFiO2Max": 0.21,
+    "berlin": { "minPEEP": 5, "mild": 300, "moderate": 200, "severe": 100 },
+    "PALICC2": { "OI": 16, "OSI": 12 },
+    "neonatalOI": { "considerINO": 25, "considerECMO": 40 }
+  },
+  "treatment": {
+    "bicarbFactor": 0.3,
+    "firstDoseFraction": 0.5,
+    "conc42": 0.5,
+    "conc84": 1.0,
+    "severeAcidosisPH": 7.1,
+    "lactateAcidosis": 4,
+    "hypernatremia": 150
+  },
+  "ventilation": {
+    "rateLimits": {
+      "preterm": [20, 70],
+      "term_neonate": [20, 60],
+      "child": [12, 40],
+      "adult": [8, 35]
+    }
+  },
+  "defaultPatm": 717
+}
