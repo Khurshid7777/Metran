@@ -19,8 +19,10 @@ export function hasKey(key: string): boolean {
   return typeof DICTS.ru[key] === 'string';
 }
 
+/** Shows a number with as many decimals as it carries, up to 3 (7.465 stays 7,465; 12.3 stays 12,3). */
 function digitsFor(v: number): number {
   if (Number.isInteger(v)) return 0;
+  for (let d = 1; d <= 3; d++) if (Math.abs(Math.round(v * 10 ** d) - v * 10 ** d) < 1e-6) return d;
   return Math.abs(v) < 10 ? 2 : 1;
 }
 

@@ -3,6 +3,7 @@ import { useT } from './useT';
 import { StewartChart } from './StewartChart';
 import { AcidBaseMap, BilirubinChart, Gamblegram } from './Charts';
 import { DeficitsCard, ProcessCard, Workings } from './Workings';
+import { MetricsCard } from './MetricsCard';
 import type { Working } from '../../core/workings';
 
 const VERDICT_PREFIX: Partial<Record<Step['id'], string>> = {
@@ -204,6 +205,7 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
           ))}
         </ol>
       </section>
+      <MetricsCard result={result} />
       <Gamblegram result={result} />
       {stewart?.status === 'done' && <StewartChart step={stewart} />}
       <BilirubinChart result={result} />

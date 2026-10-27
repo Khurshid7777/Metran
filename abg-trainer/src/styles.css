@@ -316,3 +316,18 @@ table.values td { font-variant-numeric: tabular-nums; }
 .process-list .badge { margin-left: 6px; }
 .process-list li.proc-insufficient, .process-list li.proc-disabled { opacity: 0.7; }
 .process-list { list-style: none; padding-left: 0; }
+
+.metric-group + .metric-group { margin-top: 14px; }
+.metric-group h4 { color: var(--accent); margin-bottom: 6px; }
+.metrics { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.metric { border: 1px solid var(--border); border-left: 4px solid var(--border); border-radius: 8px; padding: 8px 10px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.metric-low, .metric-high { border-left-color: var(--warn); }
+.metric-normal { border-left-color: var(--ok); }
+.metric-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.metric-name { font-weight: 600; font-size: 0.92rem; }
+.metric-value { font-size: 1.15rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.metric-sub { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.chip-s { font-size: 0.75rem; font-weight: 700; border-radius: 999px; padding: 1px 8px; }
+.chip-normal { background: var(--ok-soft); color: var(--ok); }
+.chip-low, .chip-high { background: var(--warn-soft); color: var(--warn); }
+.metric-formula { font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }

@@ -67,6 +67,10 @@ export interface AbgInput {
   biliRisk?: boolean;
   /** Analyzer's pO2(a)/FO2(I), mmHg — used to derive FiO2 when FiO2 is not entered. */
   pO2FO2?: number;
+  /** End-tidal CO2, mmHg (dead space). */
+  etCO2?: number;
+  /** Phosphate, mmol/L (strong ion gap). */
+  phosphate?: number;
   FiO2?: number;
   MAP?: number;
   PEEP?: number;
@@ -182,6 +186,8 @@ export interface InterpretationResult {
   workings: import('./workings').Working[];
   deficits: import('./deficits').Deficit[];
   bilirubin?: import('./bilirubin').BiliAssessment;
+  /** Extended assessment: derived values with formulas and norms. */
+  metrics: import('./extended').Metric[];
   computed: { HCO3: number; HCO3Calculated: boolean };
 }
 

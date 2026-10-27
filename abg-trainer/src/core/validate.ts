@@ -33,6 +33,8 @@ export const INPUT_RANGES: Record<string, [number, number]> = {
   bilirubin: [0, 900],
   ageHours: [0, 720],
   pO2FO2: [20, 700],
+  etCO2: [5, 150],
+  phosphate: [0.2, 5],
 };
 
 export function validateInput(input: AbgInput): InputError[] {

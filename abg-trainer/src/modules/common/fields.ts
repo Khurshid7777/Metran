@@ -42,6 +42,7 @@ export const FIELD_GROUPS: { id: string; fields: FieldDef[] }[] = [
       { name: 'measuredOsm', unit: 'mosm', digits: 0 },
       { name: 'iCa', unit: 'mmol', digits: 2 },
       { name: 'Mg', unit: 'mmol', digits: 2 },
+      { name: 'phosphate', unit: 'mmol', digits: 2 },
     ],
   },
   {
@@ -55,6 +56,7 @@ export const FIELD_GROUPS: { id: string; fields: FieldDef[] }[] = [
       { name: 'PEEP', unit: 'cmH2O', digits: 0 },
       { name: 'Patm', unit: 'mmHg', digits: 0 },
       { name: 'pO2FO2', unit: 'mmHg', digits: 0 },
+      { name: 'etCO2', unit: 'mmHg', digits: 0 },
     ],
   },
   {

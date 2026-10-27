@@ -6,6 +6,7 @@ import { osmolarStep } from './osmolar';
 import { deficits as computeDeficits } from './deficits';
 import { labsStep } from './labs';
 import { buildWorkings } from './workings';
+import { extendedMetrics } from './extended';
 import { oxygenationStep } from './oxygenation';
 import { categoryNorms, primaryStep } from './primary';
 import { stewartStep } from './stewart';
@@ -47,6 +48,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
       summary: [{ key: 'summary.blocked' }],
       workings: [],
       deficits: [],
+      metrics: [],
       computed: { HCO3: NaN, HCO3Calculated: input.HCO3 === undefined },
     };
   }
@@ -112,6 +114,19 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
   steps.push(labs.step);
   flags.push(...labs.step.flags);
 
+  // Extended assessment
+  const sida =
+    input.Na !== undefined && input.K !== undefined && input.Cl !== undefined
+      ? input.Na + input.K + (input.iCa ?? 0) + (input.Mg ?? 0) - input.Cl - (input.lactate ?? 0)
+      : undefined;
+  const ext = extendedMetrics(ctx, {
+    HCO3: ctx.HCO3,
+    agCorr: ag.agCorr,
+    PAO2: typeof oxy.step.details.PAO2 === 'number' ? oxy.step.details.PAO2 : undefined,
+    SIDa: sida,
+  });
+  flags.push(...ext.flags);
+
   flags.push(...cordFlags(input, norms));
 
   const disorderTypes = disorders.map((d) => d.type);
@@ -149,6 +164,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     },
     summary: [],
     workings: [],
+    metrics: ext.metrics,
     bilirubin: labs.bilirubin,
     deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis')),
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },

@@ -40,6 +40,7 @@ describe('i18n: все ключи, которые выдаёт ядро, ест�
             d.checks.forEach((x) => need('diff.check.' + x));
           }
           r.workings.forEach((w) => need('work.' + w.key));
+          r.metrics.forEach((m) => { need('metric.' + m.id); need('work.x.' + m.id); });
           r.deficits.forEach((d) => need('deficit.' + d.id + '.title'));
           const tr = r.treatment!;
           [...tr.hfoHints, ...tr.causeHints].forEach(need);
