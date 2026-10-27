@@ -11,7 +11,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "check:i18n": "node scripts/check-no-text.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "start": "vite build && vite preview --open"
   },
   "dependencies": {
     "jspdf": "^3.0.4",

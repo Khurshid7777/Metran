@@ -610,5 +610,19 @@
   "verify.intro": "Kod ushbu brauzerdagi imtihonning mahalliy yozuvi bilan solishtiriladi.",
   "verify.check": "Tekshirish",
   "verify.notFound": "Bunday kodli sertifikat topilmadi.",
-  "verify.valid": "Sertifikat haqiqiy."
+  "verify.valid": "Sertifikat haqiqiy.",
+  "summary.sf": "S/F {value} — {cls} (OʻRDS global taʼrifi 2023).",
+  "flag.preterm_hyperoxia_spo2.short": "chala tugʻilganda SpO₂ maqsaddan yuqori",
+  "flag.preterm_hyperoxia_spo2.text": "Chala tugʻilgan chaqaloqda kislorodda SpO₂ {SpO2}%: maqsad {lo}–{hi}% (RDS boʻyicha Yevropa konsensusi 2022). FiO₂ ni kamaytiring.",
+  "flag.ards_sf_mild.short": "S/F boʻyicha yengil OʻRDS",
+  "flag.ards_sf_mild.text": "SpO₂ ≤ 97% da S/F ≤ 315: 2023 global taʼrifi boʻyicha yengil OʻRDS (klinik mezonlar boʻlsa).",
+  "flag.ards_sf_moderate.short": "S/F boʻyicha oʻrta ogʻir OʻRDS",
+  "flag.ards_sf_moderate.text": "SpO₂ ≤ 97% da S/F ≤ 235: 2023 global taʼrifi boʻyicha oʻrta ogʻirlikdagi OʻRDS.",
+  "flag.ards_sf_severe.short": "S/F boʻyicha ogʻir OʻRDS",
+  "flag.ards_sf_severe.text": "SpO₂ ≤ 97% da S/F ≤ 148: 2023 global taʼrifi boʻyicha ogʻir OʻRDS.",
+  "flag.cord_hypothermia_borderline.short": "gipotermiyaning chegaraviy mezonlari",
+  "flag.cord_hypothermia_borderline.text": "pH 7,01–7,15 yoki BE −10…−15,9: davolovchi gipotermiya faqat qoʻshimcha mezonlarda (10-daqiqada Apgar ≤ 5 yoki davom etayotgan reanimatsiya) va ensefalopatiya belgilari boʻlganda.",
+  "flag.bicarb_neonatal_slow.short": "chaqaloqlarda sekin yuborish",
+  "flag.bicarb_neonatal_slow.text": "Chaqaloqlar: faqat 4,2% (0,5 mmol/ml), sekin, kamida {min} daqiqada; reanimatsiyada muntazam tavsiya etilmaydi (ILCOR/NRP).",
+  "settings.sources": "Me'yorlar va chegaralar manbalari"
 }

@@ -210,7 +210,7 @@ describe('лечение', () => {
   it('блокирующие флаги', () => {
     const blockers = (v: Partial<AbgInput>) => interpret(base({ ...acid, ...v })).treatment!.bicarbonate!.blockers.map((f) => f.code);
     expect(blockers({ pCO2: 40, pH: 6.85 })).toContain('bicarb_resp_acidosis');
-    expect(blockers({ lactate: 8 })).toContain('bicarb_lactic');
+    expect(blockers({ lactate: 8, pH: 7.25 })).toContain('bicarb_lactic');
     expect(blockers({ glucose: 25 , Cl: 100})).toContain('bicarb_keto');
     expect(blockers({ Na: 155, Cl: 135 })).toContain('bicarb_hypernatremia');
     expect(blockers({ iCa: 0.8 })).toContain('bicarb_hypocalcemia');
@@ -253,5 +253,42 @@ describe('генератор: служебное', () => {
     expect(generateCase('met_acid_simple', 1, log, 0)).toBeNull();
     expect(scenariosForLevel(1).every((s) => s.level === 1)).toBe(true);
     expect(generateForLevel(1, 5)!.level).toBe(1);
+  });
+});
+
+describe('международные рекомендации', () => {
+  const codes2 = (i: AbgInput) => interpret(i).flags.map((f) => f.code);
+  it('глобальное определение ОРДС 2023: S/F у взрослого без PaO2', () => {
+    const r = interpret(base({ FiO2: 0.5, SpO2: 94 }));
+    expect(st(r, 'oxygenation').details.sfClass).toBe('moderate');
+    expect(r.flags.map((f) => f.code)).toContain('ards_sf_moderate');
+    expect(r.summary.map((p) => p.key)).toContain('summary.sf');
+    expect(st(interpret(base({ FiO2: 0.7, SpO2: 90 })), 'oxygenation').details.sfClass).toBe('severe');
+    expect(st(interpret(base({ FiO2: 0.3, SpO2: 92 })), 'oxygenation').details.sfClass).toBe('mild');
+    expect(st(interpret(base({ FiO2: 0.21, SpO2: 96 })), 'oxygenation').details.sfClass).toBe('none');
+  });
+  it('недоношенный: SpO2 выше цели 90–94% на кислороде', () => {
+    const r = interpret({ pH: 7.3, pCO2: 50, sampleType: 'capillary', ageCategory: 'preterm', gestationalWeeks: 27, FiO2: 0.3, SpO2: 98 });
+    expect(r.flags.map((f) => f.code)).toContain('preterm_hyperoxia_spo2');
+    expect(r.treatment!.hfoHints).toContain('treat.hfo.hyperoxia');
+    expect(codes2({ pH: 7.3, pCO2: 50, sampleType: 'capillary', ageCategory: 'preterm', gestationalWeeks: 27, FiO2: 0.21, SpO2: 98 })).not.toContain('preterm_hyperoxia_spo2');
+  });
+  it('пуповина: пограничные критерии гипотермии', () => {
+    const c = (pH: number, BE: number) => codes2({ pH, pCO2: 55, BE, sampleType: 'cord_artery', ageCategory: 'term_neonate' });
+    expect(c(7.1, -8)).toContain('cord_hypothermia_borderline');
+    expect(c(7.2, -11)).toContain('cord_hypothermia_borderline');
+    expect(c(7.2, -11)).not.toContain('cord_hypothermia');
+    expect(c(6.95, -17)).not.toContain('cord_hypothermia_borderline');
+    expect(c(7.25, -5)).not.toContain('cord_hypothermia_borderline');
+  });
+  it('бикарбонат: лактат — нет при pH ≥ 7,2; ДКА — только при pH < 7,0; новорождённые — медленно', () => {
+    const acid = { pCO2: 21, HCO3: 7, BE: -20, Na: 140, Cl: 120, albumin: 40, weightKg: 70 };
+    const bl = (v: Partial<AbgInput>) => interpret(base({ ...acid, ...v })).treatment!.bicarbonate!.blockers.map((f) => f.code);
+    expect(bl({ pH: 7.15, lactate: 8 })).not.toContain('bicarb_lactic');
+    expect(bl({ pH: 7.22, lactate: 8 })).toContain('bicarb_lactic');
+    expect(bl({ pH: 7.05, glucose: 25, Cl: 100 })).toContain('bicarb_keto');
+    expect(bl({ pH: 6.95, glucose: 25, Cl: 100 })).not.toContain('bicarb_keto');
+    const w = interpret({ ...acid, pH: 7.1, sampleType: 'arterial', ageCategory: 'term_neonate', weightKg: 3 }).treatment!.bicarbonate!.warnings;
+    expect(w.find((f) => f.code === 'bicarb_neonatal_slow')?.params?.min).toBe(30);
   });
 });

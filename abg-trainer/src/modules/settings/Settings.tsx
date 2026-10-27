@@ -95,6 +95,17 @@ export function Settings() {
           <NumberSetting k="patm" label={t('settings.patm')} />
         </div>
         <p className="muted small">{t('settings.normsVersion', { v: normsJson.version, by: normsJson.approvedBy || t('settings.notApproved') })}</p>
+        <details className="sources">
+          <summary>{t('settings.sources')}</summary>
+          <dl className="details">
+            {Object.entries(normsJson.sources).map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd className="source-ref">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
       </section>
 
       <section className="card">

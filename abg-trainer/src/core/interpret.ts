@@ -114,7 +114,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     disorders: disorderTypes,
     acidosisType,
     oxygenationPoor,
-    hyperoxia: flags.some((f) => f.code === 'preterm_hyperoxia'),
+    hyperoxia: flags.some((f) => f.code.startsWith('preterm_hyperoxia')),
     ventilationAdequate: !disorderTypes.includes('respiratory_acidosis'),
   });
 
@@ -155,6 +155,10 @@ function cordFlags(input: AbgInput, norms: Norms): Flag[] {
     if (input.pH <= c.hypothermiaPH || (be !== undefined && be <= c.hypothermiaBE)) {
       flags.push({ code: 'cord_hypothermia', severity: 'critical' });
     }
+    else if (inRange(input.pH, c.borderlinePH) || (be !== undefined && inRange(be, c.borderlineBE))) {
+      // pH 7.01–7.15 or BE −10…−15.9: hypothermia only with additional criteria (Apgar, resuscitation)
+      flags.push({ code: 'cord_hypothermia_borderline', severity: 'warning' });
+    }
     if (input.cordPair && input.cordPair.pH < input.pH) flags.push({ code: 'cord_swapped', severity: 'warning' });
   }
   if (input.sampleType === 'cord_vein' && input.cordPair && input.cordPair.pH > input.pH) {
@@ -162,6 +166,8 @@ function cordFlags(input: AbgInput, norms: Norms): Flag[] {
   }
   return flags;
 }
+
+const inRange = (v: number, r: number[]) => v >= r[0] && v <= r[1];
 
 function differentials(types: Disorder[], acidosisType: AcidosisType | undefined, agKnown: boolean, age: string): DifferentialItem[] {
   const groups: string[] = [];
@@ -214,6 +220,7 @@ export function buildSummary(r: InterpretationResult): SummaryPart[] {
   if (ox?.status === 'done') {
     const d = ox.details;
     if (typeof d.PF === 'number') parts.push({ key: 'summary.pf', params: { value: Math.round(d.PF), cls: '@berlin.' + (d.berlin ?? 'na') } });
+    if (typeof d.SF === 'number' && d.sfClass) parts.push({ key: 'summary.sf', params: { value: Math.round(d.SF), cls: '@berlin.' + d.sfClass } });
     if (typeof d.OI === 'number') parts.push({ key: 'summary.oi', params: { value: round1(d.OI), cls: '@oiClass.' + (d.OIClass ?? 'na') } });
     if (typeof d.OSI === 'number') parts.push({ key: 'summary.osi', params: { value: round1(d.OSI), cls: '@osiClass.' + (d.OSIClass ?? 'na') } });
   }

@@ -37,12 +37,18 @@ export function bicarbonate(ctx: Ctx, t: TreatmentContext): BicarbResult | undef
   }
   const lactic = input.lactate !== undefined && input.lactate >= tr.lactateAcidosis;
   const keto = input.glucose !== undefined && input.glucose >= norms.electrolytes.glucoseDKA && t.acidosisType !== 'normal_ag';
-  if ((lactic || keto) && input.pH >= tr.severeAcidosisPH) {
-    blockers.push({ code: lactic ? 'bicarb_lactic' : 'bicarb_keto', severity: 'block', params: { pH: tr.severeAcidosisPH } });
+  // Lactic acidosis: SSC 2021 — no bicarbonate while pH ≥ 7.2; DKA: ADA — only if pH < 7.0
+  if (lactic && input.pH >= tr.severeAcidosisPH) {
+    blockers.push({ code: 'bicarb_lactic', severity: 'block', params: { pH: tr.severeAcidosisPH } });
+  } else if (!lactic && keto && input.pH >= tr.dkaBicarbPH) {
+    blockers.push({ code: 'bicarb_keto', severity: 'block', params: { pH: tr.dkaBicarbPH } });
   }
   if (input.Na !== undefined && input.Na > tr.hypernatremia) blockers.push({ code: 'bicarb_hypernatremia', severity: 'block' });
   if (input.iCa !== undefined && input.iCa < norms.electrolytes.iCaLow) blockers.push({ code: 'bicarb_hypocalcemia', severity: 'block' });
   if (input.ageCategory === 'preterm') warnings.push({ code: 'bicarb_preterm_ivh', severity: 'warning' });
+  if (input.ageCategory === 'preterm' || input.ageCategory === 'term_neonate') {
+    warnings.push({ code: 'bicarb_neonatal_slow', severity: 'warning', params: { min: tr.neonatalInfusionMinutes } });
+  }
   if (t.acidosisType === 'normal_ag') warnings.push({ code: 'bicarb_normal_ag', severity: 'info' });
 
   return { deficit, firstDose, concentration, volumeMl, factor, blocked: blockers.length > 0, blockers, warnings };

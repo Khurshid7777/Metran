@@ -149,7 +149,8 @@ export function buildQuestions(c: CaseData, r: InterpretationResult, level: numb
     };
     const v = ox.verdict;
     if (ox.status === 'done' && v && v !== 'calculated') {
-      const family = oxClasses.berlin.includes(v) && ox.details.berlin !== undefined ? 'berlin' : oxClasses.neo.includes(v) ? 'neo' : 'child';
+      const adult = ox.details.berlin !== undefined || ox.details.sfClass !== undefined;
+      const family = adult ? 'berlin' : oxClasses.neo.includes(v) ? 'neo' : 'child';
       qs.push({
         id: 'oxygenation', stepId: 'oxygenation', kind: 'choice', promptKey: 'q.oxygenation.' + family,
         options: opt('oxy.', oxClasses[family]), correct: v, points: 2, hintKey: 'hint.oxygenation.' + family,

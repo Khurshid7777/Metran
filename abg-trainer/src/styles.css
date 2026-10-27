@@ -229,3 +229,6 @@ table.values td { font-variant-numeric: tabular-nums; }
 @media print {
   .top nav, .actions, footer { display: none; }
 }
+.sources summary { cursor: pointer; color: var(--accent); margin-top: 8px; }
+.sources .details { grid-template-columns: 1fr; }
+.source-ref { font-weight: normal !important; font-size: 0.875rem; }

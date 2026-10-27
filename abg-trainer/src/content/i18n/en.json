@@ -609,5 +609,19 @@
   "verify.intro": "The code is checked against the local exam record in this browser.",
   "verify.check": "Verify",
   "verify.notFound": "No certificate with this code was found.",
-  "verify.valid": "The certificate is valid."
+  "verify.valid": "The certificate is valid.",
+  "summary.sf": "S/F {value} — {cls} (global ARDS definition 2023).",
+  "flag.preterm_hyperoxia_spo2.short": "SpO₂ above target in a preterm infant",
+  "flag.preterm_hyperoxia_spo2.text": "SpO₂ {SpO2}% on oxygen in a preterm infant: target {lo}–{hi}% (European Consensus on RDS 2022). Reduce FiO₂.",
+  "flag.ards_sf_mild.short": "mild ARDS by S/F",
+  "flag.ards_sf_mild.text": "S/F ≤ 315 with SpO₂ ≤ 97%: mild ARDS by the 2023 global definition (if clinical criteria are met).",
+  "flag.ards_sf_moderate.short": "moderate ARDS by S/F",
+  "flag.ards_sf_moderate.text": "S/F ≤ 235 with SpO₂ ≤ 97%: moderate ARDS by the 2023 global definition.",
+  "flag.ards_sf_severe.short": "severe ARDS by S/F",
+  "flag.ards_sf_severe.text": "S/F ≤ 148 with SpO₂ ≤ 97%: severe ARDS by the 2023 global definition.",
+  "flag.cord_hypothermia_borderline.short": "borderline cooling criteria",
+  "flag.cord_hypothermia_borderline.text": "pH 7.01–7.15 or BE −10…−15.9: therapeutic hypothermia only with additional criteria (Apgar ≤ 5 at 10 min or ongoing resuscitation) and signs of encephalopathy.",
+  "flag.bicarb_neonatal_slow.short": "slow infusion in neonates",
+  "flag.bicarb_neonatal_slow.text": "Neonates: 4.2% only (0.5 mmol/mL), infused slowly over at least {min} min; not recommended routinely during resuscitation (ILCOR/NRP).",
+  "settings.sources": "Sources of norms and thresholds"
 }

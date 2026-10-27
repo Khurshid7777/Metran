@@ -13,10 +13,19 @@ export interface OxygenationValues {
   OSI?: number;
   OSIClass?: string;
   SF?: number;
+  /** Adult ARDS severity by S/F, global definition 2023 (when SpO2 ≤ 97%). */
+  sfClass?: BerlinClass;
 }
 
 export function alveolarPO2(FiO2: number, Patm: number, PaCO2: number, water = 47, rq = 0.8): number {
   return FiO2 * (Patm - water) - PaCO2 / rq;
+}
+
+export function sfClass(sf: number, g: { SFmild: number; SFmoderate: number; SFsevere: number }): BerlinClass {
+  if (sf <= g.SFsevere) return 'severe';
+  if (sf <= g.SFmoderate) return 'moderate';
+  if (sf <= g.SFmild) return 'mild';
+  return 'none';
 }
 
 export function berlinClass(pf: number, b: { mild: number; moderate: number; severe: number }): BerlinClass {
@@ -81,8 +90,19 @@ export function oxygenationStep(ctx: Ctx): { step: Step; values: OxygenationValu
     }
   }
 
+  if (age === 'preterm' && input.SpO2 !== undefined && FiO2 > o.airFiO2Max) {
+    const p = norms.categories.preterm;
+    if (input.SpO2 > p.hyperoxiaFlagSpO2) {
+      flags.push({ code: 'preterm_hyperoxia_spo2', severity: 'warning', params: { SpO2: input.SpO2, lo: p.SpO2Target[0], hi: p.SpO2Target[1] } });
+    }
+  }
+
   if (input.SpO2 !== undefined && input.SpO2 <= o.SpO2Max) {
     values.SF = input.SpO2 / FiO2;
+    if (age === 'adult' && values.berlin === undefined) {
+      values.sfClass = sfClass(values.SF, o.globalARDS);
+      if (values.sfClass !== 'none') flags.push({ code: 'ards_sf_' + values.sfClass, severity: 'warning' });
+    }
     if (input.MAP !== undefined) {
       values.OSI = (input.MAP * FiO2 * 100) / input.SpO2;
       if (age === 'child') values.OSIClass = values.OSI >= o.PALICC2.OSI ? 'severe' : 'mild_moderate';
@@ -96,7 +116,7 @@ export function oxygenationStep(ctx: Ctx): { step: Step; values: OxygenationValu
       id: 'oxygenation',
       status: hasAny ? 'done' : arterial ? 'insufficient' : 'disabled',
       value: values.PF ?? values.OSI ?? values.SF,
-      verdict: values.berlin ?? values.OIClass ?? values.OSIClass ?? (hasAny ? 'calculated' : 'not_applicable'),
+      verdict: values.berlin ?? values.sfClass ?? values.OIClass ?? values.OSIClass ?? (hasAny ? 'calculated' : 'not_applicable'),
       explanationKey: arterial ? 'step.oxygenation.arterial' : 'step.oxygenation.nonArterial',
       flags,
       details: { ...values, FiO2, Patm },
