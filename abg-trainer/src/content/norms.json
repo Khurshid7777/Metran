@@ -28,7 +28,8 @@
     "bilirubin": "≥ 35 weeks: AAP 2022 (Kemper et al., Pediatrics 2022;150:e2022058859) hour-specific nomogram — use the AAP tool (bilitool.org); escalation of care within 34 µmol/L of the exchange threshold. < 35 weeks: Maisels et al., J Perinatol 2012 operational thresholds by GA (lower end with risk factors).",
     "glucose": "Neonates: BAPM 2017 (< 1.0 IV; < 2.0 act; < 2.5 with signs), PES 2015 (> 2.8 mmol/L first 48 h, > 3.3 after 48 h); hyperglycaemia > 8.3, insulin to consider > 14 (NICE NG154). Children: ISPAD level 1 < 3.9, level 2 < 3.0; DKA glucose > 11 with pH < 7.3 or HCO3 < 18 (ISPAD 2022). Adult ICU target 7.8–10, insulin > 10 (NICE-SUGAR, ADA).",
     "lactateAge": "Adults SSC 2021 ≥ 2 / ≥ 4; children ≥ 2 (SSC paediatric 2020). Neonates: up to ~4 normal in the first 6 h, > 2.5 persistent is concerning; cord lactate > 6.2 associated with neurological abnormality.",
-    "venousSample": "Byrne et al., Respirology 2014: venous pH −0.03…−0.04, pCO2 +4.4 mmHg, HCO3 +1. Arterial-labelled sample likely venous: pO2 < 40–45 mmHg with sO2 < 75–80%, or sO2 vs SpO2 gap > 10%."
+    "venousSample": "Byrne et al., Respirology 2014: venous pH −0.03…−0.04, pCO2 +4.4 mmHg, HCO3 +1. Arterial-labelled sample likely venous: pO2 < 40–45 mmHg with sO2 < 75–80%, or sO2 vs SpO2 gap > 10%.",
+    "deficits": "Total body water: ~0.8 L/kg preterm, ~0.75 term (Friis-Hansen 1961), 0.6 children and adult men, 0.5 adult women. Na deficit = TBW × (target − Na), rise ≤ 8 mmol/L per 24 h; free water deficit = TBW × (Na/140 − 1), fall ≤ 10 mmol/L per 24 h (Adrogué & Madias, NEJM 2000). Cl deficit = 0.2 L/kg × weight × (100 − Cl) in chloride-responsive metabolic alkalosis (Rose & Post)."
   },
   "categories": {
     "adult": {
@@ -439,6 +440,35 @@
         ]
       }
     ],
-    "spo2Gap": 10
+    "spo2Gap": 10,
+    "bilirubinAAP2022": {
+      "_note": "Таблицы AAP 2022 (Kemper et al., Pediatrics 2022;150:e2022058859, Supplemental Tables 1–4) вносятся сюда как точки [час жизни, мкмоль/л] по неделям гестации 35…40 (40 = ≥ 40 нед). Пока таблицы не внесены и не сверены, приложение не принимает решение для ≥ 35 нед и отсылает к номограмме AAP.",
+      "verified": false,
+      "photo": {
+        "noRisk": {},
+        "risk": {}
+      },
+      "exchange": {
+        "noRisk": {},
+        "risk": {}
+      },
+      "escalationMargin": 34
+    }
+  },
+  "deficits": {
+    "tbw": {
+      "preterm": 0.8,
+      "term_neonate": 0.75,
+      "child": 0.6,
+      "adult": 0.6
+    },
+    "naLow": 135,
+    "naTarget": 135,
+    "naMaxRise24h": 8,
+    "naHigh": 145,
+    "waterRefNa": 140,
+    "naMaxFall24h": 10,
+    "clDistribution": 0.2,
+    "clTarget": 100
   }
 }

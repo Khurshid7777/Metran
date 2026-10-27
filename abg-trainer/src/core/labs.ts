@@ -1,3 +1,4 @@
+import { assessBilirubin, type BiliAssessment } from './bilirubin';
 import type { Ctx, Flag, Step } from './types';
 
 export interface PotassiumPlan {
@@ -19,6 +20,7 @@ export interface CalciumPlan {
 
 export interface LabsOutcome {
   step: Step;
+  bilirubin?: BiliAssessment;
   potassium?: PotassiumPlan;
   calcium?: CalciumPlan;
 }
@@ -195,23 +197,16 @@ export function labsStep(ctx: Ctx): LabsOutcome {
   }
 
   // Bilirubin (neonates)
-  if (input.bilirubin !== undefined && neonate(age)) {
-    const ga = input.gestationalWeeks ?? (age === 'term_neonate' ? 39 : undefined);
-    if (ga !== undefined && ga < 35) {
-      const band = L.bilirubinPreterm.find((b) => ga < b.gaMax) ?? L.bilirubinPreterm[L.bilirubinPreterm.length - 1];
-      details.biliPhoto = band.photo[0];
-      details.biliExchange = band.exchange[0];
-      const p = { b: input.bilirubin, photo: `${band.photo[0]}–${band.photo[1]}`, ex: `${band.exchange[0]}–${band.exchange[1]}` };
-      if (input.bilirubin >= band.exchange[0]) flags.push({ code: 'bili_exchange', severity: 'critical', params: p });
-      else if (input.bilirubin >= band.photo[0]) flags.push({ code: 'bili_photo', severity: 'warning', params: p });
-      else flags.push({ code: 'bili_below_preterm', severity: 'info', params: p });
-    } else {
-      flags.push({ code: 'bili_aap', severity: 'info', params: { b: input.bilirubin, h: input.ageHours ?? '—' } });
-    }
+  const bili = assessBilirubin(ctx);
+  if (bili) {
+    flags.push(...bili.flags);
+    if (bili.photoNow !== undefined) details.biliPhoto = Math.round(bili.photoNow);
+    if (bili.exchangeNow !== undefined) details.biliExchange = Math.round(bili.exchangeNow);
   }
 
   const any = [input.Hb, input.FCOHb, input.FMetHb, input.K, input.iCa, input.glucose, input.lactate, input.bilirubin].some((v) => v !== undefined);
   return {
+    bilirubin: bili,
     potassium,
     calcium,
     step: {

@@ -3,7 +3,9 @@ import differentialsJson from '../content/differentials.json';
 import { anionGapStep, deltaStep } from './anionGap';
 import { compensationStep } from './compensation';
 import { osmolarStep } from './osmolar';
+import { deficits as computeDeficits } from './deficits';
 import { labsStep } from './labs';
+import { buildWorkings } from './workings';
 import { oxygenationStep } from './oxygenation';
 import { categoryNorms, primaryStep } from './primary';
 import { stewartStep } from './stewart';
@@ -43,6 +45,8 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
       flags: [],
       differentials: [],
       summary: [{ key: 'summary.blocked' }],
+      workings: [],
+      deficits: [],
       computed: { HCO3: NaN, HCO3Calculated: input.HCO3 === undefined },
     };
   }
@@ -144,8 +148,12 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
       available: tr.available || Boolean(labs.potassium || labs.calcium),
     },
     summary: [],
+    workings: [],
+    bilirubin: labs.bilirubin,
+    deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis')),
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },
   };
+  result.workings = buildWorkings(input, steps, ctx.HCO3, settings, norms, result.treatment!, result.deficits);
   result.summary = buildSummary(result);
   return result;
 }

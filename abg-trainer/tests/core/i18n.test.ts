@@ -39,6 +39,8 @@ describe('i18n: все ключи, которые выдаёт ядро, ест�
             d.causes.forEach((x) => need('diff.cause.' + x));
             d.checks.forEach((x) => need('diff.check.' + x));
           }
+          r.workings.forEach((w) => need('work.' + w.key));
+          r.deficits.forEach((d) => need('deficit.' + d.id + '.title'));
           const tr = r.treatment!;
           [...tr.hfoHints, ...tr.causeHints].forEach(need);
           tr.bicarbonate?.blockers.concat(tr.bicarbonate.warnings).forEach((f) => need('flag.' + f.code + '.text'));

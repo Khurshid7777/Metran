@@ -1,6 +1,9 @@
 import type { Flag, InterpretationResult, Step, SummaryPart } from '../../core/types';
 import { useT } from './useT';
 import { StewartChart } from './StewartChart';
+import { AcidBaseMap, BilirubinChart, Gamblegram } from './Charts';
+import { DeficitsCard, ProcessCard, Workings } from './Workings';
+import type { Working } from '../../core/workings';
 
 const VERDICT_PREFIX: Partial<Record<Step['id'], string>> = {
   primary: 'disorder.',
@@ -9,6 +12,8 @@ const VERDICT_PREFIX: Partial<Record<Step['id'], string>> = {
   osmolar: 'osm.',
   oxygenation: 'oxy.',
 };
+
+const HIDDEN_DETAILS = new Set(['pCO2', 'HCO3', 'discrepancy', 'pco2Lo', 'pco2Hi', 'hcoLo', 'hcoHi']);
 
 const SEVERITY_ORDER = { block: 0, critical: 1, warning: 2, info: 3 } as const;
 
@@ -32,11 +37,11 @@ export function FlagList({ flags }: { flags: Flag[] }) {
   );
 }
 
-function StepCard({ step }: { step: Step }) {
+function StepCard({ step, workings }: { step: Step; workings: Working[] }) {
   const { t, n } = useT();
   const digits = step.id === 'ph' || step.id === 'deltaRatio' || step.id === 'consistency' ? 2 : 1;
   const details = Object.entries(step.details).filter(
-    ([k, v]) => typeof v === 'number' && Number.isFinite(v) && k !== 'pCO2' && k !== 'HCO3',
+    ([k, v]) => typeof v === 'number' && Number.isFinite(v) && !HIDDEN_DETAILS.has(k),
   ) as [string, number][];
   const prefix = VERDICT_PREFIX[step.id] ?? 'verdict.';
   return (
@@ -62,6 +67,7 @@ function StepCard({ step }: { step: Step }) {
         </p>
       )}
       <p className="step-expl">{t(step.explanationKey)}</p>
+      <Workings items={workings} />
       {details.length > 0 && (
         <dl className="details">
           {details.map(([k, v]) => (
@@ -83,6 +89,7 @@ export function TreatmentBlock({ result }: { result: InterpretationResult }) {
   if (!tr || !tr.available) return null;
   const b = tr.bicarbonate;
   const v = tr.ventilation;
+  const w = (keys: string[]) => result.workings.filter((x) => x.stepId === 'treatment' && keys.includes(x.key));
   return (
     <section className="card treatment" aria-labelledby="treat-h">
       <h3 id="treat-h">{t('treat.title')}</h3>
@@ -96,6 +103,7 @@ export function TreatmentBlock({ result }: { result: InterpretationResult }) {
             <div><dt>{t('treat.bicarb.firstDose')}</dt><dd>{n(b.firstDose, 1)} {t('unit.mmolAbs')}</dd></div>
             <div><dt>{t('treat.bicarb.volume', { c: b.concentration === '4.2' ? '4,2' : '8,4' })}</dt><dd>{n(b.volumeMl, 1)} {t('unit.ml')}</dd></div>
           </dl>
+          <Workings items={w(['bicarb'])} />
           {b.blocked && <p className="blocked-note">{t('treat.bicarb.blocked')}</p>}
           <FlagList flags={[...b.blockers, ...b.warnings]} />
         </div>
@@ -105,6 +113,7 @@ export function TreatmentBlock({ result }: { result: InterpretationResult }) {
           <h4>{t('treat.vent.title')}</h4>
           <p className="formula">{t('treat.vent.formula')}</p>
           <p>{t('treat.vent.result', { cur: v.currentRate, target: v.targetPCO2, next: v.newRate })}</p>
+          <Workings items={w(['vent'])} />
           {v.outOfLimits && <p className="flag flag-warning">{t('treat.vent.limits', { lo: v.limits[0], hi: v.limits[1] })}</p>}
         </div>
       )}
@@ -124,6 +133,7 @@ export function TreatmentBlock({ result }: { result: InterpretationResult }) {
             </li>
             <li>{t('treat.k.conc', { p: tr.potassium.concPeripheral, c: tr.potassium.concCentral })}</li>
           </ul>
+          <Workings items={w(['kPed', 'kAdult'])} />
           <p className="muted">{t('treat.k.notes')}</p>
         </div>
       )}
@@ -135,6 +145,7 @@ export function TreatmentBlock({ result }: { result: InterpretationResult }) {
               ? t('treat.ca.dosePed', { ml: Math.round(tr.calcium.gluconateMl * 10) / 10 })
               : t('treat.ca.doseAdult', { ml: tr.calcium.gluconateMl, max: tr.calcium.gluconateMlMax ?? tr.calcium.gluconateMl })}
           </p>
+          <Workings items={w(['caPed'])} />
           <p className="muted">{t('treat.ca.notes')}</p>
         </div>
       )}
@@ -183,17 +194,22 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
         <SummaryText parts={result.summary} />
         <FlagList flags={result.flags} />
       </section>
+      <ProcessCard result={result} />
+      <AcidBaseMap result={result} />
       <section className="card" aria-labelledby="steps-h">
         <h3 id="steps-h">{t('result.steps')}</h3>
         <ol className="steps">
           {result.steps.map((s) => (
-            <StepCard key={s.id} step={s} />
+            <StepCard key={s.id} step={s} workings={result.workings.filter((w) => w.stepId === s.id)} />
           ))}
         </ol>
       </section>
+      <Gamblegram result={result} />
       {stewart?.status === 'done' && <StewartChart step={stewart} />}
+      <BilirubinChart result={result} />
       <Differentials result={result} />
       {showTreatment && <TreatmentBlock result={result} />}
+      {showTreatment && <DeficitsCard result={result} />}
     </div>
   );
 }

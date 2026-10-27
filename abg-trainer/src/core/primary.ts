@@ -105,7 +105,7 @@ export function primaryStep(ctx: Ctx): PrimaryOutcome {
     verdict: primary,
     explanationKey: 'step.primary.' + primary,
     flags,
-    details: { pCO2, HCO3, pco2High, pco2Low, hcoLow, hcoHigh },
+    details: { pCO2, HCO3, pco2High, pco2Low, hcoLow, hcoHigh, pco2Lo: n.pCO2[0], pco2Hi: n.pCO2[1], hcoLo: n.HCO3[0], hcoHi: n.HCO3[1] },
     normalRange: n.pCO2,
   };
   return { phStep, primaryStep: primaryStepResult, phStatus, primary, compensationBase, mixedPair };

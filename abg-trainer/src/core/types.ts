@@ -63,6 +63,8 @@ export interface AbgInput {
   bilirubin?: number;
   /** Postnatal age in hours (neonates, for bilirubin and glucose). */
   ageHours?: number;
+  /** Neurotoxicity risk factors (AAP 2022): GA < 38 wk, albumin < 30 g/L, haemolysis, sepsis, instability. */
+  biliRisk?: boolean;
   /** Analyzer's pO2(a)/FO2(I), mmHg — used to derive FiO2 when FiO2 is not entered. */
   pO2FO2?: number;
   FiO2?: number;
@@ -176,6 +178,10 @@ export interface InterpretationResult {
   differentials: DifferentialItem[];
   treatment?: TreatmentResult;
   summary: SummaryPart[];
+  /** Formulas with the patient's numbers substituted. */
+  workings: import('./workings').Working[];
+  deficits: import('./deficits').Deficit[];
+  bilirubin?: import('./bilirubin').BiliAssessment;
   computed: { HCO3: number; HCO3Calculated: boolean };
 }
 

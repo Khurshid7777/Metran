@@ -277,3 +277,42 @@ table.values td { font-variant-numeric: tabular-nums; }
 .qfield .abl { font-weight: 600; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.92rem; }
 .qfield .unit { font-size: 0.78rem; }
 .qfield input { font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+
+.workings { margin-top: 8px; background: var(--accent-soft); border-radius: 8px; padding: 8px 10px; }
+.workings-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); font-weight: 700; }
+.workings ul { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.workings code { font-size: 0.86rem; white-space: normal; overflow-wrap: anywhere; color: var(--text); }
+.chart { width: 100%; height: auto; max-width: 640px; display: block; }
+.chart-narrow { max-width: 340px; }
+.chart .grid { stroke: var(--border); stroke-width: 0.6; }
+.chart .axis-line { stroke: var(--muted); stroke-width: 1; }
+.chart .tick, .chart .iso-label, .chart .zone-label { fill: var(--muted); font-size: 9px; }
+.chart .axis-title { fill: var(--text); font-size: 10px; }
+.chart .zone.acid { fill: var(--acid); fill-opacity: 0.28; }
+.chart .zone.alk { fill: var(--alk); fill-opacity: 0.28; }
+.chart .zone.light { fill-opacity: 0.14; }
+.chart .normal-box { fill: var(--ok); fill-opacity: 0.18; stroke: var(--ok); stroke-width: 1; }
+.chart .isopleth { fill: none; stroke: var(--muted); stroke-width: 0.8; stroke-dasharray: 3 3; }
+.chart .point { fill: var(--accent); stroke: var(--surface); stroke-width: 1.5; }
+.chart .point-halo { fill: var(--accent); fill-opacity: 0.25; }
+.chart .point-line { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 5 3; }
+.chart .th-photo { fill: none; stroke: var(--warn); stroke-width: 2.2; }
+.chart .th-exchange { fill: none; stroke: var(--bad); stroke-width: 2.2; }
+.chart .seg-na { fill: var(--alk); fill-opacity: 0.55; }
+.chart .seg-k { fill: var(--alk); fill-opacity: 0.85; }
+.chart .seg-cl { fill: var(--total); fill-opacity: 0.35; }
+.chart .seg-hco3 { fill: var(--ok); fill-opacity: 0.45; }
+.chart .seg-ag { fill: var(--acid); fill-opacity: 0.6; }
+.chart .seg-label { fill: var(--text); font-size: 11px; font-weight: 600; }
+.sw-normal { background: var(--ok); opacity: 0.5; }
+.sw-point { background: var(--accent); border-radius: 50%; }
+.sw-photo { background: var(--warn); }
+.sw-exchange { background: var(--bad); }
+.process summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.process summary::before { content: '▸'; color: var(--accent); }
+.process[open] summary::before { content: '▾'; }
+.process summary h3 { margin: 0; }
+.process-list { display: flex; flex-direction: column; gap: 6px; padding-left: 20px; }
+.process-list .badge { margin-left: 6px; }
+.process-list li.proc-insufficient, .process-list li.proc-disabled { opacity: 0.7; }
+.process-list { list-style: none; padding-left: 0; }

@@ -172,6 +172,17 @@ function FullForm() {
                   </div>
                 );
               })}
+              {g.id === 'neonatal' && (
+                <label className="check">
+                  <input
+                    type="checkbox"
+                    checked={values.biliRisk === '1'}
+                    onChange={(e) => d.set('biliRisk', e.target.checked ? '1' : '')}
+                    data-testid="in-biliRisk"
+                  />{' '}
+                  {t('field.biliRisk')}
+                </label>
+              )}
               {g.id === 'oxygenation' && (
                 <>
                   <label>

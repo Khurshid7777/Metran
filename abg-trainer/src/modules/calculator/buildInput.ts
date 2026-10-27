@@ -47,6 +47,7 @@ export function buildInput(d: DraftInput): { input?: AbgInput; bad: string[] } {
     else input.cordPair = { pH: v };
   }
   if (d.bpd && d.ageCategory === 'preterm') input.bpd = true;
+  if (d.values.biliRisk === '1') input.biliRisk = true;
   if (d.ventMode !== 'none') {
     const rate = parseLocaleNumber(d.values.ventRate ?? '');
     input.ventilation = { mode: d.ventMode, rate: Number.isNaN(rate) ? undefined : rate };
