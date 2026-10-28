@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { SCENARIOS, generateCase, GENERATOR_SETTINGS } from '../../src/core/generator';
 import { interpret } from '../../src/core/interpret';
 import { buildQuestions } from '../../src/modules/trainer/questions';
+import formulas from '../../src/content/formulas.json';
 
 const ru = JSON.parse(readFileSync('src/content/i18n/ru.json', 'utf8')) as Record<string, string>;
 const PREFIX: Record<string, string> = { primary: 'disorder.', deltaRatio: 'delta.', anionGap: 'ag.', osmolar: 'osm.', oxygenation: 'oxy.' };
@@ -56,5 +57,10 @@ describe('i18n: все ключи, которые выдаёт ядро, ест�
       }
     }
     expect([...missing]).toEqual([]);
+  });
+
+  it('справочник формул: у каждой формулы есть название', () => {
+    const missing = formulas.flatMap((g) => [`ref.group.${g.group}`, ...g.items.map((i) => i.nameKey)]).filter((k) => !(k in ru));
+    expect(missing).toEqual([]);
   });
 });

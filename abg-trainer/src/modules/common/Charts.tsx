@@ -20,7 +20,7 @@ function band(points: [number, number][], tol: number, x: (v: number) => number,
 const range = (a: number, b: number, step: number) => Array.from({ length: Math.floor((b - a) / step) + 1 }, (_, i) => a + i * step);
 
 /** Acid–base map: pCO2 × HCO3 with pH isopleths, the expected-compensation corridors (Boston) and the patient's point. */
-export function AcidBaseMap({ result }: { result: InterpretationResult }) {
+export function AcidBaseMap({ result, trail }: { result: InterpretationResult; trail?: [number, number][] }) {
   const { t, n } = useT();
   const prim = result.steps.find((s) => s.id === 'primary');
   if (!prim) return null;
@@ -84,6 +84,17 @@ export function AcidBaseMap({ result }: { result: InterpretationResult }) {
         {yTicks.map((v) => <text key={'ty' + v} x={PAD.l - 6} y={y(v) + 4} className="tick" textAnchor="end">{v}</text>)}
         <text x={(PAD.l + W - PAD.r) / 2} y={H - 4} className="axis-title" textAnchor="middle">{t('chart.map.x')}</text>
         <text x={12} y={(PAD.t + H - PAD.b) / 2} className="axis-title" textAnchor="middle" transform={`rotate(-90 12 ${(PAD.t + H - PAD.b) / 2})`}>{t('chart.map.y')}</text>
+        {trail && trail.length > 1 && (
+          <g data-testid="map-trail">
+            <polyline points={trail.map(([p, h]) => `${x(Math.min(p, pMax)).toFixed(1)},${y(Math.min(h, hMax)).toFixed(1)}`).join(' ')} className="trail" />
+            {trail.map(([p, h], i) => (
+              <g key={i}>
+                <circle cx={x(Math.min(p, pMax))} cy={y(Math.min(h, hMax))} r={3} className="trail-dot" />
+                <text x={x(Math.min(p, pMax)) + 5} y={y(Math.min(h, hMax)) - 5} className="tick">{i + 1}</text>
+              </g>
+            ))}
+          </g>
+        )}
         <circle cx={x(Math.min(pCO2, pMax))} cy={y(Math.min(HCO3, hMax))} r={7} className="point-halo" />
         <circle cx={x(Math.min(pCO2, pMax))} cy={y(Math.min(HCO3, hMax))} r={4} className="point" />
       </svg>
@@ -329,5 +340,108 @@ export function DeviationProfile({ result }: { result: InterpretationResult }) {
         <text x={x(1)} y={h - 4} className="tick" textAnchor="middle">{t('chart.profile.high')}</text>
       </svg>
     </section>
+  );
+}
+
+/** Davenport diagram: pH × HCO3 with pCO2 isobars and the blood buffer line through the normal point. */
+export function Davenport({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const ph = result.steps.find((s) => s.id === 'ph');
+  const prim = result.steps.find((s) => s.id === 'primary');
+  if (!ph || !prim) return null;
+  const pH = ph.value as number;
+  const HCO3 = prim.details.HCO3 as number;
+  const pCO2 = prim.details.pCO2 as number;
+  const hb = (result.profile.find((p) => p.id === 'Hb')?.value ?? 150) / 10;
+  // Van Slyke: buffer value of whole blood β ≈ 1.43 × Hb (g/dL) + 7.7 mmol/L per pH unit
+  const beta = 1.43 * hb + 7.7;
+  const x0 = 6.9;
+  const x1 = 7.8;
+  const hMax = Math.max(50, Math.ceil((HCO3 + 5) / 10) * 10);
+  const x = scale(x0, x1, PAD.l, W - PAD.r);
+  const y = scale(0, hMax, H - PAD.b, PAD.t);
+  const iso = [20, 30, 40, 60, 80].map((p) => ({
+    p,
+    pts: range(0, 90, 1)
+      .map((i) => x0 + i * 0.01)
+      .map((v) => [v, 0.0307 * p * 10 ** (v - 6.1)] as [number, number])
+      .filter(([, h]) => h <= hMax),
+  }));
+  const buf = [x0, x1].map((v) => [v, 24.4 - beta * (v - 7.4)] as [number, number]);
+  const clip = (v: number) => Math.max(0, Math.min(hMax, v));
+  const xTicks = range(0, 9, 1).map((i) => Math.round((x0 + i * 0.1) * 10) / 10);
+  const yTicks = range(0, hMax, 10);
+  return (
+    <section className="card chart-card" aria-labelledby="dav-h">
+      <h3 id="dav-h">{t('chart.davenport.title')}</h3>
+      <p className="muted small">{t('chart.davenport.caption', { beta: Math.round(beta * 10) / 10 })}</p>
+      <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label={t('chart.davenport.aria', { pH, HCO3: Math.round(HCO3 * 10) / 10 })}>
+        {xTicks.map((v) => <line key={'gx' + v} x1={x(v)} x2={x(v)} y1={PAD.t} y2={H - PAD.b} className="grid" />)}
+        {yTicks.map((v) => <line key={'gy' + v} y1={y(v)} y2={y(v)} x1={PAD.l} x2={W - PAD.r} className="grid" />)}
+        <rect x={x(7.35)} y={y(26)} width={x(7.45) - x(7.35)} height={y(22) - y(26)} className="normal-box" />
+        {iso.map((i) => (
+          <g key={i.p}>
+            <polyline points={i.pts.map(([v, h]) => `${x(v).toFixed(1)},${y(h).toFixed(1)}`).join(' ')} className={i.p === 40 ? 'isobar-40' : 'isopleth'} />
+            {i.pts.length > 0 && (
+              <text x={x(i.pts[i.pts.length - 1][0]) - 2} y={y(i.pts[i.pts.length - 1][1]) - 4} className="iso-label" textAnchor="end">
+                {t('chart.davenport.isobar', { p: i.p })}
+              </text>
+            )}
+          </g>
+        ))}
+        <line x1={x(buf[0][0])} y1={y(clip(buf[0][1]))} x2={x(buf[1][0])} y2={y(clip(buf[1][1]))} className="buffer-line" />
+        <line x1={PAD.l} x2={W - PAD.r} y1={H - PAD.b} y2={H - PAD.b} className="axis-line" />
+        <line x1={PAD.l} x2={PAD.l} y1={PAD.t} y2={H - PAD.b} className="axis-line" />
+        {xTicks.map((v) => <text key={'tx' + v} x={x(v)} y={H - PAD.b + 14} className="tick" textAnchor="middle">{n(v, 1)}</text>)}
+        {yTicks.map((v) => <text key={'ty' + v} x={PAD.l - 6} y={y(v) + 4} className="tick" textAnchor="end">{v}</text>)}
+        <text x={(PAD.l + W - PAD.r) / 2} y={H - 4} className="axis-title" textAnchor="middle">{t('chart.davenport.x')}</text>
+        <text x={12} y={(PAD.t + H - PAD.b) / 2} className="axis-title" textAnchor="middle" transform={`rotate(-90 12 ${(PAD.t + H - PAD.b) / 2})`}>{t('chart.map.y')}</text>
+        <circle cx={x(Math.max(x0, Math.min(x1, pH)))} cy={y(Math.min(HCO3, hMax))} r={7} className="point-halo" />
+        <circle cx={x(Math.max(x0, Math.min(x1, pH)))} cy={y(Math.min(HCO3, hMax))} r={4} className="point" />
+      </svg>
+      <p className="legend">
+        <span className="sw sw-std" aria-hidden="true" /> {t('chart.davenport.legendIso')}
+        <span className="sw sw-buffer" aria-hidden="true" /> {t('chart.davenport.legendBuffer')}
+        <span className="sw sw-point" aria-hidden="true" /> {t('chart.davenport.legendPoint', { pH, pCO2, HCO3: Math.round(HCO3 * 10) / 10 })}
+      </p>
+    </section>
+  );
+}
+
+/** Small line chart of one value over hours for the series. */
+export function TrendChart({ label, hours, values, normal }: { label: string; hours: number[]; values: (number | undefined)[]; normal?: [number, number] }) {
+  const { n } = useT();
+  const pts = hours.map((h, i) => [h, values[i]] as [number, number | undefined]).filter((p): p is [number, number] => p[1] !== undefined);
+  if (!pts.length) return null;
+  const w = 220;
+  const h = 110;
+  const pad = { l: 34, r: 8, t: 14, b: 18 };
+  const vs = pts.map((p) => p[1]).concat(normal ?? []);
+  let lo = Math.min(...vs);
+  let hi = Math.max(...vs);
+  if (hi - lo < 1e-6) { lo -= 1; hi += 1; }
+  const m = (hi - lo) * 0.1;
+  lo -= m; hi += m;
+  const hMax = Math.max(1, ...hours);
+  const x = scale(0, hMax, pad.l, w - pad.r);
+  const y = scale(lo, hi, h - pad.b, pad.t);
+  const digits = Math.abs(pts[0][1]) < 10 ? 2 : 0;
+  return (
+    <figure className="trend">
+      <svg viewBox={`0 0 ${w} ${h}`} className="chart" role="img" aria-label={`${label}: ${pts.map((p) => n(p[1], digits)).join(' → ')}`}>
+        {normal && <rect x={pad.l} y={y(normal[1])} width={w - pad.l - pad.r} height={y(normal[0]) - y(normal[1])} className="normal-box" />}
+        <line x1={pad.l} x2={w - pad.r} y1={h - pad.b} y2={h - pad.b} className="axis-line" />
+        <polyline points={pts.map(([hh, v]) => `${x(hh).toFixed(1)},${y(v).toFixed(1)}`).join(' ')} className="curve-pt" />
+        {pts.map(([hh, v], i) => (
+          <g key={i}>
+            <circle cx={x(hh)} cy={y(v)} r={3} className="point" />
+            <text x={x(hh)} y={y(v) - 6} className="tick" textAnchor="middle">{n(v, digits)}</text>
+          </g>
+        ))}
+        <text x={pad.l} y={h - 4} className="tick">0</text>
+        <text x={w - pad.r} y={h - 4} className="tick" textAnchor="end">{n(Math.round(hMax * 10) / 10, 1)}</text>
+      </svg>
+      <figcaption>{label}</figcaption>
+    </figure>
   );
 }

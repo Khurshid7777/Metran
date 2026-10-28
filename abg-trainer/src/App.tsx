@@ -3,13 +3,14 @@ import { LANGS, type Lang } from './i18n';
 import { Calculator } from './modules/calculator/Calculator';
 import { Exam } from './modules/exam/Exam';
 import { Progress } from './modules/progress/Progress';
+import { Reference } from './modules/reference/Reference';
 import { Settings } from './modules/settings/Settings';
 import { Verify } from './modules/settings/Verify';
 import { Trainer } from './modules/trainer/Trainer';
 import { useT } from './modules/common/useT';
 import { useApp, type Screen } from './store';
 
-const NAV: Screen[] = ['home', 'calculator', 'trainer', 'exam', 'progress', 'settings'];
+const NAV: Screen[] = ['home', 'calculator', 'trainer', 'exam', 'reference', 'progress', 'settings'];
 
 function Home() {
   const { t } = useT();
@@ -71,6 +72,7 @@ export function App() {
         {screen === 'calculator' && <Calculator />}
         {screen === 'trainer' && <Trainer />}
         {screen === 'exam' && <Exam />}
+        {screen === 'reference' && <Reference />}
         {screen === 'progress' && <Progress />}
         {screen === 'settings' && <Settings />}
         {screen === 'verify' && <Verify />}

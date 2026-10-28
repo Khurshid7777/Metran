@@ -71,6 +71,16 @@ export interface AbgInput {
   etCO2?: number;
   /** Phosphate, mmol/L (strong ion gap). */
   phosphate?: number;
+  /** Central venous saturation ScvO2 %, pO2 and pCO2 of the paired venous sample, mmHg. */
+  ScvO2?: number;
+  pvO2?: number;
+  pvCO2?: number;
+  /** Cardiac output, L/min. */
+  cardiacOutput?: number;
+  /** Peak inspiratory pressure, cmH2O; minute ventilation, L/min; height, cm. */
+  PIP?: number;
+  VE?: number;
+  heightCm?: number;
   FiO2?: number;
   MAP?: number;
   PEEP?: number;

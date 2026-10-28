@@ -1,7 +1,7 @@
 import { p50FromPoint, predictedSO2, P50_STD, virtualPO2 } from './odc';
 import type { Ctx, Flag } from './types';
 
-export type MetricGroup = 'acidBase' | 'electrolytes' | 'oxygen' | 'temperature' | 'neonatal';
+export type MetricGroup = 'acidBase' | 'electrolytes' | 'oxygen' | 'perfusion' | 'ventilation' | 'temperature' | 'neonatal';
 export type MetricVerdict = 'normal' | 'low' | 'high' | 'info';
 
 /** A derived value with its formula (i18n `work.x.<id>`), normal range and verdict. */
@@ -157,6 +157,60 @@ export function extendedMetrics(ctx: Ctx, x: ExtendedInput): { metrics: Metric[]
   if (input.Hb !== undefined) {
     add('oxygen', 'hct', (input.Hb / 10) * 3, 0, { hb: r(input.Hb / 10), v: Math.round((input.Hb / 10) * 3) }, 'percent');
     add('oxygen', 'o2Capacity', 1.39 * (input.Hb / 10), 1, { hb: r(input.Hb / 10), v: r(1.39 * (input.Hb / 10)) }, 'mldl');
+  }
+
+  // --- Perfusion: paired arterial + central venous sample ---
+  if (arterial && input.pO2 !== undefined && input.SaO2 !== undefined && input.Hb !== undefined && input.ScvO2 !== undefined) {
+    const hb = input.Hb / 10;
+    const cao2 = 1.39 * hb * (input.SaO2 / 100) + 0.003 * input.pO2;
+    const pv = input.pvO2 ?? E.defaultPvO2;
+    const cvo2 = 1.39 * hb * (input.ScvO2 / 100) + 0.003 * pv;
+    add('perfusion', 'CvO2', cvo2, 1, { hb: r(hb), s: input.ScvO2, pv, v: r(cvo2) }, 'mldl');
+    const avd = cao2 - cvo2;
+    add('perfusion', 'avDO2', avd, 1, { ca: r(cao2), cv: r(cvo2), v: r(avd) }, 'mldl', E.avDO2 as [number, number]);
+    const o2er = avd / cao2;
+    add('perfusion', 'O2ER', o2er, 2, { ca: r(cao2), cv: r(cvo2), v: r(o2er, 2) }, undefined, E.O2ER as [number, number]);
+    if (o2er > E.O2ER[1]) flags.push({ code: 'o2er_high', severity: 'warning', params: { v: r(o2er, 2) } });
+    if (input.ScvO2 < E.ScvO2Min) flags.push({ code: 'scvo2_low', severity: 'warning', params: { v: input.ScvO2 } });
+    if (x.PAO2 !== undefined) {
+      // Exact shunt with the measured venous content (Berggren)
+      const cc = 1.39 * hb + 0.003 * x.PAO2;
+      const qs = ((cc - cao2) / (cc - cvo2)) * 100;
+      add('perfusion', 'shuntExact', qs, 0, { cc: r(cc), ca: r(cao2), cv: r(cvo2), v: Math.round(qs) }, 'percent', [0, E.shuntMax]);
+    }
+    if (input.cardiacOutput !== undefined) {
+      const do2 = input.cardiacOutput * cao2 * 10;
+      const vo2 = input.cardiacOutput * avd * 10;
+      add('perfusion', 'DO2', do2, 0, { co: input.cardiacOutput, ca: r(cao2), v: Math.round(do2) }, 'mlmin');
+      add('perfusion', 'VO2', vo2, 0, { co: input.cardiacOutput, avd: r(avd), v: Math.round(vo2) }, 'mlmin');
+      if (input.weightKg !== undefined) {
+        add('perfusion', 'DO2kg', do2 / input.weightKg, 1, { do2: Math.round(do2), w: input.weightKg, v: r(do2 / input.weightKg) }, 'mlminkg');
+      }
+    }
+  }
+  if (input.pvCO2 !== undefined) {
+    const gap = input.pvCO2 - pCO2;
+    add('perfusion', 'pCO2gap', gap, 1, { pv: input.pvCO2, pa: pCO2, v: r(gap) }, 'mmHg', [0, E.pCO2GapMax]);
+    if (gap > E.pCO2GapMax) flags.push({ code: 'pco2_gap_high', severity: 'warning', params: { v: r(gap) } });
+  }
+
+  // --- Ventilation ---
+  const rate = input.ventilation?.rate;
+  if (rate !== undefined && input.PIP !== undefined) {
+    const vi = (rate * input.PIP * pCO2) / 1000;
+    add('ventilation', 'VI', vi, 1, { rr: rate, pip: input.PIP, pCO2, v: r(vi) });
+  }
+  if (input.PIP !== undefined && input.PEEP !== undefined) {
+    const dp = input.PIP - input.PEEP;
+    add('ventilation', 'drivingPressure', dp, 0, { pip: input.PIP, peep: input.PEEP, v: dp }, 'cmH2O', [0, E.drivingPressureMax]);
+    if (dp > E.drivingPressureMax) flags.push({ code: 'driving_pressure_high', severity: 'warning', params: { v: dp } });
+  }
+  if (input.VE !== undefined && input.heightCm !== undefined && input.ageCategory === 'adult') {
+    const pbw = 50 + 0.91 * (input.heightCm - 152.4);
+    add('ventilation', 'PBW', pbw, 1, { h: input.heightCm, v: r(pbw) }, 'kg');
+    const vr = (input.VE * 1000 * pCO2) / (pbw * 100 * 37.5);
+    add('ventilation', 'VR', vr, 2, { ve: input.VE, pCO2, pbw: r(pbw), v: r(vr, 2) }, undefined, E.VR as [number, number]);
+    if (vr > E.VRHigh) flags.push({ code: 'vr_high', severity: 'warning', params: { v: r(vr, 2) } });
   }
 
   // --- Temperature correction (when the patient's temperature is entered) ---

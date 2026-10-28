@@ -10,6 +10,8 @@ import { useT } from '../common/useT';
 import { buildInput, unitOf } from './buildInput';
 import { AGES, SAMPLES, useDraft, type Units } from './draft';
 import { QuickEntry } from './QuickEntry';
+import { AddToSeriesButton, SeriesCard } from './SeriesCard';
+import { useSeries } from './seriesStore';
 
 
 const UNIT_CHOICES: Record<keyof Units, UnitId[]> = {
@@ -47,6 +49,7 @@ export function Calculator() {
         </div>
       </div>
       {mode === 'quick' ? <QuickEntry onDetails={() => setMode('full')} /> : <FullForm />}
+      <SeriesCard />
     </div>
   );
 }
@@ -62,6 +65,7 @@ function FullForm() {
     return r.input ? interpret(r.input, coreSettings(settings)) : null;
   });
   const [parseErrors, setParseErrors] = useState<string[]>([]);
+  const addSeries = useSeries((s) => s.add);
 
   const visibleGroups = useMemo(
     () =>
@@ -210,7 +214,14 @@ function FullForm() {
       </form>
       {result?.blocked && <p className="flag flag-critical" role="alert">{t('calc.blocked')}</p>}
       {parseErrors.length > 0 && <p className="flag flag-critical" role="alert">{t('calc.fixErrors')}</p>}
-      {result && !result.blocked && <ResultView result={result} />}
+      {result && !result.blocked && (
+        <>
+          <div className="actions">
+            <AddToSeriesButton onAdd={() => { const r = buildInput(d); if (r.input) addSeries(r.input); }} />
+          </div>
+          <ResultView result={result} />
+        </>
+      )}
     </>
   );
 }

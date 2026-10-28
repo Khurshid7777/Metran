@@ -6,6 +6,8 @@ import { FlagList, SummaryText } from '../common/ResultView';
 import { useT } from '../common/useT';
 import { buildInput } from './buildInput';
 import { AGES, useDraft } from './draft';
+import { AddToSeriesButton } from './SeriesCard';
+import { useSeries } from './seriesStore';
 
 const QUICK_SAMPLES: SampleType[] = ['arterial', 'capillary', 'venous', 'cord_artery'];
 
@@ -43,6 +45,7 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
   const [result, setResult] = useState<InterpretationResult | null>(null);
   const [bad, setBad] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
+  const addSeries = useSeries((s) => s.add);
   const neonate = d.ageCategory === 'preterm' || d.ageCategory === 'term_neonate';
   const fields = QUICK_FIELDS.filter((f) => !f.neonatalOnly || neonate);
 
@@ -155,6 +158,7 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
           <FlagList flags={result.flags} />
           <div className="actions">
             <button className="primary" onClick={onDetails} data-testid="q-details">{t('quick.details')}</button>
+            <AddToSeriesButton onAdd={() => { const r = buildInput(d); if (r.input) addSeries(r.input); }} />
           </div>
         </section>
       )}

@@ -35,6 +35,13 @@ export const INPUT_RANGES: Record<string, [number, number]> = {
   pO2FO2: [20, 700],
   etCO2: [5, 150],
   phosphate: [0.2, 5],
+  ScvO2: [20, 100],
+  pvO2: [10, 100],
+  pvCO2: [10, 200],
+  cardiacOutput: [0.1, 20],
+  PIP: [5, 60],
+  VE: [0.1, 40],
+  heightCm: [30, 230],
 };
 
 export function validateInput(input: AbgInput): InputError[] {

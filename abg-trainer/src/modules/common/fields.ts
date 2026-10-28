@@ -57,6 +57,18 @@ export const FIELD_GROUPS: { id: string; fields: FieldDef[] }[] = [
       { name: 'Patm', unit: 'mmHg', digits: 0 },
       { name: 'pO2FO2', unit: 'mmHg', digits: 0 },
       { name: 'etCO2', unit: 'mmHg', digits: 0 },
+      { name: 'PIP', unit: 'cmH2O', digits: 0 },
+      { name: 'VE', unit: 'lmin', digits: 1 },
+      { name: 'heightCm', unit: 'cm', digits: 0, ages: ['adult'] },
+    ],
+  },
+  {
+    id: 'venous',
+    fields: [
+      { name: 'ScvO2', unit: 'percent', digits: 0 },
+      { name: 'pvO2', unit: 'mmHg', digits: 0 },
+      { name: 'pvCO2', unit: 'mmHg', digits: 0 },
+      { name: 'cardiacOutput', unit: 'lmin', digits: 1 },
     ],
   },
   {

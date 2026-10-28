@@ -3,7 +3,7 @@ import type { Lang } from './i18n';
 import { load, save, storageAvailable } from './storage';
 import { getProfile, setProfile, type Profile } from './storage/records';
 
-export type Screen = 'home' | 'calculator' | 'trainer' | 'exam' | 'progress' | 'settings' | 'verify';
+export type Screen = 'home' | 'calculator' | 'trainer' | 'exam' | 'reference' | 'progress' | 'settings' | 'verify';
 
 export interface AppSettings {
   advanced: boolean;

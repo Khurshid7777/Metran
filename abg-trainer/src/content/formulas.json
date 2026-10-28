@@ -1,0 +1,357 @@
+[
+  {
+    "group": "acidBase",
+    "items": [
+      {
+        "nameKey": "ref.hh",
+        "formula": "pH = 6.1 + log₁₀(HCO₃⁻ / (0.0307 × pCO₂))",
+        "source": "Henderson–Hasselbalch"
+      },
+      {
+        "nameKey": "ref.hplus",
+        "formula": "[H⁺] = 10^(9 − pH) ≈ 24 × pCO₂ / HCO₃⁻, nmol/L",
+        "source": "Kassirer & Bleich 1965"
+      },
+      {
+        "nameKey": "ref.winters",
+        "formula": "pCO₂ = 1.5 × HCO₃⁻ + 8 ± 2",
+        "source": "Winters 1967"
+      },
+      {
+        "nameKey": "ref.metAlk",
+        "formula": "pCO₂ = 0.7 × HCO₃⁻ + 21 ± 2 (≤ 55)",
+        "source": "Javaheri 1982"
+      },
+      {
+        "nameKey": "ref.respAcid",
+        "formula": "HCO₃⁻ = 24 + 0.1 × (pCO₂ − 40) acute; 24 + 0.35 × (pCO₂ − 40) chronic",
+        "source": "Narins & Emmett 1980"
+      },
+      {
+        "nameKey": "ref.respAlk",
+        "formula": "HCO₃⁻ = 24 − 0.2 × (40 − pCO₂) acute; 24 − 0.4 × (40 − pCO₂) chronic",
+        "source": "Narins & Emmett 1980"
+      },
+      {
+        "nameKey": "metric.pHacute",
+        "formula": "pH = 7.4 + 0.008 × (40 − pCO₂) acute; 7.4 + 0.003 × (40 − pCO₂) chronic",
+        "source": "Berend 2018"
+      },
+      {
+        "nameKey": "metric.sbeVanSlyke",
+        "formula": "SBE = 0.93 × (HCO₃⁻ − 24.4 + 14.83 × (pH − 7.4))",
+        "source": "Siggaard-Andersen; CLSI C46"
+      },
+      {
+        "nameKey": "ref.copenhagen",
+        "formula": "ΔpCO₂ = SBE (met. acidosis); ΔpCO₂ = 0.6 × SBE (met. alkalosis); SBE = 0.4 × ΔpCO₂ (chronic resp.)",
+        "source": "Schlichtig 1998"
+      }
+    ]
+  },
+  {
+    "group": "anionGap",
+    "items": [
+      {
+        "nameKey": "ref.ag",
+        "formula": "AG = Na⁺ − (Cl⁻ + HCO₃⁻)",
+        "source": "Kraut & Madias 2007"
+      },
+      {
+        "nameKey": "ref.agCorr",
+        "formula": "AG_corr = AG + 0.25 × (40 − albumin, g/L)",
+        "source": "Figge 1998"
+      },
+      {
+        "nameKey": "ref.delta",
+        "formula": "Δ/Δ = (AG_corr − 12) / (24 − HCO₃⁻)",
+        "source": "Rastegar 2007"
+      },
+      {
+        "nameKey": "metric.hco3Corrected",
+        "formula": "HCO₃⁻corr = HCO₃⁻ + (AG_corr − 12)",
+        "source": "Wrenn 1990"
+      },
+      {
+        "nameKey": "metric.agExpected",
+        "formula": "AG_expected = 0.25 × albumin, g/L",
+        "source": "Feldman 2005"
+      },
+      {
+        "nameKey": "ref.osm",
+        "formula": "Osm_calc = 2 × Na⁺ + glucose + urea; gap = Osm_measured − Osm_calc",
+        "source": "Kraut & Kurtz 2008"
+      }
+    ]
+  },
+  {
+    "group": "stewart",
+    "items": [
+      {
+        "nameKey": "ref.stewartNaCl",
+        "formula": "Na–Cl effect = (Na⁺ − Cl⁻) − 38",
+        "source": "Story 2004"
+      },
+      {
+        "nameKey": "ref.stewartAlb",
+        "formula": "Albumin effect = 0.25 × (42 − albumin, g/L)",
+        "source": "Story 2004"
+      },
+      {
+        "nameKey": "ref.uma",
+        "formula": "UMA = SBE − (Na–Cl effect + albumin effect − lactate)",
+        "source": "Story 2004"
+      },
+      {
+        "nameKey": "ref.sida",
+        "formula": "SIDa = Na⁺ + K⁺ + Ca²⁺ + Mg²⁺ − Cl⁻ − lactate",
+        "source": "Stewart 1983"
+      },
+      {
+        "nameKey": "metric.SIDe",
+        "formula": "SIDe = HCO₃⁻ + Alb × (0.123 × pH − 0.631) + Pi × (0.309 × pH − 0.469)",
+        "source": "Figge 1992"
+      },
+      {
+        "nameKey": "metric.SIG",
+        "formula": "SIG = SIDa − SIDe",
+        "source": "Kellum 2009"
+      }
+    ]
+  },
+  {
+    "group": "oxygen",
+    "items": [
+      {
+        "nameKey": "ref.pio2",
+        "formula": "PIO₂ = FiO₂ × (Patm − 47)",
+        "source": "—"
+      },
+      {
+        "nameKey": "ref.pao2",
+        "formula": "PAO₂ = FiO₂ × (Patm − 47) − PaCO₂ / 0.8",
+        "source": "Alveolar gas equation"
+      },
+      {
+        "nameKey": "ref.aa",
+        "formula": "A-a = PAO₂ − PaO₂; normal ≈ age / 4 + 4",
+        "source": "Mellemgaard 1966"
+      },
+      {
+        "nameKey": "metric.aARatio",
+        "formula": "a/A = PaO₂ / PAO₂ (> 0.75)",
+        "source": "Gilbert & Keighley 1974"
+      },
+      {
+        "nameKey": "metric.RI",
+        "formula": "RI = (PAO₂ − PaO₂) / PaO₂",
+        "source": "Goldfarb 1975"
+      },
+      {
+        "nameKey": "ref.pf",
+        "formula": "P/F = PaO₂ / FiO₂; S/F = SpO₂ / FiO₂",
+        "source": "Berlin 2012; Matthay 2024"
+      },
+      {
+        "nameKey": "ref.oi",
+        "formula": "OI = MAP × FiO₂ × 100 / PaO₂; OSI = MAP × FiO₂ × 100 / SpO₂",
+        "source": "PALICC-2 2023"
+      },
+      {
+        "nameKey": "ref.cao2",
+        "formula": "CaO₂ = 1.39 × Hb (g/dL) × SaO₂ + 0.003 × PaO₂",
+        "source": "—"
+      },
+      {
+        "nameKey": "ref.severinghaus",
+        "formula": "S = 1 / (23400 / (P³ + 150 × P) + 1)",
+        "source": "Severinghaus 1979"
+      },
+      {
+        "nameKey": "ref.virtualPO2",
+        "formula": "P_std = pO₂ × 10^(0.024 × (37 − T) + 0.40 × (pH − 7.4) + 0.06 × log₁₀(40 / pCO₂))",
+        "source": "Kelman 1966"
+      },
+      {
+        "nameKey": "metric.p50",
+        "formula": "p50 = 26.86 × pO₂ / P_std(sO₂)",
+        "source": "Severinghaus 1979"
+      },
+      {
+        "nameKey": "metric.FO2Hb",
+        "formula": "FO₂Hb = sO₂ × (1 − FCOHb − FMetHb)",
+        "source": "Radiometer"
+      },
+      {
+        "nameKey": "metric.pO2Expected",
+        "formula": "PaO₂ expected = 104.2 − 0.27 × age",
+        "source": "Sorbini 1968"
+      }
+    ]
+  },
+  {
+    "group": "perfusion",
+    "items": [
+      {
+        "nameKey": "ref.shunt",
+        "formula": "Qs/Qt = (CcO₂ − CaO₂) / (CcO₂ − CvO₂); CcO₂ = 1.39 × Hb + 0.003 × PAO₂",
+        "source": "Berggren 1942"
+      },
+      {
+        "nameKey": "metric.O2ER",
+        "formula": "O₂ER = (CaO₂ − CvO₂) / CaO₂ (0.22–0.32)",
+        "source": "—"
+      },
+      {
+        "nameKey": "ref.do2",
+        "formula": "DO₂ = CO × CaO₂ × 10; VO₂ = CO × (CaO₂ − CvO₂) × 10",
+        "source": "Fick"
+      },
+      {
+        "nameKey": "metric.pCO2gap",
+        "formula": "ΔpCO₂ = PvCO₂ − PaCO₂ (≤ 6 mmHg)",
+        "source": "Vallet 2013"
+      }
+    ]
+  },
+  {
+    "group": "ventilation",
+    "items": [
+      {
+        "nameKey": "metric.deadSpace",
+        "formula": "Vd/Vt = (PaCO₂ − PetCO₂) / PaCO₂",
+        "source": "Bohr–Enghoff"
+      },
+      {
+        "nameKey": "metric.drivingPressure",
+        "formula": "ΔP = PIP (Pplat) − PEEP (≤ 15 cmH₂O)",
+        "source": "Amato 2015"
+      },
+      {
+        "nameKey": "metric.VI",
+        "formula": "VI = RR × PIP × PaCO₂ / 1000",
+        "source": "Notter 1985"
+      },
+      {
+        "nameKey": "metric.PBW",
+        "formula": "PBW = 50 + 0.91 × (height − 152.4); women 45.5 + 0.91 × (height − 152.4)",
+        "source": "ARDSNet 2000"
+      },
+      {
+        "nameKey": "metric.VR",
+        "formula": "VR = VE × PaCO₂ / (PBW × 100 × 37.5)",
+        "source": "Sinha 2019"
+      },
+      {
+        "nameKey": "ref.ventRate",
+        "formula": "RR_new = RR × pCO₂ / pCO₂_target",
+        "source": "—"
+      }
+    ]
+  },
+  {
+    "group": "electrolytes",
+    "items": [
+      {
+        "nameKey": "metric.naCorrected",
+        "formula": "Na_corr = Na⁺ + 2.4 × (glucose − 5.55) / 5.55",
+        "source": "Hillier 1999"
+      },
+      {
+        "nameKey": "metric.clCorrected",
+        "formula": "Cl_corr = Cl⁻ × 140 / Na⁺",
+        "source": "—"
+      },
+      {
+        "nameKey": "metric.ca74",
+        "formula": "cCa²⁺(7.4) = cCa²⁺ × 10^(−0.24 × (7.4 − pH))",
+        "source": "Siggaard-Andersen"
+      },
+      {
+        "nameKey": "ref.naDeficit",
+        "formula": "Na deficit = TBW × (target − Na⁺); ≤ 8 mmol/L per 24 h",
+        "source": "Adrogué & Madias 2000"
+      },
+      {
+        "nameKey": "ref.freeWater",
+        "formula": "Free water deficit = TBW × (Na⁺ / 140 − 1); ≤ 10 mmol/L per 24 h",
+        "source": "Adrogué & Madias 2000"
+      },
+      {
+        "nameKey": "ref.clDeficit",
+        "formula": "Cl deficit = 0.2 × weight × (100 − Cl⁻)",
+        "source": "Rose & Post"
+      },
+      {
+        "nameKey": "ref.tbw",
+        "formula": "TBW = weight × 0.8 preterm, 0.75 term, 0.6 child / man, 0.5 woman",
+        "source": "Friis-Hansen 1961"
+      }
+    ]
+  },
+  {
+    "group": "treatment",
+    "items": [
+      {
+        "nameKey": "ref.bicarb",
+        "formula": "HCO₃⁻ deficit = 0.3 × weight × |BE|; first dose ½",
+        "source": "—"
+      },
+      {
+        "nameKey": "deficit.bicarbHCO3.title",
+        "formula": "HCO₃⁻ deficit = 0.5 × weight × (24 − HCO₃⁻)",
+        "source": "Kassirer"
+      },
+      {
+        "nameKey": "deficit.maintenance.title",
+        "formula": "4 mL/kg/h (1–10 kg) + 2 mL/kg/h (11–20 kg) + 1 mL/kg/h (> 20 kg)",
+        "source": "Holliday & Segar 1957"
+      },
+      {
+        "nameKey": "treat.k.title",
+        "formula": "KCl 0.5 mmol/kg; ≤ 0.2 mmol/kg/h; ≤ 40 mmol/L peripheral",
+        "source": "NSW Neonatal ANMF"
+      },
+      {
+        "nameKey": "treat.ca.title",
+        "formula": "Calcium gluconate 10% 0.5 mL/kg over 5–10 min (≤ 20 mL)",
+        "source": "RCH Melbourne"
+      },
+      {
+        "nameKey": "ref.lactateClearance",
+        "formula": "Lactate clearance = (L₀ − Lₜ) / L₀ × 100% (≥ 10%)",
+        "source": "Nguyen 2004"
+      }
+    ]
+  },
+  {
+    "group": "temperature",
+    "items": [
+      {
+        "nameKey": "metric.pHT",
+        "formula": "pH(T) = pH − 0.0147 × (T − 37)",
+        "source": "Rosenthal 1948"
+      },
+      {
+        "nameKey": "metric.pCO2T",
+        "formula": "pCO₂(T) = pCO₂ × 10^(0.019 × (T − 37))",
+        "source": "Siggaard-Andersen"
+      }
+    ]
+  },
+  {
+    "group": "neonatal",
+    "items": [
+      {
+        "nameKey": "metric.biliMg",
+        "formula": "Bilirubin mg/dL = µmol/L / 17.1",
+        "source": "—"
+      },
+      {
+        "nameKey": "metric.baRatio",
+        "formula": "B/A = bilirubin (mg/dL) / albumin (g/dL)",
+        "source": "AAP 2004/2022"
+      }
+    ]
+  }
+]
