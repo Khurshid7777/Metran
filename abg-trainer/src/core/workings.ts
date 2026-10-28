@@ -111,6 +111,8 @@ export function buildWorkings(
     const p = d.params;
     if (d.id === 'sodium') add('deficits', 'sodium', { f: p.f, w: p.w, tbw: r(p.tbw), target: p.target, Na: p.Na, v: Math.round(d.amount), max: p.max, first: Math.round(d.first24h!) });
     if (d.id === 'freeWater') add('deficits', 'freeWater', { f: p.f, w: p.w, tbw: r(p.tbw), Na: p.Na, ref: p.ref, v: r(d.amount, 2), max: p.max, first: r(d.first24h!, 2) });
+    if (d.id === 'bicarbHCO3') add('deficits', 'bicarbHCO3', { f: p.f, w: p.w, target: p.target, HCO3: p.HCO3, v: Math.round(d.amount) });
+    if (d.id === 'maintenance') add('deficits', 'maintenance', { w: p.w, v: Math.round(d.amount), day: Math.round(d.first24h!) });
     if (d.id === 'chloride') add('deficits', 'chloride', { f: p.f, w: p.w, target: p.target, Cl: p.Cl, v: Math.round(d.amount) });
   }
   return out;

@@ -30,7 +30,7 @@
     "lactateAge": "Adults SSC 2021 ≥ 2 / ≥ 4; children ≥ 2 (SSC paediatric 2020). Neonates: up to ~4 normal in the first 6 h, > 2.5 persistent is concerning; cord lactate > 6.2 associated with neurological abnormality.",
     "venousSample": "Byrne et al., Respirology 2014: venous pH −0.03…−0.04, pCO2 +4.4 mmHg, HCO3 +1. Arterial-labelled sample likely venous: pO2 < 40–45 mmHg with sO2 < 75–80%, or sO2 vs SpO2 gap > 10%.",
     "deficits": "Total body water: ~0.8 L/kg preterm, ~0.75 term (Friis-Hansen 1961), 0.6 children and adult men, 0.5 adult women. Na deficit = TBW × (target − Na), rise ≤ 8 mmol/L per 24 h; free water deficit = TBW × (Na/140 − 1), fall ≤ 10 mmol/L per 24 h (Adrogué & Madias, NEJM 2000). Cl deficit = 0.2 L/kg × weight × (100 − Cl) in chloride-responsive metabolic alkalosis (Rose & Post).",
-    "extended": "SBE (Van Slyke) = 0.93 × (HCO3 − 24.4 + 14.83 × (pH − 7.4)) — the equation behind cBase(Ecf) (Siggaard-Andersen; CLSI C46). Expected pH: acute ΔpH = 0.008 × ΔpCO2, chronic 0.003. Corrected HCO3 = HCO3 + (AG − 12) (Wrenn 1990). Expected AG ≈ 0.25 × albumin g/L (Feldman 2005). Strong ion gap: SIDe = HCO3 + albumin × (0.123·pH − 0.631) + Pi × (0.309·pH − 0.469); SIG = SIDa − SIDe (Figge 1992; Kellum 2009). Na−Cl difference 32–40, Cl:Na 0.75–0.79 (Durward 2001). Na corrected for glucose +2.4 per 5.55 mmol/L (Hillier 1999). cCa2+(7.4) = cCa2+ × 10^(−0.24 × (7.4 − pH)) (Radiometer / Siggaard-Andersen). a/A ratio > 0.75 (Gilbert & Keighley 1974). Shunt from the content equation with C(a−v)O2 2.3 mmol/L = 5.15 mL/dL (Radiometer FShunt,e); normal < 10%. Expected PaO2 = 104.2 − 0.27 × age (Sorbini 1968). Dead space Vd/Vt = (PaCO2 − PetCO2)/PaCO2 (Enghoff), normal 0.2–0.35, > 0.6 high risk in ARDS (Nuckton 2002). Temperature: pH(T) = pH − 0.0147 × (T − 37); pCO2(T) = pCO2 × 10^(0.019 × (T − 37)). Bilirubin/albumin ratio (mg/dL per g/dL) for exchange consideration: ≥ 38 wk 8.0 (7.2 with risk factors); 35–37 wk 7.2 (6.8 with risk) — AAP 2004/2022."
+    "extended": "SBE (Van Slyke) = 0.93 × (HCO3 − 24.4 + 14.83 × (pH − 7.4)) — the equation behind cBase(Ecf) (Siggaard-Andersen; CLSI C46). Expected pH: acute ΔpH = 0.008 × ΔpCO2, chronic 0.003. Corrected HCO3 = HCO3 + (AG − 12) (Wrenn 1990). Expected AG ≈ 0.25 × albumin g/L (Feldman 2005). Strong ion gap: SIDe = HCO3 + albumin × (0.123·pH − 0.631) + Pi × (0.309·pH − 0.469); SIG = SIDa − SIDe (Figge 1992; Kellum 2009). Na−Cl difference 32–40, Cl:Na 0.75–0.79 (Durward 2001). Na corrected for glucose +2.4 per 5.55 mmol/L (Hillier 1999). cCa2+(7.4) = cCa2+ × 10^(−0.24 × (7.4 − pH)) (Radiometer / Siggaard-Andersen). a/A ratio > 0.75 (Gilbert & Keighley 1974). Shunt from the content equation with C(a−v)O2 2.3 mmol/L = 5.15 mL/dL (Radiometer FShunt,e); normal < 10%. Expected PaO2 = 104.2 − 0.27 × age (Sorbini 1968). Dead space Vd/Vt = (PaCO2 − PetCO2)/PaCO2 (Enghoff), normal 0.2–0.35, > 0.6 high risk in ARDS (Nuckton 2002). Temperature: pH(T) = pH − 0.0147 × (T − 37); pCO2(T) = pCO2 × 10^(0.019 × (T − 37)). Bilirubin/albumin ratio (mg/dL per g/dL) for exchange consideration: ≥ 38 wk 8.0 (7.2 with risk factors); 35–37 wk 7.2 (6.8 with risk) — AAP 2004/2022. Oxygen dissociation: Severinghaus 1979 S = 1/(23400/(P³+150P)+1), p50 = 26.86 mmHg; virtual pO2 = pO2 · 10^(0.024(37−T) + 0.40(pH−7.4) + 0.06·log(40/pCO2)) (Kelman 1966); in-vivo p50 from one point = 26.86 · pO2 / P_std(sO2); normal p50 24–29 mmHg. PIO2 = FiO2 × (Patm − 47). FO2Hb = sO2 × (1 − FCOHb − FMetHb). Bicarbonate deficit by HCO3 (Kassirer): 0.5 × weight × (24 − HCO3). Maintenance fluid (Holliday & Segar 1957): 4/2/1 mL/kg/h."
   },
   "categories": {
     "adult": {
@@ -470,7 +470,23 @@
     "waterRefNa": 140,
     "naMaxFall24h": 10,
     "clDistribution": 0.2,
-    "clTarget": 100
+    "clTarget": 100,
+    "kassirerFactor": 0.5,
+    "hollidaySegar": [
+      [
+        10,
+        4
+      ],
+      [
+        10,
+        2
+      ],
+      [
+        999,
+        1
+      ]
+    ],
+    "bicarbTarget": 24
   },
   "extended": {
     "hPlus": [
@@ -528,6 +544,67 @@
       "risk38": 7.2,
       "well35": 7.2,
       "risk35": 6.8
+    },
+    "p50": [
+      24,
+      29
+    ],
+    "sO2PredictedGap": 8
+  },
+  "profile": {
+    "Na": [
+      135,
+      145
+    ],
+    "K": [
+      3.5,
+      5.0
+    ],
+    "Cl": [
+      98,
+      106
+    ],
+    "iCa": [
+      1.15,
+      1.3
+    ],
+    "lactate": [
+      0.5,
+      2.0
+    ],
+    "glucose": [
+      3.9,
+      7.8
+    ],
+    "glucoseNeonate": [
+      2.8,
+      8.3
+    ],
+    "agCorr": [
+      8,
+      12
+    ],
+    "albumin": [
+      35,
+      50
+    ],
+    "Hb": {
+      "adult": [
+        120,
+        175
+      ],
+      "child": [
+        110,
+        150
+      ],
+      "term_neonate": [
+        135,
+        215
+      ],
+      "preterm": [
+        130,
+        200
+      ]
     }
   }
 }

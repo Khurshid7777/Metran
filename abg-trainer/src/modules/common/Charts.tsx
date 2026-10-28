@@ -1,3 +1,4 @@
+import { odcCurve, P50_STD, shiftFactor } from '../../core/odc';
 import type { InterpretationResult } from '../../core/types';
 import { useT } from './useT';
 
@@ -195,6 +196,138 @@ export function BilirubinChart({ result }: { result: InterpretationResult }) {
         <span className="sw sw-exchange" aria-hidden="true" /> {t('chart.bili.exchange')}
         <span className="sw sw-point" aria-hidden="true" /> {t('chart.bili.point', { b: n(value, 0) })}
       </p>
+    </section>
+  );
+}
+
+/** Oxygen–haemoglobin dissociation curve: standard and shifted to the patient's pH, pCO2 and temperature, with the measured point. */
+export function OdcChart({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const pred = result.metrics.find((m) => m.id === 'sO2Predicted');
+  if (!pred) return null;
+  const pO2 = Number(pred.params.pO2);
+  const pH = Number(pred.params.pH);
+  const pCO2 = Number(pred.params.pCO2);
+  const temp = Number(pred.params.t);
+  const p50m = result.metrics.find((m) => m.id === 'p50');
+  const measured = p50m ? Number(p50m.params.sO2) : undefined;
+  const factor = shiftFactor(pH, pCO2, temp);
+  const pMax = Math.max(120, Math.ceil((pO2 + 20) / 20) * 20);
+  const x = scale(0, pMax, PAD.l, W - PAD.r);
+  const y = scale(0, 100, H - PAD.b, PAD.t);
+  const path = (pts: [number, number][]) => pts.map(([p, s]) => `${x(p).toFixed(1)},${y(s).toFixed(1)}`).join(' ');
+  const p50pt = P50_STD * factor;
+  const xTicks = range(0, pMax, 20);
+  const yTicks = range(0, 100, 20);
+  const pointS = measured ?? pred.value;
+  return (
+    <section className="card chart-card" aria-labelledby="odc-h">
+      <h3 id="odc-h">{t('chart.odc.title')}</h3>
+      <p className="muted small">{t('chart.odc.caption')}</p>
+      <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label={t('chart.odc.aria', { pO2, s: Math.round(pointS) })}>
+        {xTicks.map((v) => <line key={'gx' + v} x1={x(v)} x2={x(v)} y1={PAD.t} y2={H - PAD.b} className="grid" />)}
+        {yTicks.map((v) => <line key={'gy' + v} y1={y(v)} y2={y(v)} x1={PAD.l} x2={W - PAD.r} className="grid" />)}
+        <line x1={PAD.l} x2={W - PAD.r} y1={y(50)} y2={y(50)} className="isopleth" />
+        <polyline points={path(odcCurve(pMax, 1))} className="curve-std" />
+        <polyline points={path(odcCurve(pMax, factor))} className="curve-pt" />
+        <line x1={x(P50_STD)} x2={x(P50_STD)} y1={y(50)} y2={H - PAD.b} className="p50-std" />
+        <line x1={x(p50pt)} x2={x(p50pt)} y1={y(50)} y2={H - PAD.b} className="p50-pt" />
+        <line x1={PAD.l} x2={W - PAD.r} y1={H - PAD.b} y2={H - PAD.b} className="axis-line" />
+        <line x1={PAD.l} x2={PAD.l} y1={PAD.t} y2={H - PAD.b} className="axis-line" />
+        {xTicks.map((v) => <text key={'tx' + v} x={x(v)} y={H - PAD.b + 14} className="tick" textAnchor="middle">{v}</text>)}
+        {yTicks.map((v) => <text key={'ty' + v} x={PAD.l - 6} y={y(v) + 4} className="tick" textAnchor="end">{v}</text>)}
+        <text x={(PAD.l + W - PAD.r) / 2} y={H - 4} className="axis-title" textAnchor="middle">{t('chart.odc.x')}</text>
+        <text x={12} y={(PAD.t + H - PAD.b) / 2} className="axis-title" textAnchor="middle" transform={`rotate(-90 12 ${(PAD.t + H - PAD.b) / 2})`}>{t('chart.odc.y')}</text>
+        <circle cx={x(Math.min(pO2, pMax))} cy={y(pointS)} r={7} className="point-halo" />
+        <circle cx={x(Math.min(pO2, pMax))} cy={y(pointS)} r={4} className="point" />
+      </svg>
+      <p className="legend">
+        <span className="sw sw-std" aria-hidden="true" /> {t('chart.odc.std', { p50: n(P50_STD, 1) })}
+        <span className="sw sw-curve" aria-hidden="true" /> {t('chart.odc.pt', { p50: n(Math.round(p50pt * 10) / 10, 1) })}
+        <span className="sw sw-point" aria-hidden="true" /> {t(measured !== undefined ? 'chart.odc.measured' : 'chart.odc.predicted', { pO2, s: Math.round(pointS) })}
+      </p>
+    </section>
+  );
+}
+
+/** Oxygen cascade: inspired → alveolar → arterial pO2; the drop from PAO2 to PaO2 is the A-a gradient. */
+export function O2Cascade({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const pio2 = result.metrics.find((m) => m.id === 'PIO2');
+  const aa = result.workings.find((w) => w.key === 'Aa');
+  if (!pio2 || !aa) return null;
+  const bars = [
+    { k: 'PIO2', v: pio2.value, cls: 'bar-pio2' },
+    { k: 'PAO2', v: Number(aa.params.PAO2), cls: 'bar-pao2' },
+    { k: 'PaO2', v: Number(aa.params.pO2), cls: 'bar-pao2a' },
+  ];
+  const max = Math.max(...bars.map((b) => b.v)) * 1.1;
+  const h = 180;
+  const top = 20;
+  const bw = 70;
+  const gap = 30;
+  const y = (v: number) => (v / max) * h;
+  return (
+    <section className="card chart-card" aria-labelledby="casc-h">
+      <h3 id="casc-h">{t('chart.cascade.title')}</h3>
+      <p className="muted small">{t('chart.cascade.caption')}</p>
+      <svg viewBox={`0 0 ${40 + 3 * bw + 2 * gap + 20} ${h + top + 34}`} className="chart chart-narrow" role="img"
+        aria-label={t('chart.cascade.aria', { pio2: Math.round(pio2.value), pao2: Math.round(bars[1].v), pa: bars[2].v })}>
+        {bars.map((b, i) => {
+          const bx = 40 + i * (bw + gap);
+          return (
+            <g key={b.k}>
+              <rect x={bx} y={top + h - y(b.v)} width={bw} height={y(b.v)} rx={4} className={b.cls} />
+              <text x={bx + bw / 2} y={top + h - y(b.v) - 5} className="seg-label" textAnchor="middle">{n(Math.round(b.v), 0)}</text>
+              <text x={bx + bw / 2} y={top + h + 16} className="axis-title" textAnchor="middle">{t('chart.cascade.' + b.k)}</text>
+            </g>
+          );
+        })}
+        <line x1={40 + bw + gap + bw} x2={40 + 2 * (bw + gap)} y1={top + h - y(bars[1].v)} y2={top + h - y(bars[1].v)} className="isopleth" />
+        <text x={40 + 2 * (bw + gap) + bw / 2} y={top + h - y(bars[1].v) + 14} className="tick" textAnchor="middle">
+          {t('chart.cascade.gap', { v: n(Number(aa.params.v), 0) })}
+        </text>
+      </svg>
+    </section>
+  );
+}
+
+/** Deviation profile: every analyte on one scale, the band is the normal range. */
+export function DeviationProfile({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const items = result.profile;
+  if (items.length < 3) return null;
+  const rowH = 24;
+  const labelW = 64;
+  const valW = 64;
+  const plotL = labelW;
+  const plotR = W - valW;
+  const zMax = 3;
+  const x = scale(-zMax, zMax, plotL, plotR);
+  const h = items.length * rowH + 24;
+  return (
+    <section className="card chart-card" aria-labelledby="prof-h">
+      <h3 id="prof-h">{t('chart.profile.title')}</h3>
+      <p className="muted small">{t('chart.profile.caption')}</p>
+      <svg viewBox={`0 0 ${W} ${h}`} className="chart" role="img" aria-label={t('chart.profile.aria')}>
+        <rect x={x(-1)} y={4} width={x(1) - x(-1)} height={items.length * rowH} className="normal-box" />
+        <line x1={x(0)} x2={x(0)} y1={4} y2={4 + items.length * rowH} className="isopleth" />
+        {items.map((it, i) => {
+          const z = Math.max(-zMax, Math.min(zMax, it.z));
+          const cy = 4 + i * rowH + rowH / 2;
+          const cls = Math.abs(it.z) <= 1 ? 'dot-ok' : Math.abs(it.z) <= 2 ? 'dot-warn' : 'dot-bad';
+          return (
+            <g key={it.id}>
+              <text x={labelW - 6} y={cy + 4} className="seg-label" textAnchor="end">{t('chart.profile.' + it.id)}</text>
+              <line x1={x(0)} x2={x(z)} y1={cy} y2={cy} className={'stem ' + cls} />
+              <circle cx={x(z)} cy={cy} r={5} className={cls} />
+              <text x={W - 4} y={cy + 4} className="tick" textAnchor="end">{n(it.value, Math.abs(it.value) < 10 ? 2 : 1)}</text>
+            </g>
+          );
+        })}
+        <text x={x(-1)} y={h - 4} className="tick" textAnchor="middle">{t('chart.profile.low')}</text>
+        <text x={x(1)} y={h - 4} className="tick" textAnchor="middle">{t('chart.profile.high')}</text>
+      </svg>
     </section>
   );
 }

@@ -331,3 +331,17 @@ table.values td { font-variant-numeric: tabular-nums; }
 .chip-normal { background: var(--ok-soft); color: var(--ok); }
 .chip-low, .chip-high { background: var(--warn-soft); color: var(--warn); }
 .metric-formula { font-size: 0.8rem; color: var(--muted); overflow-wrap: anywhere; }
+
+.chart .curve-std { fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.chart .curve-pt { fill: none; stroke: var(--accent); stroke-width: 2.4; }
+.chart .p50-std { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.chart .p50-pt { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 2 3; }
+.chart .bar-pio2 { fill: var(--alk); fill-opacity: 0.35; }
+.chart .bar-pao2 { fill: var(--alk); fill-opacity: 0.6; }
+.chart .bar-pao2a { fill: var(--accent); }
+.chart .stem { stroke-width: 2; }
+.chart .dot-ok { fill: var(--ok); stroke: var(--ok); }
+.chart .dot-warn { fill: var(--warn); stroke: var(--warn); }
+.chart .dot-bad { fill: var(--bad); stroke: var(--bad); }
+.sw-std { background: var(--muted); }
+.sw-curve { background: var(--accent); }

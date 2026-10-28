@@ -188,6 +188,8 @@ export interface InterpretationResult {
   bilirubin?: import('./bilirubin').BiliAssessment;
   /** Extended assessment: derived values with formulas and norms. */
   metrics: import('./extended').Metric[];
+  /** Every analyte against its normal range, for the deviation chart. */
+  profile: import('./profile').ProfileItem[];
   computed: { HCO3: number; HCO3Calculated: boolean };
 }
 

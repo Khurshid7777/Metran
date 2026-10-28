@@ -1,3 +1,4 @@
+import { p50FromPoint, predictedSO2, P50_STD, virtualPO2 } from './odc';
 import type { Ctx, Flag } from './types';
 
 export type MetricGroup = 'acidBase' | 'electrolytes' | 'oxygen' | 'temperature' | 'neonatal';
@@ -22,6 +23,7 @@ export interface ExtendedInput {
   HCO3: number;
   agCorr?: number;
   PAO2?: number;
+  Patm?: number;
   SIDa?: number;
 }
 
@@ -123,6 +125,29 @@ export function extendedMetrics(ctx: Ctx, x: ExtendedInput): { metrics: Metric[]
       const expected = 104.2 - 0.27 * input.ageYears;
       add('oxygen', 'pO2Expected', expected, 0, { age: input.ageYears, v: Math.round(expected) }, 'mmHg');
     }
+  }
+  if (input.FiO2 !== undefined && x.Patm !== undefined) {
+    const pio2 = input.FiO2 * (x.Patm - norms.oxygenation.waterVapour);
+    add('oxygen', 'PIO2', pio2, 0, { FiO2: input.FiO2, Patm: x.Patm, v: Math.round(pio2) }, 'mmHg');
+  }
+  if (input.pO2 !== undefined) {
+    const temp = input.temperature ?? 37;
+    const pv = virtualPO2(input.pO2, pH, pCO2, temp);
+    const pred = predictedSO2(input.pO2, pH, pCO2, temp);
+    add('oxygen', 'sO2Predicted', pred, 0, { pO2: input.pO2, pH, pCO2, t: temp, pv: r(pv), v: Math.round(pred) }, 'percent');
+    if (input.SaO2 !== undefined) {
+      const p50 = p50FromPoint(input.pO2, input.SaO2);
+      if (p50 !== undefined) {
+        add('oxygen', 'p50', p50, 1, { std: P50_STD, pO2: input.pO2, sO2: input.SaO2, v: r(p50) }, 'mmHg', E.p50 as [number, number]);
+      }
+      if (Math.abs(pred - input.SaO2) > E.sO2PredictedGap) {
+        flags.push({ code: 'so2_mismatch', severity: 'warning', params: { meas: input.SaO2, pred: Math.round(pred) } });
+      }
+    }
+  }
+  if (input.SaO2 !== undefined && (input.FCOHb !== undefined || input.FMetHb !== undefined)) {
+    const fo2hb = input.SaO2 * (1 - ((input.FCOHb ?? 0) + (input.FMetHb ?? 0)) / 100);
+    add('oxygen', 'FO2Hb', fo2hb, 1, { s: input.SaO2, co: input.FCOHb ?? 0, met: input.FMetHb ?? 0, v: r(fo2hb) }, 'percent', [94, 99]);
   }
   if (input.etCO2 !== undefined) {
     const vdvt = (pCO2 - input.etCO2) / pCO2;

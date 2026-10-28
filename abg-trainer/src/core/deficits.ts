@@ -1,7 +1,7 @@
 import type { Ctx } from './types';
 
 export interface Deficit {
-  id: 'sodium' | 'freeWater' | 'chloride';
+  id: 'sodium' | 'freeWater' | 'chloride' | 'bicarbHCO3' | 'maintenance';
   /** mmol for sodium/chloride, litres for free water. */
   amount: number;
   /** Safe amount for the first 24 h (sodium/free water), honouring the max rate of change. */
@@ -16,7 +16,7 @@ export function tbwFactor(ctx: Ctx): number {
 }
 
 /** Electrolyte and water deficits that follow from the sample; each needs the weight. */
-export function deficits(ctx: Ctx, metabolicAlkalosis: boolean): Deficit[] {
+export function deficits(ctx: Ctx, metabolicAlkalosis: boolean, metabolicAcidosis = false): Deficit[] {
   const { input, norms } = ctx;
   const D = norms.deficits;
   const w = input.weightKg;
@@ -40,6 +40,23 @@ export function deficits(ctx: Ctx, metabolicAlkalosis: boolean): Deficit[] {
     // Cl deficit = 0.2 L/kg × weight × (100 − Cl)
     const amount = D.clDistribution * w * (D.clTarget - input.Cl);
     out.push({ id: 'chloride', amount, tbwFactor: D.clDistribution, params: { f: D.clDistribution, w, Cl: input.Cl, target: D.clTarget } });
+  }
+  if (metabolicAcidosis && ctx.HCO3 < D.bicarbTarget) {
+    // Kassirer: HCO3 deficit = 0.5 L/kg × weight × (24 − HCO3) — a second estimate next to the BE-based one
+    const amount = D.kassirerFactor * w * (D.bicarbTarget - ctx.HCO3);
+    out.push({ id: 'bicarbHCO3', amount, tbwFactor: D.kassirerFactor, params: { f: D.kassirerFactor, w, HCO3: Math.round(ctx.HCO3 * 10) / 10, target: D.bicarbTarget } });
+  }
+  if (input.ageCategory === 'child' || input.ageCategory === 'adult') {
+    // Holliday–Segar 4-2-1: mL/h for the first 10 kg, the next 10 kg and every kg above 20
+    let rest = w;
+    let mlh = 0;
+    for (const [kg, rate] of D.hollidaySegar) {
+      const part = Math.min(rest, kg);
+      mlh += part * rate;
+      rest -= part;
+      if (rest <= 0) break;
+    }
+    out.push({ id: 'maintenance', amount: mlh, first24h: mlh * 24, tbwFactor: 0, params: { w, mlh } });
   }
   return out;
 }

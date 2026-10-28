@@ -1,7 +1,7 @@
 import type { Flag, InterpretationResult, Step, SummaryPart } from '../../core/types';
 import { useT } from './useT';
 import { StewartChart } from './StewartChart';
-import { AcidBaseMap, BilirubinChart, Gamblegram } from './Charts';
+import { AcidBaseMap, BilirubinChart, DeviationProfile, Gamblegram, O2Cascade, OdcChart } from './Charts';
 import { DeficitsCard, ProcessCard, Workings } from './Workings';
 import { MetricsCard } from './MetricsCard';
 import type { Working } from '../../core/workings';
@@ -196,6 +196,7 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
         <FlagList flags={result.flags} />
       </section>
       <ProcessCard result={result} />
+      <DeviationProfile result={result} />
       <AcidBaseMap result={result} />
       <section className="card" aria-labelledby="steps-h">
         <h3 id="steps-h">{t('result.steps')}</h3>
@@ -207,6 +208,8 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
       </section>
       <MetricsCard result={result} />
       <Gamblegram result={result} />
+      <OdcChart result={result} />
+      <O2Cascade result={result} />
       {stewart?.status === 'done' && <StewartChart step={stewart} />}
       <BilirubinChart result={result} />
       <Differentials result={result} />

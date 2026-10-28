@@ -7,6 +7,7 @@ import { deficits as computeDeficits } from './deficits';
 import { labsStep } from './labs';
 import { buildWorkings } from './workings';
 import { extendedMetrics } from './extended';
+import { deviationProfile } from './profile';
 import { oxygenationStep } from './oxygenation';
 import { categoryNorms, primaryStep } from './primary';
 import { stewartStep } from './stewart';
@@ -49,6 +50,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
       workings: [],
       deficits: [],
       metrics: [],
+      profile: [],
       computed: { HCO3: NaN, HCO3Calculated: input.HCO3 === undefined },
     };
   }
@@ -123,6 +125,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     HCO3: ctx.HCO3,
     agCorr: ag.agCorr,
     PAO2: typeof oxy.step.details.PAO2 === 'number' ? oxy.step.details.PAO2 : undefined,
+    Patm: input.Patm ?? settings.patm ?? norms.defaultPatm,
     SIDa: sida,
   });
   flags.push(...ext.flags);
@@ -165,8 +168,9 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     summary: [],
     workings: [],
     metrics: ext.metrics,
+    profile: deviationProfile(ctx, ag.agCorr),
     bilirubin: labs.bilirubin,
-    deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis')),
+    deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis'), disorderTypes.includes('metabolic_acidosis')),
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },
   };
   result.workings = buildWorkings(input, steps, ctx.HCO3, settings, norms, result.treatment!, result.deficits);

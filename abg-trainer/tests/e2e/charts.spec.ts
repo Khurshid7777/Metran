@@ -15,6 +15,9 @@ test('подробный разбор: карта КЩС, гэмблграмма
   await expect(res).toContainText('pCO₂ ожид. = 1,5 × 11,4 + 8 = 25,1');
   await expect(res).toContainText('AG_корр = 16,6 + 0,25 × (40 − 25) = 20,3');
   await expect(page.getByTestId('deficits')).toContainText('= 294 ммоль');
+  await expect(res.getByRole('img', { name: 'Профиль отклонений показателей от нормы' })).toBeVisible();
+  await expect(page.getByTestId('deficits')).toContainText('Holliday–Segar');
+  await expect(page.getByTestId('deficits')).toContainText('Kassirer');
   await page.getByText('Как получен вывод').click();
   await expect(res).toContainText('совпадает ли второй показатель');
 
@@ -23,4 +26,13 @@ test('подробный разбор: карта КЩС, гэмблграмма
   await page.getByTestId('calculate').click();
   await expect(res.getByRole('img', { name: /Билирубин 150/ })).toBeVisible();
   await expect(res).toContainText('выше порога фототерапии');
+
+  await page.getByTestId('ageCategory').selectOption('adult');
+  await page.getByTestId('in-pO2').fill('44,3');
+  await page.getByTestId('in-SaO2').fill('81');
+  await page.getByTestId('in-FiO2').fill('0,25');
+  await page.getByTestId('calculate').click();
+  await expect(res.getByRole('img', { name: /Кривая диссоциации: pO₂ 44,3, sO₂ 81%/ })).toBeVisible();
+  await expect(res.getByRole('img', { name: /Кислородный каскад/ })).toBeVisible();
+  await expect(page.getByTestId('metrics')).toContainText('p50 in vivo');
 });

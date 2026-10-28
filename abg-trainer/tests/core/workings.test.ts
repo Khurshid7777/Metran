@@ -66,7 +66,7 @@ describe('дефициты', () => {
   });
   it('Cl⁻ только при метаболическом алкалозе; без веса — нет дефицитов', () => {
     expect(interpret(adult({ pH: 7.51, pCO2: 46, HCO3: 36, Cl: 90, weightKg: 70 })).deficits.find((x) => x.id === 'chloride')!.amount).toBeCloseTo(140);
-    expect(interpret(adult({ Cl: 90, weightKg: 70 })).deficits).toEqual([]);
+    expect(interpret(adult({ Cl: 90, weightKg: 70 })).deficits.map((d) => d.id)).toEqual(['maintenance']);
     expect(interpret(adult({ Na: 120 })).deficits).toEqual([]);
   });
 });
