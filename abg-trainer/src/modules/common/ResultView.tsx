@@ -110,6 +110,57 @@ export function DkaCard({ result }: { result: InterpretationResult }) {
   );
 }
 
+export function UrineCard({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const u = result.urine;
+  if (!u) return null;
+  const row = (label: string, value: string, formula: string) => (
+    <div className="treat-item">
+      <h4>{label}</h4>
+      <p className="formula">{formula}</p>
+      <p>{value}</p>
+    </div>
+  );
+  return (
+    <section className="card" aria-labelledby="urine-h" data-testid="urine-card">
+      <h3 id="urine-h">{t('urine.title')}</h3>
+      {u.uag !== undefined && u.uagClass && row(t('urine.uag'), `${n(u.uag, 0)} ${t('unit.mmol')} — ${t('urine.uag.' + u.uagClass)}`, t('urine.uag.formula'))}
+      {u.clClass && row(t('urine.cl'), t('urine.cl.' + u.clClass), t('urine.cl.formula'))}
+      {u.fena !== undefined && u.fenaClass && row(t('urine.fena'), `${n(u.fena, 2)} % — ${t('urine.fena.' + u.fenaClass)}`, t('urine.fena.formula'))}
+      {u.feurea !== undefined && u.feureaClass && row(t('urine.feurea'), `${n(u.feurea, 1)} % — ${t('urine.feurea.' + u.feureaClass)}`, t('urine.feurea.formula'))}
+      <p className="muted small">{t('urine.note')}</p>
+    </section>
+  );
+}
+
+export function NaCorrectionCard({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const c = result.naCorrection;
+  if (!c) return null;
+  return (
+    <section className="card" aria-labelledby="nac-h" data-testid="na-correction">
+      <h3 id="nac-h">{t('nac.title')}</h3>
+      <p className="disclaimer" role="note">{t('treat.disclaimer')}</p>
+      <p className="formula">{t('nac.formula', { tbw: c.tbw, max: c.limit })}</p>
+      <table className="nac-table">
+        <thead>
+          <tr><th scope="col">{t('nac.solution')}</th><th scope="col">{t('nac.delta')}</th><th scope="col">{t('nac.volume', { max: c.limit })}</th></tr>
+        </thead>
+        <tbody>
+          {c.items.map((i) => (
+            <tr key={i.id} className={i.wrongDirection ? 'muted' : ''}>
+              <th scope="row">{t('nac.sol.' + i.id)}</th>
+              <td>{i.deltaPerL > 0 ? '+' : ''}{n(i.deltaPerL, 1)}</td>
+              <td>{i.litres24h === undefined ? t('nac.wrong.' + c.direction) : `${n(i.litres24h, 2)} ${t('unit.l')} (${n(i.mlPerHour, 0)} ${t('unit.mlh')})`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="muted small">{t('nac.note')}</p>
+    </section>
+  );
+}
+
 export function TreatmentBlock({ result }: { result: InterpretationResult }) {
   const { t, n } = useT();
   const tr = result.treatment;
@@ -241,6 +292,8 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
       <BilirubinChart result={result} />
       <Differentials result={result} />
       {showTreatment && <DkaCard result={result} />}
+      <UrineCard result={result} />
+      {showTreatment && <NaCorrectionCard result={result} />}
       {showTreatment && <TreatmentBlock result={result} />}
       {showTreatment && <DeficitsCard result={result} />}
     </div>

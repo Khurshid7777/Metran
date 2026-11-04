@@ -78,3 +78,23 @@ test('ДКА: карточка с тяжестью, осмолярностью �
   await expect(card).toContainText('1–2 ед/ч');
   await expect(page.getByTestId('result')).toContainText('отложите инсулин');
 });
+
+test('моча и коррекция Na: карточки появляются при введённых данных', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('sampleType').selectOption('venous');
+  await page.getByTestId('in-pH').fill('7,25');
+  await page.getByTestId('in-pCO2').fill('28');
+  await page.getByTestId('in-HCO3').fill('12');
+  await page.getByTestId('in-Na').fill('120');
+  await page.getByTestId('in-Cl').fill('90');
+  await page.getByTestId('in-weightKg').fill('70');
+  await page.getByTestId('in-urineNa').fill('20');
+  await page.getByTestId('in-urineK').fill('30');
+  await page.getByTestId('in-urineCl').fill('80');
+  await page.getByTestId('calculate').click();
+  await expect(page.getByTestId('urine-card')).toContainText('отрицательный');
+  await expect(page.getByTestId('na-correction')).toContainText('NaCl 3 %');
+  await expect(page.getByTestId('na-correction')).toContainText('не повышает Na⁺');
+});

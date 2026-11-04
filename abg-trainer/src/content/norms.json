@@ -9,7 +9,9 @@
     "dka.child.severity",
     "dka.child.dextrose",
     "dka.adult.severity",
-    "dka.effOsmHigh"
+    "dka.effOsmHigh",
+    "urine",
+    "deficits.infusates"
   ],
   "sources": {
     "acidBase": "Boston rules: Narins & Emmett, Medicine 1980; Berend, Rev Clin Esp 2018 (Winters, metabolic alkalosis 0.7×HCO3+21, respiratory 0.1/0.35, 0.2/0.4). Copenhagen SBE: Schlichtig, Crit Care Med 1998.",
@@ -38,7 +40,9 @@
     "perfusion": "CvO2 = 1.39 × Hb × ScvO2 + 0.003 × pvO2; a–v O2 difference 3–5 mL/dL; O2ER = (CaO2 − CvO2)/CaO2, normal 0.22–0.32; ScvO2 ≥ 70% (Rivers 2001; SSC); shunt Qs/Qt = (CcO2 − CaO2)/(CcO2 − CvO2) (Berggren); DO2 = CO × CaO2 × 10, VO2 = CO × (CaO2 − CvO2) × 10; venous–arterial pCO2 gap > 6 mmHg = low flow (Vallet 2013; Mallat 2016).",
     "ventilation": "Ventilation index VI = RR × PIP × PaCO2 / 1000 (neonatal, Notter); driving pressure = Pplat/PIP − PEEP, > 15 cmH2O associated with mortality (Amato, NEJM 2015); ventilatory ratio = VE × PaCO2 / (PBW × 100 × 37.5), > 2 associated with mortality (Sinha 2019); PBW = 50 + 0.91 × (height − 152.4) (ARDSNet, male formula; female 45.5 + …).",
     "series": "Na correction speed: rise ≤ 8 mmol/L and fall ≤ 10 mmol/L per 24 h (Adrogué & Madias; European hyponatraemia guideline 2014). Lactate clearance ≥ 10% within 2–6 h (Nguyen 2004; Jones 2010).",
-    "dka": "Children: ISPAD 2022 Clinical Practice Consensus Guidelines ch. 11, Glaser et al., Pediatr Diabetes 2022;23:835-856 — insulin 0.05–0.1 U/kg/h (0.05 may be considered at pH > 7.15), started ≥ 1 h after fluids; potassium: defer while K > 5.5 until urine output documented, start infusion when K < 5.5, defer insulin if K < 3.0; deficit replaced over 24–48 h (checked in search excerpts). Adults: ADA/EASD/JBDS/AACE/DTS consensus, Dhatariya et al., Diabetes Care 2024;47:1257-1275 — DKA: glucose ≥ 200 mg/dL (11.1 mmol/L) or known diabetes, BHB ≥ 3.0 mmol/L, pH < 7.3 and/or HCO3 < 18; resolution BHB < 0.6 mmol/L; glucose every 1–2 h, electrolytes/phosphate/BHB/venous pH every 4 h (checked in search excerpts). NOT verified against the full text in this build (recalled): ISPAD severity cut-offs pH 7.3/7.2/7.1 and HCO3 18/10/5, glucose > 11 mmol/L, dextrose at glucose 14–17 mmol/L, effective osmolality = 2×Na + glucose and the 320 mOsm/kg check, adult severity classes, resolution pH ≥ 7.3 and HCO3 ≥ 18. The clinical lead must confirm them against the guideline."
+    "dka": "Children: ISPAD 2022 Clinical Practice Consensus Guidelines ch. 11, Glaser et al., Pediatr Diabetes 2022;23:835-856 — insulin 0.05–0.1 U/kg/h (0.05 may be considered at pH > 7.15), started ≥ 1 h after fluids; potassium: defer while K > 5.5 until urine output documented, start infusion when K < 5.5, defer insulin if K < 3.0; deficit replaced over 24–48 h (checked in search excerpts). Adults: ADA/EASD/JBDS/AACE/DTS consensus, Dhatariya et al., Diabetes Care 2024;47:1257-1275 — DKA: glucose ≥ 200 mg/dL (11.1 mmol/L) or known diabetes, BHB ≥ 3.0 mmol/L, pH < 7.3 and/or HCO3 < 18; resolution BHB < 0.6 mmol/L; glucose every 1–2 h, electrolytes/phosphate/BHB/venous pH every 4 h (checked in search excerpts). NOT verified against the full text in this build (recalled): ISPAD severity cut-offs pH 7.3/7.2/7.1 and HCO3 18/10/5, glucose > 11 mmol/L, dextrose at glucose 14–17 mmol/L, effective osmolality = 2×Na + glucose and the 320 mOsm/kg check, adult severity classes, resolution pH ≥ 7.3 and HCO3 ≥ 18. The clinical lead must confirm them against the guideline.",
+    "urine": "Urine anion gap = UNa + UK − UCl: negative in extrarenal (GI) bicarbonate loss, positive in impaired renal acidification (Batlle, N Engl J Med 1988; Kraut & Madias, Nat Rev Nephrol 2010). Urine Cl in metabolic alkalosis: < 25 mmol/L chloride-responsive, > 40 chloride-resistant (Rose & Post). FENa = (UNa × PCr)/(PNa × UCr) × 100: < 1 % prerenal, > 2 % intrinsic (tubular) injury; FEUrea < 35 % prerenal, useful on diuretics (Carvounis, Kidney Int 2002; Kaplan & Kohn 1992). Cut-offs are recalled from standard references and were not re-checked against the full text in this build; FENa is not interpreted for neonates.",
+    "naCorrection": "Adrogué & Madias, N Engl J Med 2000;342:1581: change in serum Na per litre of infusate = (infusate Na + infusate K − serum Na) / (TBW + 1). The estimate ignores ongoing losses and ADH-driven changes — measure Na every 2–4 h. Infusate electrolyte content: standard product compositions (0.9 % NaCl 154, 3 % NaCl 513, 0.45 % NaCl 77, 0.18 % NaCl 31 mmol/L Na; lactated Ringer 130 Na + 4 K; Plasma-Lyte 140 Na + 5 K; 5 % dextrose 0)."
   },
   "categories": {
     "adult": {
@@ -494,7 +498,44 @@
         1
       ]
     ],
-    "bicarbTarget": 24
+    "bicarbTarget": 24,
+    "infusates": [
+      {
+        "id": "nacl3",
+        "Na": 513,
+        "K": 0
+      },
+      {
+        "id": "nacl09",
+        "Na": 154,
+        "K": 0
+      },
+      {
+        "id": "plasmalyte",
+        "Na": 140,
+        "K": 5
+      },
+      {
+        "id": "lr",
+        "Na": 130,
+        "K": 4
+      },
+      {
+        "id": "nacl045",
+        "Na": 77,
+        "K": 0
+      },
+      {
+        "id": "nacl018",
+        "Na": 31,
+        "K": 0
+      },
+      {
+        "id": "d5w",
+        "Na": 0,
+        "K": 0
+      }
+    ]
   },
   "extended": {
     "hPlus": [
@@ -698,5 +739,13 @@
       "bhbResolved": 0.6
     },
     "effOsmHigh": 320
+  },
+  "urine": {
+    "uagNegative": 0,
+    "clResponsive": 25,
+    "clResistant": 40,
+    "fenaPrerenal": 1,
+    "fenaIntrinsic": 2,
+    "feureaPrerenal": 35
   }
 }

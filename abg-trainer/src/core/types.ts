@@ -61,6 +61,13 @@ export interface AbgInput {
   FMetHb?: number;
   /** Total bilirubin ctBil, µmol/L. */
   bilirubin?: number;
+  /** Plasma creatinine and urine creatinine (µmol/L), urine Na/K/Cl (mmol/L), urine urea (mmol/L). */
+  creatinine?: number;
+  urineCreatinine?: number;
+  urineNa?: number;
+  urineK?: number;
+  urineCl?: number;
+  urineUrea?: number;
   /** Beta-hydroxybutyrate, mmol/L (DKA).
    */
   bhb?: number;
@@ -200,6 +207,8 @@ export interface InterpretationResult {
   deficits: import('./deficits').Deficit[];
   bilirubin?: import('./bilirubin').BiliAssessment;
   dka?: import('./dka').DkaAssessment;
+  urine?: import('./urine').UrineAssessment;
+  naCorrection?: import('./sodiumCorrection').NaCorrection;
   /** Extended assessment: derived values with formulas and norms. */
   metrics: import('./extended').Metric[];
   /** Every analyte against its normal range, for the deviation chart. */

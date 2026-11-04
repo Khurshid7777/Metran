@@ -73,6 +73,17 @@ export const FIELD_GROUPS: { id: string; fields: FieldDef[] }[] = [
     ],
   },
   {
+    id: 'urine',
+    fields: [
+      { name: 'creatinine', unit: 'umol', digits: 0 },
+      { name: 'urineCreatinine', unit: 'umol', digits: 0 },
+      { name: 'urineNa', unit: 'mmol', digits: 0 },
+      { name: 'urineK', unit: 'mmol', digits: 0 },
+      { name: 'urineCl', unit: 'mmol', digits: 0 },
+      { name: 'urineUrea', unit: 'mmol', digits: 0 },
+    ],
+  },
+  {
     id: 'oximetry',
     fields: [
       { name: 'Hb', unit: 'gL', digits: 0 },
