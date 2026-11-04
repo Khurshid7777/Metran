@@ -61,6 +61,9 @@ export interface AbgInput {
   FMetHb?: number;
   /** Total bilirubin ctBil, µmol/L. */
   bilirubin?: number;
+  /** Beta-hydroxybutyrate, mmol/L (DKA).
+   */
+  bhb?: number;
   /** Postnatal age in hours (neonates, for bilirubin and glucose). */
   ageHours?: number;
   /** Neurotoxicity risk factors (AAP 2022): GA < 38 wk, albumin < 30 g/L, haemolysis, sepsis, instability. */
@@ -196,6 +199,7 @@ export interface InterpretationResult {
   workings: import('./workings').Working[];
   deficits: import('./deficits').Deficit[];
   bilirubin?: import('./bilirubin').BiliAssessment;
+  dka?: import('./dka').DkaAssessment;
   /** Extended assessment: derived values with formulas and norms. */
   metrics: import('./extended').Metric[];
   /** Every analyte against its normal range, for the deviation chart. */

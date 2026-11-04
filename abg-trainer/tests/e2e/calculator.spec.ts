@@ -56,3 +56,25 @@ test('нет горизонтальной прокрутки на узком э�
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
 });
+
+test('ДКА: карточка с тяжестью, осмолярностью и предупреждением по калию', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('ageCategory').selectOption('child');
+  await page.getByTestId('sampleType').selectOption('venous');
+  await page.getByTestId('in-pH').fill('7,05');
+  await page.getByTestId('in-pCO2').fill('20');
+  await page.getByTestId('in-HCO3').fill('5');
+  await page.getByTestId('in-Na').fill('132');
+  await page.getByTestId('in-K').fill('2,8');
+  await page.getByTestId('in-glucose').fill('28');
+  await page.getByTestId('in-weightKg').fill('20');
+  await page.getByTestId('calculate').click();
+  const card = page.getByTestId('dka-card');
+  await expect(card).toContainText('Диабетический кетоацидоз');
+  await expect(card).toContainText('тяжёлая');
+  await expect(card).toContainText('292');
+  await expect(card).toContainText('1–2 ед/ч');
+  await expect(page.getByTestId('result')).toContainText('отложите инсулин');
+});

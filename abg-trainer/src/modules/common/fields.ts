@@ -43,6 +43,7 @@ export const FIELD_GROUPS: { id: string; fields: FieldDef[] }[] = [
       { name: 'iCa', unit: 'mmol', digits: 2 },
       { name: 'Mg', unit: 'mmol', digits: 2 },
       { name: 'phosphate', unit: 'mmol', digits: 2 },
+      { name: 'bhb', unit: 'mmol', digits: 1 },
     ],
   },
   {

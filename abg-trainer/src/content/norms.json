@@ -5,7 +5,11 @@
   "_assumed": [
     "categories.preterm.HCO3",
     "categories.preterm.BE",
-    "ventilation.rateLimits"
+    "ventilation.rateLimits",
+    "dka.child.severity",
+    "dka.child.dextrose",
+    "dka.adult.severity",
+    "dka.effOsmHigh"
   ],
   "sources": {
     "acidBase": "Boston rules: Narins & Emmett, Medicine 1980; Berend, Rev Clin Esp 2018 (Winters, metabolic alkalosis 0.7×HCO3+21, respiratory 0.1/0.35, 0.2/0.4). Copenhagen SBE: Schlichtig, Crit Care Med 1998.",
@@ -33,7 +37,8 @@
     "extended": "SBE (Van Slyke) = 0.93 × (HCO3 − 24.4 + 14.83 × (pH − 7.4)) — the equation behind cBase(Ecf) (Siggaard-Andersen; CLSI C46). Expected pH: acute ΔpH = 0.008 × ΔpCO2, chronic 0.003. Corrected HCO3 = HCO3 + (AG − 12) (Wrenn 1990). Expected AG ≈ 0.25 × albumin g/L (Feldman 2005). Strong ion gap: SIDe = HCO3 + albumin × (0.123·pH − 0.631) + Pi × (0.309·pH − 0.469); SIG = SIDa − SIDe (Figge 1992; Kellum 2009). Na−Cl difference 32–40, Cl:Na 0.75–0.79 (Durward 2001). Na corrected for glucose +2.4 per 5.55 mmol/L (Hillier 1999). cCa2+(7.4) = cCa2+ × 10^(−0.24 × (7.4 − pH)) (Radiometer / Siggaard-Andersen). a/A ratio > 0.75 (Gilbert & Keighley 1974). Shunt from the content equation with C(a−v)O2 2.3 mmol/L = 5.15 mL/dL (Radiometer FShunt,e); normal < 10%. Expected PaO2 = 104.2 − 0.27 × age (Sorbini 1968). Dead space Vd/Vt = (PaCO2 − PetCO2)/PaCO2 (Enghoff), normal 0.2–0.35, > 0.6 high risk in ARDS (Nuckton 2002). Temperature: pH(T) = pH − 0.0147 × (T − 37); pCO2(T) = pCO2 × 10^(0.019 × (T − 37)). Bilirubin/albumin ratio (mg/dL per g/dL) for exchange consideration: ≥ 38 wk 8.0 (7.2 with risk factors); 35–37 wk 7.2 (6.8 with risk) — AAP 2004/2022. Oxygen dissociation: Severinghaus 1979 S = 1/(23400/(P³+150P)+1), p50 = 26.86 mmHg; virtual pO2 = pO2 · 10^(0.024(37−T) + 0.40(pH−7.4) + 0.06·log(40/pCO2)) (Kelman 1966); in-vivo p50 from one point = 26.86 · pO2 / P_std(sO2); normal p50 24–29 mmHg. PIO2 = FiO2 × (Patm − 47). FO2Hb = sO2 × (1 − FCOHb − FMetHb). Bicarbonate deficit by HCO3 (Kassirer): 0.5 × weight × (24 − HCO3). Maintenance fluid (Holliday & Segar 1957): 4/2/1 mL/kg/h.",
     "perfusion": "CvO2 = 1.39 × Hb × ScvO2 + 0.003 × pvO2; a–v O2 difference 3–5 mL/dL; O2ER = (CaO2 − CvO2)/CaO2, normal 0.22–0.32; ScvO2 ≥ 70% (Rivers 2001; SSC); shunt Qs/Qt = (CcO2 − CaO2)/(CcO2 − CvO2) (Berggren); DO2 = CO × CaO2 × 10, VO2 = CO × (CaO2 − CvO2) × 10; venous–arterial pCO2 gap > 6 mmHg = low flow (Vallet 2013; Mallat 2016).",
     "ventilation": "Ventilation index VI = RR × PIP × PaCO2 / 1000 (neonatal, Notter); driving pressure = Pplat/PIP − PEEP, > 15 cmH2O associated with mortality (Amato, NEJM 2015); ventilatory ratio = VE × PaCO2 / (PBW × 100 × 37.5), > 2 associated with mortality (Sinha 2019); PBW = 50 + 0.91 × (height − 152.4) (ARDSNet, male formula; female 45.5 + …).",
-    "series": "Na correction speed: rise ≤ 8 mmol/L and fall ≤ 10 mmol/L per 24 h (Adrogué & Madias; European hyponatraemia guideline 2014). Lactate clearance ≥ 10% within 2–6 h (Nguyen 2004; Jones 2010)."
+    "series": "Na correction speed: rise ≤ 8 mmol/L and fall ≤ 10 mmol/L per 24 h (Adrogué & Madias; European hyponatraemia guideline 2014). Lactate clearance ≥ 10% within 2–6 h (Nguyen 2004; Jones 2010).",
+    "dka": "Children: ISPAD 2022 Clinical Practice Consensus Guidelines ch. 11, Glaser et al., Pediatr Diabetes 2022;23:835-856 — insulin 0.05–0.1 U/kg/h (0.05 may be considered at pH > 7.15), started ≥ 1 h after fluids; potassium: defer while K > 5.5 until urine output documented, start infusion when K < 5.5, defer insulin if K < 3.0; deficit replaced over 24–48 h (checked in search excerpts). Adults: ADA/EASD/JBDS/AACE/DTS consensus, Dhatariya et al., Diabetes Care 2024;47:1257-1275 — DKA: glucose ≥ 200 mg/dL (11.1 mmol/L) or known diabetes, BHB ≥ 3.0 mmol/L, pH < 7.3 and/or HCO3 < 18; resolution BHB < 0.6 mmol/L; glucose every 1–2 h, electrolytes/phosphate/BHB/venous pH every 4 h (checked in search excerpts). NOT verified against the full text in this build (recalled): ISPAD severity cut-offs pH 7.3/7.2/7.1 and HCO3 18/10/5, glucose > 11 mmol/L, dextrose at glucose 14–17 mmol/L, effective osmolality = 2×Na + glucose and the 320 mOsm/kg check, adult severity classes, resolution pH ≥ 7.3 and HCO3 ≥ 18. The clinical lead must confirm them against the guideline."
   },
   "categories": {
     "adult": {
@@ -633,5 +638,65 @@
     "naFallMax24h": 10,
     "lactateConcern": 2,
     "lactateClearanceMin": 10
+  },
+  "dka": {
+    "checked": [
+      "child.insulin",
+      "child.potassium",
+      "adult.criteria",
+      "adult.resolutionBHB",
+      "adult.monitoring"
+    ],
+    "recalled": [
+      "child.criteria",
+      "child.severity",
+      "child.dextrose",
+      "effOsm",
+      "adult.severity"
+    ],
+    "child": {
+      "glucose": 11,
+      "pH": 7.3,
+      "HCO3": 18,
+      "severity": {
+        "moderate": {
+          "pH": 7.2,
+          "HCO3": 10
+        },
+        "severe": {
+          "pH": 7.1,
+          "HCO3": 5
+        }
+      },
+      "insulinRate": [
+        0.05,
+        0.1
+      ],
+      "insulinLowRatePH": 7.15,
+      "kDeferInsulin": 3.0,
+      "kDeferK": 5.5,
+      "dextrose": [
+        14,
+        17
+      ]
+    },
+    "adult": {
+      "glucose": 11.1,
+      "bhb": 3.0,
+      "pH": 7.3,
+      "HCO3": 18,
+      "severity": {
+        "moderate": {
+          "pH": 7.25,
+          "HCO3": 15
+        },
+        "severe": {
+          "pH": 7.0,
+          "HCO3": 10
+        }
+      },
+      "bhbResolved": 0.6
+    },
+    "effOsmHigh": 320
   }
 }

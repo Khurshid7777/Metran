@@ -4,6 +4,7 @@ import { anionGapStep, deltaStep } from './anionGap';
 import { compensationStep } from './compensation';
 import { osmolarStep } from './osmolar';
 import { deficits as computeDeficits } from './deficits';
+import { dkaAssessment } from './dka';
 import { labsStep } from './labs';
 import { buildWorkings } from './workings';
 import { extendedMetrics } from './extended';
@@ -130,6 +131,9 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
   });
   flags.push(...ext.flags);
 
+  const dka = dkaAssessment(ctx, ctx.HCO3);
+  flags.push(...dka.flags);
+
   flags.push(...cordFlags(input, norms));
 
   const disorderTypes = disorders.map((d) => d.type);
@@ -170,6 +174,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     metrics: ext.metrics,
     profile: deviationProfile(ctx, ag.agCorr),
     bilirubin: labs.bilirubin,
+    dka: dka.assessment,
     deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis'), disorderTypes.includes('metabolic_acidosis')),
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },
   };

@@ -31,6 +31,7 @@ export const INPUT_RANGES: Record<string, [number, number]> = {
   FCOHb: [0, 60],
   FMetHb: [0, 60],
   bilirubin: [0, 900],
+  bhb: [0, 25],
   ageHours: [0, 720],
   pO2FO2: [20, 700],
   etCO2: [5, 150],

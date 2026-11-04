@@ -46,6 +46,11 @@
         "nameKey": "ref.copenhagen",
         "formula": "ΔpCO₂ = SBE (met. acidosis); ΔpCO₂ = 0.6 × SBE (met. alkalosis); SBE = 0.4 × ΔpCO₂ (chronic resp.)",
         "source": "Schlichtig 1998"
+      },
+      {
+        "nameKey": "ref.effOsm",
+        "formula": "Osm_eff = 2 × Na⁺ + glucose, mmol/kg (urea excluded)",
+        "source": "ISPAD 2022 (formula not verified against the full text)"
       }
     ]
   },

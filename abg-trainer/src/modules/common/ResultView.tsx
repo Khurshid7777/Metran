@@ -84,6 +84,32 @@ function StepCard({ step, workings }: { step: Step; workings: Working[] }) {
   );
 }
 
+export function DkaCard({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const d = result.dka;
+  if (!d) return null;
+  const adult = d.population === 'adult';
+  return (
+    <section className="card dka" aria-labelledby="dka-h" data-testid="dka-card">
+      <h3 id="dka-h">{t('dka.title')}</h3>
+      <p className="disclaimer" role="note">{t('treat.disclaimer')}</p>
+      <dl className="details">
+        <div><dt>{t('dka.severity')}</dt><dd>{t('dka.sev.' + d.severity)}{d.euglycemic ? ' · ' + t('dka.euglycemic') : ''}</dd></div>
+        {d.effOsm !== undefined && <div><dt>{t('dka.effOsm')}</dt><dd>{n(d.effOsm, 0)} {t('unit.mosm')}</dd></div>}
+        {d.insulin && (
+          <div><dt>{t('dka.insulin')}</dt><dd>{n(d.insulin.lo, 2)}–{n(d.insulin.hi, 2)} {t('unit.unitsH')}</dd></div>
+        )}
+      </dl>
+      {d.effOsm !== undefined && <p className="formula">{t('dka.effOsm.formula')}</p>}
+      {d.insulin && <p className="muted">{t('dka.insulin.note', { low: d.insulin.lowRateAllowed ? t('dka.insulin.lowOk') : '' })}</p>}
+      {adult && <p className="muted">{t('dka.adult.note')}</p>}
+      {d.missing.includes('bhb') && <p className="flag flag-info">{t('dka.bhbMissing')}</p>}
+      <p className="muted small">{t('dka.monitoring')}</p>
+      <p className="flag flag-warning" role="note">{t('dka.unverified')}</p>
+    </section>
+  );
+}
+
 export function TreatmentBlock({ result }: { result: InterpretationResult }) {
   const { t, n } = useT();
   const tr = result.treatment;
@@ -214,6 +240,7 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
       {stewart?.status === 'done' && <StewartChart step={stewart} />}
       <BilirubinChart result={result} />
       <Differentials result={result} />
+      {showTreatment && <DkaCard result={result} />}
       {showTreatment && <TreatmentBlock result={result} />}
       {showTreatment && <DeficitsCard result={result} />}
     </div>
