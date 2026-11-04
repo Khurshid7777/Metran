@@ -1290,5 +1290,18 @@
   "editor.export": "Export to JSON",
   "editor.export.hint": "The file can be placed in the project's src/content/cases/ folder (one case per file) — then it ships in the build for all users.",
   "editor.import": "Import: paste JSON",
-  "editor.import.run": "Import"
+  "editor.import.run": "Import",
+  "trainer.source.review": "Review (topics with mistakes)",
+  "review.note": "The case is drawn from topics whose review date has come: the most overdue first.",
+  "review.none": "No topics to review at this level right now. Work through generator cases — topics with mistakes will appear here.",
+  "review.title": "Review plan",
+  "review.intro": "A topic comes back after {days} days following each successful attempt; a mistake sends it back to the start and it is due at once. An attempt counts as successful with a correct conclusion and at least 70 % of the points.",
+  "review.empty": "No data yet: the schedule is built from trainer and exam cases completed after this feature was added.",
+  "review.topic": "Topic",
+  "review.box": "Stage",
+  "review.result": "Correct / attempts",
+  "review.next": "Review",
+  "review.now": "now",
+  "review.unseen": "Not yet seen: {n} topics.",
+  "review.byType": "Accuracy by type of disorder"
 }

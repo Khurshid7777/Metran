@@ -372,3 +372,5 @@ table.values td { font-variant-numeric: tabular-nums; }
 .ed-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .ed-list .actions { margin: 0 0 0 auto; }
 .check { display: block; margin: 6px 0; }
+.review-table tr.due th, .review-table tr.due td { background: var(--warn-soft); }
+.review-table td { white-space: nowrap; }

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { computeKpi, download, exportCsv, exportJson, getAttempts, getExams, stepAccuracy } from '../../storage/records';
 import { useApp } from '../../store';
 import { useT } from '../common/useT';
+import { ReviewCard } from './ReviewCard';
 
 const pct = (v: number | null) => (v === null ? null : Math.round(v * 1000) / 10);
 
@@ -39,6 +40,8 @@ export function Progress() {
             })}
         </ul>
       </section>
+
+      <ReviewCard attempts={attempts} />
 
       <section className="card" aria-labelledby="dyn-h">
         <h3 id="dyn-h">{t('progress.dynamics')}</h3>

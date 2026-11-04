@@ -1291,5 +1291,18 @@
   "editor.export": "JSON ga eksport",
   "editor.export.hint": "Faylni loyihaning src/content/cases/ papkasiga qo‘yish mumkin (har bir holat bitta faylda) — shunda u barcha foydalanuvchilar uchun yig‘ilmaga kiradi.",
   "editor.import": "Import: JSON ni qo‘ying",
-  "editor.import.run": "Import qilish"
+  "editor.import.run": "Import qilish",
+  "trainer.source.review": "Takrorlash (xato bo‘lgan mavzular)",
+  "review.note": "Holat takrorlash muddati kelgan mavzulardan tanlanadi: eng kechiktirilgani birinchi.",
+  "review.none": "Bu darajada hozir takrorlanadigan mavzu yo‘q. Generator holatlarini yeching — xato qilingan mavzular shu yerda paydo bo‘ladi.",
+  "review.title": "Takrorlash rejasi",
+  "review.intro": "Har bir muvaffaqiyatli urinishdan keyin mavzu {days} kundan so‘ng qaytadi; xato uni boshiga qaytaradi va u darhol takrorlashga chiqadi. To‘g‘ri xulosa va kamida 70 % ball bilan urinish muvaffaqiyatli hisoblanadi.",
+  "review.empty": "Hozircha ma’lumot yo‘q: jadval bu funksiya qo‘shilgandan keyin yechilgan trenajyor va imtihon holatlaridan tuziladi.",
+  "review.topic": "Mavzu",
+  "review.box": "Bosqich",
+  "review.result": "To‘g‘ri / urinishlar",
+  "review.next": "Takrorlash",
+  "review.now": "hozir",
+  "review.unseen": "Hali uchramagan: {n} mavzu.",
+  "review.byType": "Buzilish turlari bo‘yicha aniqlik"
 }

@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState } from 'react';
-import { generateForLevel, rng, type CaseData } from '../../core/generator';
+import { generateCase, generateForLevel, rng, SCENARIOS, type CaseData } from '../../core/generator';
 import { interpret } from '../../core/interpret';
+import { dueTopics, reviewState } from '../../core/spaced';
 import type { InterpretationResult } from '../../core/types';
-import { addAttempt, type AnswerRecord } from '../../storage/records';
+import { addAttempt, getAttempts, type AnswerRecord } from '../../storage/records';
 import { coreSettings, useApp } from '../../store';
 import { bank } from '../common/bank';
 import { CaseCard } from '../common/CaseCard';
@@ -12,9 +13,10 @@ import { useT } from '../common/useT';
 import { buildAttempt, buildQuestions, isCorrect, scoreAnswer, type Question } from './questions';
 
 type Phase = 'setup' | 'clinic' | 'steps' | 'debrief';
-type Source = 'generator' | 'bank';
+type Source = 'generator' | 'bank' | 'review';
 
 export function pickCase(level: number, source: Source, seed: number): CaseData | null {
+  if (source === 'review') return null;
   if (source === 'bank') {
     const pool = bank().accepted.filter((c) => c.level <= level);
     if (pool.length) return pool[Math.floor(rng(seed)() * pool.length)];
@@ -37,12 +39,19 @@ export function Trainer() {
   const [answers, setAnswers] = useState<AnswerRecord[]>([]);
   const start = useRef(0);
 
+  // Scenarios that are due for repetition at this level, most overdue first
+  const due = useMemo(
+    () => dueTopics(reviewState(getAttempts()), Date.now(), (id) => (SCENARIOS.find((x) => x.id === id)?.level ?? 99) <= level),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [level, phase],
+  );
+
   const questions: Question[] = useMemo(() => (c && result ? buildQuestions(c, result, level) : []), [c, result, level]);
   const q = questions[idx];
 
   function newCase() {
     const seed = (Date.now() ^ Math.floor(Math.random() * 1e9)) >>> 0;
-    const next = pickCase(level, source, seed);
+    const next = source === 'review' ? (due[0] ? generateCase(due[0].id, seed) : null) : pickCase(level, source, seed);
     if (!next) return;
     const s = { ...coreSettings(settings), advanced: level >= 3 || settings.advanced };
     setCase(next);
@@ -98,14 +107,16 @@ export function Trainer() {
           <fieldset>
             <legend>{t('trainer.source')}</legend>
             <div className="options">
-              {(['generator', 'bank'] as Source[]).map((s) => (
+              {(['generator', 'bank', 'review'] as Source[]).map((s) => (
                 <label key={s} className={'option' + (source === s ? ' selected' : '')}>
-                  <input type="radio" name="source" checked={source === s} onChange={() => setSource(s)} /> {t('trainer.source.' + s)}
+                  <input type="radio" name="source" checked={source === s} onChange={() => setSource(s)} data-testid={'source-' + s} /> {t('trainer.source.' + s)}
+                  {s === 'review' && <span className="badge" data-testid="review-count"> {due.length}</span>}
                 </label>
               ))}
             </div>
+            {source === 'review' && <p className="muted small" data-testid="review-note">{t(due.length ? 'review.note' : 'review.none')}</p>}
           </fieldset>
-          <button className="primary" onClick={newCase} data-testid="trainer-start">{t('trainer.start')}</button>
+          <button className="primary" onClick={newCase} disabled={source === 'review' && due.length === 0} data-testid="trainer-start">{t('trainer.start')}</button>
         </div>
       </div>
     );

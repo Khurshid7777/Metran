@@ -18,6 +18,9 @@ test('тренажёр → дебрифинг', async ({ page }) => {
   }
   await expect(page.getByTestId('debrief')).toBeVisible();
   await expect(page.getByTestId('debrief')).toContainText('Правильное заключение');
+  const saved = await page.evaluate(() => JSON.parse(window.localStorage.getItem('abg-trainer:attempts') ?? '[]'));
+  expect(saved[0].scenarioId).toBeTruthy();
   await page.getByTestId('nav-progress').click();
   await expect(page.locator('.bars li').first()).toBeVisible();
+  await expect(page.getByTestId('review-plan')).toBeVisible();
 });

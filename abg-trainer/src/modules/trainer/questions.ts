@@ -202,6 +202,7 @@ export function buildAttempt(
   return {
     ...base,
     caseId: c.id,
+    scenarioId: c.scenarioId,
     seed: c.seed,
     answers,
     hintsUsed: answers.filter((a) => a.hint).length,

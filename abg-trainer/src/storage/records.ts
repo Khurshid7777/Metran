@@ -25,6 +25,8 @@ export interface AttemptRecord {
   mode: 'trainer' | 'exam';
   level: number;
   caseId: string;
+  /** Generator scenario of the case; drives the spaced-repetition schedule. */
+  scenarioId?: string;
   seed?: number;
   examId?: string;
   answers: AnswerRecord[];
