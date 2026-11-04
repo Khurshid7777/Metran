@@ -1110,5 +1110,14 @@
   "ref.tbw": "Organizmdagi umumiy suv",
   "ref.bicarb": "Bikarbonat defitsiti (BE boʻyicha)",
   "ref.lactateClearance": "Laktat klirensi",
-  "chart.davenport.x": "pH"
+  "chart.davenport.x": "pH",
+  "paste.title": "ABL dan qo‘yish (nusxalangan matn)",
+  "paste.hint": "ABL800 ekrani yoki chop etilgan natijadan nusxa oling va shu yerga qo‘ying — maydonlar o‘zi to‘ldiriladi. Bemor ma’lumotlari (F.I.Sh., ID) kerak emas va saqlanmaydi.",
+  "paste.apply": "Aniqlash va to‘ldirish",
+  "paste.clear": "Tozalash",
+  "paste.none": "Birorta ko‘rsatkich topilmadi. pH, pCO₂ va boshqalar bor blok nusxalanganini tekshiring.",
+  "paste.found": "Aniqlangan ko‘rsatkichlar: {n} ({list}).",
+  "paste.stdOnly": "Faqat standart bikarbonat cHCO₃⁻(P,st) topildi — Boston qoidalari uchun yaramaydi. Haqiqiy cHCO₃⁻(P) ni qo‘lda kiriting yoki bo‘sh qoldiring — u hisoblanadi.",
+  "paste.beBlood": "BE cBase(Ecf) o‘rniga cBase(B) dan olindi — ilovada SBE hujayradan tashqari suyuqlik bo‘yicha hisoblanadi, qiymatni tekshiring.",
+  "paste.sampleReminder": "Namuna turi va bemor yoshi matndan aniqlanmaydi — ularni qo‘lda tanlang."
 }

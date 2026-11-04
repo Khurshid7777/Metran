@@ -9,6 +9,7 @@ import { ResultView } from '../common/ResultView';
 import { useT } from '../common/useT';
 import { buildInput, unitOf } from './buildInput';
 import { AGES, SAMPLES, useDraft, type Units } from './draft';
+import { PasteAbl } from './PasteAbl';
 import { QuickEntry } from './QuickEntry';
 import { AddToSeriesButton, SeriesCard } from './SeriesCard';
 import { useSeries } from './seriesStore';
@@ -48,6 +49,7 @@ export function Calculator() {
           ))}
         </div>
       </div>
+      <PasteAbl />
       {mode === 'quick' ? <QuickEntry onDetails={() => setMode('full')} /> : <FullForm />}
       <SeriesCard />
     </div>

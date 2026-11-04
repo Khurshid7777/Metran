@@ -1109,5 +1109,14 @@
   "ref.tbw": "Total body water",
   "ref.bicarb": "Bicarbonate deficit (by BE)",
   "ref.lactateClearance": "Lactate clearance",
-  "chart.davenport.x": "pH"
+  "chart.davenport.x": "pH",
+  "paste.title": "Paste from ABL (copied text)",
+  "paste.hint": "Copy the result from the ABL800 screen or printout and paste it here — the fields fill in automatically. Patient data (name, ID) is not needed and is not stored.",
+  "paste.apply": "Recognise and fill",
+  "paste.clear": "Clear",
+  "paste.none": "No parameters found. Make sure the block with pH, pCO₂ etc. was copied.",
+  "paste.found": "Parameters recognised: {n} ({list}).",
+  "paste.stdOnly": "Only the standard bicarbonate cHCO₃⁻(P,st) was found — it is not suitable for the Boston rules. Enter the actual cHCO₃⁻(P) manually or leave it empty to have it calculated.",
+  "paste.beBlood": "BE was taken from cBase(B) rather than cBase(Ecf) — the app's SBE uses extracellular fluid, please check the value.",
+  "paste.sampleReminder": "Sample type and patient age cannot be read from the text — choose them manually."
 }
