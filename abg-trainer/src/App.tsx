@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { LANGS, type Lang } from './i18n';
+import { Editor } from './modules/editor/Editor';
 import { Calculator } from './modules/calculator/Calculator';
 import { Exam } from './modules/exam/Exam';
 import { Progress } from './modules/progress/Progress';
@@ -76,6 +77,7 @@ export function App() {
         {screen === 'progress' && <Progress />}
         {screen === 'settings' && <Settings />}
         {screen === 'verify' && <Verify />}
+        {screen === 'editor' && <Editor />}
       </main>
       <footer className="muted small">{t('app.footer')}</footer>
     </>

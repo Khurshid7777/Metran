@@ -143,6 +143,9 @@ export function Settings() {
       <section className="card">
         <h3>{t('bank.title')}</h3>
         <p>{t('bank.summary', { ok: bank().accepted.length, bad: review.length })}</p>
+        <div className="actions">
+          <button onClick={() => go('editor')} data-testid="open-editor">{t('editor.open')}</button>
+        </div>
         {review.length > 0 && (
           <ul className="flags">
             {review.map((r) => (

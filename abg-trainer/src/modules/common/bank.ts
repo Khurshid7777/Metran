@@ -1,6 +1,7 @@
 import { interpret } from '../../core/interpret';
 import { GENERATOR_SETTINGS, matchesExpected, type CaseData, type Expected, type Localized } from '../../core/generator';
 import type { AbgInput, AgeCategory, SampleType } from '../../core/types';
+import { getCustomCases } from '../../storage/cases';
 
 export interface BankCase {
   id: string;
@@ -17,10 +18,15 @@ export interface BankCase {
   reviewedBy: string;
   reviewedAt: string;
   demo?: boolean;
+  /** Written in the in-app editor (stored in this browser). */
+  local?: boolean;
 }
 
 const modules = import.meta.glob('../../content/cases/*.json', { eager: true, import: 'default' }) as Record<string, BankCase>;
 export const RAW_BANK: BankCase[] = Object.values(modules).sort((a, b) => a.id.localeCompare(b.id));
+
+/** Built-in cases followed by the ones written in the editor. */
+export const allCases = (): BankCase[] => [...RAW_BANK, ...getCustomCases()];
 
 export function bankToCase(b: BankCase): CaseData {
   const input: AbgInput = {
@@ -38,7 +44,7 @@ export function bankToCase(b: BankCase): CaseData {
 export function validateBank(): { accepted: CaseData[]; review: { id: string; expected: Expected; got: Expected }[] } {
   const accepted: CaseData[] = [];
   const review: { id: string; expected: Expected; got: Expected }[] = [];
-  for (const b of RAW_BANK) {
+  for (const b of allCases()) {
     const c = bankToCase(b);
     const r = interpret(c.input, GENERATOR_SETTINGS);
     if (matchesExpected(r, c.expected)) accepted.push(c);
@@ -48,6 +54,11 @@ export function validateBank(): { accepted: CaseData[]; review: { id: string; ex
 }
 
 let cache: ReturnType<typeof validateBank> | null = null;
+/** Call after the custom cases changed. */
+export function invalidateBank(): void {
+  cache = null;
+}
+
 export function bank() {
   return (cache ??= validateBank());
 }

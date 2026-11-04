@@ -368,3 +368,7 @@ table.values td { font-variant-numeric: tabular-nums; }
 .paste-abl textarea { width: 100%; box-sizing: border-box; font-family: ui-monospace, monospace; font-size: 0.85rem; margin: 8px 0; }
 .preanalytic summary { cursor: pointer; font-weight: 600; }
 .hk-steps li { margin: 6px 0; }
+.ed-list { list-style: none; padding: 0; }
+.ed-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.ed-list .actions { margin: 0 0 0 auto; }
+.check { display: block; margin: 6px 0; }
