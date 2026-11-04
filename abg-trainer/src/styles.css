@@ -366,3 +366,5 @@ table.values td { font-variant-numeric: tabular-nums; }
 
 .paste-abl summary { cursor: pointer; font-weight: 600; }
 .paste-abl textarea { width: 100%; box-sizing: border-box; font-family: ui-monospace, monospace; font-size: 0.85rem; margin: 8px 0; }
+.preanalytic summary { cursor: pointer; font-weight: 600; }
+.hk-steps li { margin: 6px 0; }

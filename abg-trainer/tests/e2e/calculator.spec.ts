@@ -98,3 +98,24 @@ test('моча и коррекция Na: карточки появляются �
   await expect(page.getByTestId('na-correction')).toContainText('NaCl 3 %');
   await expect(page.getByTestId('na-correction')).toContainText('не повышает Na⁺');
 });
+
+test('гиперкалиемия: карточка с дозами и чек-лист пробы', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.locator('[data-testid="preanalytic"] summary').click();
+  await expect(page.getByTestId('preanalytic')).toContainText('пузырьки');
+  await page.getByTestId('ageCategory').selectOption('child');
+  await page.getByTestId('sampleType').selectOption('venous');
+  await page.getByTestId('in-pH').fill('7,41');
+  await page.getByTestId('in-pCO2').fill('40');
+  await page.getByTestId('in-HCO3').fill('25');
+  await page.getByTestId('in-K').fill('6,8');
+  await page.getByTestId('in-weightKg').fill('8');
+  await page.getByTestId('calculate').click();
+  const card = page.getByTestId('hyperk-card');
+  await expect(card).toContainText('Тяжёлая');
+  await expect(card).toContainText('0,8 ед');
+  await expect(card).toContainText('40 мл');
+  await expect(page.getByTestId('result')).toContainText('возможен гемолиз');
+});

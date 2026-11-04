@@ -7,7 +7,9 @@ import { deficits as computeDeficits } from './deficits';
 import { dkaAssessment } from './dka';
 import { sodiumCorrection } from './sodiumCorrection';
 import { urineAssessment } from './urine';
+import { hyperKPlan } from './hyperK';
 import { labsStep } from './labs';
+import { preanalyticFlags } from './preanalytic';
 import { buildWorkings } from './workings';
 import { extendedMetrics } from './extended';
 import { deviationProfile } from './profile';
@@ -139,6 +141,8 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
   const urine = urineAssessment(ctx, disorders.map((d) => d.type), acidosisType);
   flags.push(...urine.flags);
 
+  flags.push(...preanalyticFlags(ctx, oxy.step.details.PAO2 as number | undefined));
+
   flags.push(...cordFlags(input, norms));
 
   const disorderTypes = disorders.map((d) => d.type);
@@ -181,6 +185,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     bilirubin: labs.bilirubin,
     dka: dka.assessment,
     urine: urine.assessment,
+    hyperK: hyperKPlan(ctx),
     naCorrection: sodiumCorrection(ctx),
     deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis'), disorderTypes.includes('metabolic_acidosis')),
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },

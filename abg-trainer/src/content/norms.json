@@ -11,7 +11,12 @@
     "dka.adult.severity",
     "dka.effOsmHigh",
     "urine",
-    "deficits.infusates"
+    "deficits.infusates",
+    "hyperK.insulin.adult",
+    "hyperK.salbutamolMg.adult",
+    "hyperK.pseudo",
+    "hyperK.air",
+    "hyperK.delay"
   ],
   "sources": {
     "acidBase": "Boston rules: Narins & Emmett, Medicine 1980; Berend, Rev Clin Esp 2018 (Winters, metabolic alkalosis 0.7×HCO3+21, respiratory 0.1/0.35, 0.2/0.4). Copenhagen SBE: Schlichtig, Crit Care Med 1998.",
@@ -42,7 +47,9 @@
     "series": "Na correction speed: rise ≤ 8 mmol/L and fall ≤ 10 mmol/L per 24 h (Adrogué & Madias; European hyponatraemia guideline 2014). Lactate clearance ≥ 10% within 2–6 h (Nguyen 2004; Jones 2010).",
     "dka": "Children: ISPAD 2022 Clinical Practice Consensus Guidelines ch. 11, Glaser et al., Pediatr Diabetes 2022;23:835-856 — insulin 0.05–0.1 U/kg/h (0.05 may be considered at pH > 7.15), started ≥ 1 h after fluids; potassium: defer while K > 5.5 until urine output documented, start infusion when K < 5.5, defer insulin if K < 3.0; deficit replaced over 24–48 h (checked in search excerpts). Adults: ADA/EASD/JBDS/AACE/DTS consensus, Dhatariya et al., Diabetes Care 2024;47:1257-1275 — DKA: glucose ≥ 200 mg/dL (11.1 mmol/L) or known diabetes, BHB ≥ 3.0 mmol/L, pH < 7.3 and/or HCO3 < 18; resolution BHB < 0.6 mmol/L; glucose every 1–2 h, electrolytes/phosphate/BHB/venous pH every 4 h (checked in search excerpts). NOT verified against the full text in this build (recalled): ISPAD severity cut-offs pH 7.3/7.2/7.1 and HCO3 18/10/5, glucose > 11 mmol/L, dextrose at glucose 14–17 mmol/L, effective osmolality = 2×Na + glucose and the 320 mOsm/kg check, adult severity classes, resolution pH ≥ 7.3 and HCO3 ≥ 18. The clinical lead must confirm them against the guideline.",
     "urine": "Urine anion gap = UNa + UK − UCl: negative in extrarenal (GI) bicarbonate loss, positive in impaired renal acidification (Batlle, N Engl J Med 1988; Kraut & Madias, Nat Rev Nephrol 2010). Urine Cl in metabolic alkalosis: < 25 mmol/L chloride-responsive, > 40 chloride-resistant (Rose & Post). FENa = (UNa × PCr)/(PNa × UCr) × 100: < 1 % prerenal, > 2 % intrinsic (tubular) injury; FEUrea < 35 % prerenal, useful on diuretics (Carvounis, Kidney Int 2002; Kaplan & Kohn 1992). Cut-offs are recalled from standard references and were not re-checked against the full text in this build; FENa is not interpreted for neonates.",
-    "naCorrection": "Adrogué & Madias, N Engl J Med 2000;342:1581: change in serum Na per litre of infusate = (infusate Na + infusate K − serum Na) / (TBW + 1). The estimate ignores ongoing losses and ADH-driven changes — measure Na every 2–4 h. Infusate electrolyte content: standard product compositions (0.9 % NaCl 154, 3 % NaCl 513, 0.45 % NaCl 77, 0.18 % NaCl 31 mmol/L Na; lactated Ringer 130 Na + 4 K; Plasma-Lyte 140 Na + 5 K; 5 % dextrose 0)."
+    "naCorrection": "Adrogué & Madias, N Engl J Med 2000;342:1581: change in serum Na per litre of infusate = (infusate Na + infusate K − serum Na) / (TBW + 1). The estimate ignores ongoing losses and ADH-driven changes — measure Na every 2–4 h. Infusate electrolyte content: standard product compositions (0.9 % NaCl 154, 3 % NaCl 513, 0.45 % NaCl 77, 0.18 % NaCl 31 mmol/L Na; lactated Ringer 130 Na + 4 K; Plasma-Lyte 140 Na + 5 K; 5 % dextrose 0).",
+    "hyperK": "Severity: mild 5.5–5.9, moderate 6.0–6.4, severe ≥ 6.5 mmol/L (ERC classification used by the UK Kidney Association / Renal Association hyperkalaemia guideline, 2020; checked in search excerpts). Children: calcium gluconate 10 % 0.5 mL/kg (max 20 mL) over ~10 min; regular insulin 0.1 U/kg (max 10 U) with glucose 0.5 g/kg (10 % dextrose 5 mL/kg) over 30 min, glucose every 30 min; nebulised salbutamol 2.5 mg (< 10 kg) or 5 mg (≥ 10 kg) — doses agree across several paediatric hospital guidelines (RCH Melbourne, PCH Perth, Birmingham Women's and Children's), but local protocols differ on glucose and salbutamol (excerpts). Adults: insulin 10 U with 25 g glucose and nebulised salbutamol 10–20 mg are recalled from the UKKA guideline and were not checked against the full text; the 2023 UKKA draft changes the IV calcium recommendation (10 mL calcium chloride 10 % over 5 min) — follow the local protocol. Calcium doses reuse norms.labs.iCa. Not applied to neonates (different thresholds).",
+    "preanalytic": "Sample handling: CLSI C46 (Blood gas and pH analysis and related measurements) and the Radiometer ABL800 FLEX Reference Manual — balanced heparin, expel air bubbles, mix, analyse within 30 min at room temperature; recalled, not checked against the full text. Plausibility rules: pO2 cannot exceed the alveolar PO2 (FiO2 × (Patm − 47) − pCO2/0.8); isolated hyperkalaemia without acidosis suggests haemolysis; low glucose with high lactate and K suggests in-vitro metabolism after a delay."
   },
   "categories": {
     "adult": {
@@ -747,5 +754,48 @@
     "fenaPrerenal": 1,
     "fenaIntrinsic": 2,
     "feureaPrerenal": 35
+  },
+  "hyperK": {
+    "insulin": {
+      "child": {
+        "unitsKg": 0.1,
+        "maxUnits": 10,
+        "glucoseGKg": 0.5,
+        "dextrose10MlKg": 5
+      },
+      "adult": {
+        "units": 10,
+        "glucoseG": 25
+      }
+    },
+    "salbutamolMg": {
+      "child": [
+        [
+          10,
+          2.5
+        ],
+        [
+          999,
+          5
+        ]
+      ],
+      "adult": [
+        10,
+        20
+      ]
+    },
+    "glucoseCheckMin": 30,
+    "pseudo": {
+      "K": 6.0,
+      "pHMin": 7.35,
+      "HCO3Min": 22
+    },
+    "air": {
+      "margin": 10
+    },
+    "delay": {
+      "glucose": 2.5,
+      "lactate": 4
+    }
   }
 }

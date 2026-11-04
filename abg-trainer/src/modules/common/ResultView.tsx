@@ -161,6 +161,40 @@ export function NaCorrectionCard({ result }: { result: InterpretationResult }) {
   );
 }
 
+export function HyperKCard({ result }: { result: InterpretationResult }) {
+  const { t, n } = useT();
+  const h = result.hyperK;
+  if (!h) return null;
+  const range = (a: [number, number], digits = 1) => (a[0] === a[1] ? n(a[0], digits) : `${n(a[0], digits)}–${n(a[1], digits)}`);
+  return (
+    <section className="card hyperk" aria-labelledby="hk-h" data-testid="hyperk-card">
+      <h3 id="hk-h">{t('hk.title')}</h3>
+      <p className="disclaimer" role="note">{t('treat.disclaimer')}</p>
+      <p><strong>{t('hk.sev.' + h.severity)}</strong></p>
+      <ol className="hk-steps">
+        <li>{t('hk.step.ecg')}</li>
+        {h.shift && h.severity === 'severe' && <li>{t('hk.step.calciumSevere')}</li>}
+        {h.shift && h.needsWeight && <li className="flag flag-info">{t('hk.needsWeight')}</li>}
+        {h.shift && !h.needsWeight && (
+          <>
+            <li>{t('hk.step.calcium', { ml: range(h.calciumMl) })}</li>
+            <li>
+              {h.perKg
+                ? t('hk.step.insulinPed', { u: n(h.insulinUnits, 1), g: n(h.glucoseG, 1), ml: n(h.dextrose10Ml, 0) })
+                : t('hk.step.insulinAdult', { u: n(h.insulinUnits, 0), g: n(h.glucoseG, 0) })}
+            </li>
+            <li>{t('hk.step.salbutamol', { mg: range(h.salbutamolMg) })}</li>
+            <li>{t('hk.step.glucose', { min: h.glucoseCheckMin })}</li>
+          </>
+        )}
+        <li>{t('hk.step.cause')}</li>
+        {h.shift && <li>{t('hk.step.eliminate')}</li>}
+      </ol>
+      <p className="flag flag-warning" role="note">{t('hk.unverified')}</p>
+    </section>
+  );
+}
+
 export function TreatmentBlock({ result }: { result: InterpretationResult }) {
   const { t, n } = useT();
   const tr = result.treatment;
@@ -294,6 +328,7 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
       {showTreatment && <DkaCard result={result} />}
       <UrineCard result={result} />
       {showTreatment && <NaCorrectionCard result={result} />}
+      {showTreatment && <HyperKCard result={result} />}
       {showTreatment && <TreatmentBlock result={result} />}
       {showTreatment && <DeficitsCard result={result} />}
     </div>

@@ -208,6 +208,7 @@ export interface InterpretationResult {
   bilirubin?: import('./bilirubin').BiliAssessment;
   dka?: import('./dka').DkaAssessment;
   urine?: import('./urine').UrineAssessment;
+  hyperK?: import('./hyperK').HyperKPlan;
   naCorrection?: import('./sodiumCorrection').NaCorrection;
   /** Extended assessment: derived values with formulas and norms. */
   metrics: import('./extended').Metric[];

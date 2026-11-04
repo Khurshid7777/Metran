@@ -11,6 +11,7 @@ import { useT } from '../common/useT';
 import { buildInput, unitOf } from './buildInput';
 import { AGES, SAMPLES, useDraft, type Units } from './draft';
 import { PasteAbl } from './PasteAbl';
+import { Preanalytic } from './Preanalytic';
 import { QuickEntry } from './QuickEntry';
 import { AddToSeriesButton, SeriesCard } from './SeriesCard';
 import { useSeries } from './seriesStore';
@@ -51,6 +52,7 @@ export function Calculator() {
         </div>
       </div>
       <PasteAbl />
+      <Preanalytic />
       {mode === 'quick' ? <QuickEntry onDetails={() => setMode('full')} /> : <FullForm />}
       <SeriesCard />
     </div>
