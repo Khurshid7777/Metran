@@ -65,3 +65,15 @@ test('отчёт: скачивание содержит значения, зак
   expect(html).toContain('<details open');
   expect(html).not.toContain('<button');
 });
+
+test('быстрый режим: кнопка «Пример» заполняет поля и сразу считает', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-quick').click();
+  await page.getByTestId('q-example').click();
+  await expect(page.getByTestId('q-in-pH')).toHaveValue('7.33');
+  await expect(page.getByTestId('q-result')).toContainText('метаболический ацидоз');
+  // тот же пример переносится в подробный режим
+  await page.getByTestId('q-details').click();
+  await expect(page.getByTestId('in-HCO3')).toHaveValue('18');
+});

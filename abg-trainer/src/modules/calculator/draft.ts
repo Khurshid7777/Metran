@@ -6,6 +6,9 @@ import { load, save } from '../../storage';
 export const SAMPLES: SampleType[] = ['arterial', 'venous', 'capillary', 'cord_artery', 'cord_vein'];
 export const AGES: AgeCategory[] = ['preterm', 'term_neonate', 'child', 'adult'];
 
+/** Example for the quick form: only the fields shown there, a metabolic acidosis with a raised anion gap. */
+export const QUICK_EXAMPLE: Record<string, string> = { pH: '7.33', pCO2: '35', pO2: '85', BE: '-7', HCO3: '18', K: '4.2', Na: '140', Cl: '110', glucose: '6', lactate: '3.1' };
+
 export type Units = { gas: UnitId; albumin: UnitId; glucose: UnitId; urea: UnitId };
 export type VentMode = 'none' | 'conventional' | 'hfo';
 

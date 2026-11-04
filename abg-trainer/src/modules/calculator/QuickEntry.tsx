@@ -6,7 +6,7 @@ import { ReportButtons } from '../common/Report';
 import { FlagList, SummaryText } from '../common/ResultView';
 import { useT } from '../common/useT';
 import { buildInput } from './buildInput';
-import { AGES, useDraft } from './draft';
+import { AGES, QUICK_EXAMPLE, useDraft } from './draft';
 import { AddToSeriesButton } from './SeriesCard';
 import { useSeries } from './seriesStore';
 
@@ -52,9 +52,17 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
 
   function run(e?: React.FormEvent) {
     e?.preventDefault();
-    const r = buildInput(d);
+    const r = buildInput(useDraft.getState());
     setBad(r.bad);
     setResult(r.input ? interpret(r.input, coreSettings(settings)) : null);
+  }
+
+  function example() {
+    d.setValues(QUICK_EXAMPLE);
+    d.setAge('adult');
+    d.setSample('arterial');
+    // the store is updated synchronously, so the result can be computed at once
+    run();
   }
 
   // Enter moves to the next field; on the last field it runs the interpretation.
@@ -147,6 +155,7 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
         <p className="muted small">{t('quick.hco3Hint')}</p>
         <div className="actions">
           <button type="submit" className="primary" data-testid="q-run">{t('calc.calculate')}</button>
+          <button type="button" onClick={example} data-testid="q-example">{t('calc.example')}</button>
           <button type="button" onClick={() => { d.reset(); setResult(null); setBad([]); }} data-testid="q-new">{t('quick.new')}</button>
         </div>
       </form>
