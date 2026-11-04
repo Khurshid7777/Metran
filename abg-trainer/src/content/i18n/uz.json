@@ -1119,5 +1119,12 @@
   "paste.found": "Aniqlangan ko‘rsatkichlar: {n} ({list}).",
   "paste.stdOnly": "Faqat standart bikarbonat cHCO₃⁻(P,st) topildi — Boston qoidalari uchun yaramaydi. Haqiqiy cHCO₃⁻(P) ni qo‘lda kiriting yoki bo‘sh qoldiring — u hisoblanadi.",
   "paste.beBlood": "BE cBase(Ecf) o‘rniga cBase(B) dan olindi — ilovada SBE hujayradan tashqari suyuqlik bo‘yicha hisoblanadi, qiymatni tekshiring.",
-  "paste.sampleReminder": "Namuna turi va bemor yoshi matndan aniqlanmaydi — ularni qo‘lda tanlang."
+  "paste.sampleReminder": "Namuna turi va bemor yoshi matndan aniqlanmaydi — ularni qo‘lda tanlang.",
+  "report.title": "Hisobot: kislota-asos holati",
+  "report.generated": "{when} da shakllantirildi. Bemor ma’lumotlari (F.I.Sh., ID) kiritilmaydi — chop etishda qo‘lda yozing.",
+  "report.inputs": "Kiritilgan ko‘rsatkichlar",
+  "report.print": "Hisobotni chop etish",
+  "report.download": "Hisobotni yuklab olish (HTML)",
+  "report.saved": "Hisobot saqlandi. Faylni brauzerda oching va chop eting (Ctrl+P).",
+  "report.printFail": "Chop etish oynasini ochib bo‘lmadi. Hisobotni yuklab oling va brauzerdan chop eting."
 }

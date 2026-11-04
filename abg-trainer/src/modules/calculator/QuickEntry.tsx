@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { interpret } from '../../core/interpret';
 import type { AbgInput, InterpretationResult, SampleType } from '../../core/types';
 import { coreSettings, useApp } from '../../store';
+import { ReportButtons } from '../common/Report';
 import { FlagList, SummaryText } from '../common/ResultView';
 import { useT } from '../common/useT';
 import { buildInput } from './buildInput';
@@ -159,6 +160,7 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
           <div className="actions">
             <button className="primary" onClick={onDetails} data-testid="q-details">{t('quick.details')}</button>
             <AddToSeriesButton onAdd={() => { const r = buildInput(d); if (r.input) addSeries(r.input); }} />
+            <ReportButtons result={result} input={buildInput(d).input} />
           </div>
         </section>
       )}

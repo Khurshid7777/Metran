@@ -1118,5 +1118,12 @@
   "paste.found": "Parameters recognised: {n} ({list}).",
   "paste.stdOnly": "Only the standard bicarbonate cHCO₃⁻(P,st) was found — it is not suitable for the Boston rules. Enter the actual cHCO₃⁻(P) manually or leave it empty to have it calculated.",
   "paste.beBlood": "BE was taken from cBase(B) rather than cBase(Ecf) — the app's SBE uses extracellular fluid, please check the value.",
-  "paste.sampleReminder": "Sample type and patient age cannot be read from the text — choose them manually."
+  "paste.sampleReminder": "Sample type and patient age cannot be read from the text — choose them manually.",
+  "report.title": "Report: acid–base status",
+  "report.generated": "Generated {when}. No patient identifiers are included — add them by hand when printing.",
+  "report.inputs": "Entered values",
+  "report.print": "Print report",
+  "report.download": "Download report (HTML)",
+  "report.saved": "Report saved. Open the file in a browser and print it (Ctrl+P).",
+  "report.printFail": "Could not open the print dialog. Download the report and print it from the browser."
 }

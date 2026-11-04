@@ -5,6 +5,7 @@ import type { AgeCategory, InterpretationResult, SampleType } from '../../core/t
 import { coreSettings, useApp } from '../../store';
 import { load, save } from '../../storage';
 import { FIELD_GROUPS } from '../common/fields';
+import { ReportButtons } from '../common/Report';
 import { ResultView } from '../common/ResultView';
 import { useT } from '../common/useT';
 import { buildInput, unitOf } from './buildInput';
@@ -220,6 +221,7 @@ function FullForm() {
         <>
           <div className="actions">
             <AddToSeriesButton onAdd={() => { const r = buildInput(d); if (r.input) addSeries(r.input); }} />
+            <ReportButtons result={result} input={buildInput(d).input} />
           </div>
           <ResultView result={result} />
         </>

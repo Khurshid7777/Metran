@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 
 test('быстрый ввод: Enter по полям, обязательный тип пробы, переход к подробному разбору', async ({ page }) => {
   await page.goto('/');
@@ -42,4 +43,25 @@ test('вставка текста с ABL800 заполняет поля и сч�
   await page.getByTestId('q-sample-venous').click();
   await page.getByTestId('q-run').click();
   await expect(page.getByTestId('q-result')).toContainText('метаболический алкалоз');
+});
+
+test('отчёт: скачивание содержит значения, заключение и графики', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-quick').click();
+  await page.getByTestId('q-age-adult').click();
+  await page.getByTestId('q-sample-venous').click();
+  await page.getByTestId('q-in-pH').fill('7.32');
+  await page.getByTestId('q-in-pCO2').fill('32');
+  await page.getByTestId('q-in-HCO3').fill('16');
+  await page.getByTestId('q-run').click();
+  const dl = page.waitForEvent('download');
+  await page.getByTestId('report-download').click();
+  const file = await (await dl).path();
+  const html = readFileSync(file!, 'utf8');
+  expect(html).toContain('Отчёт: кислотно-основное состояние');
+  expect(html).toContain('7,32');
+  expect(html).toContain('<svg');
+  expect(html).toContain('<details open');
+  expect(html).not.toContain('<button');
 });
