@@ -119,3 +119,27 @@ test('гиперкалиемия: карточка с дозами и чек-л�
   await expect(card).toContainText('40 мл');
   await expect(page.getByTestId('result')).toContainText('возможен гемолиз');
 });
+
+test('подробный режим: «Пример» считает сразу, а исключение расчётов убирает их из результата', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('full-example').click();
+  const result = page.getByTestId('result');
+  await expect(result).toBeVisible();
+  await expect(page.getByTestId('in-ScvO2')).toHaveValue('68');
+  await expect(page.getByTestId('dka-card')).toBeVisible();
+  await expect(result).toContainText('Перфузия');
+  await expect(result).toContainText('Вентиляция');
+
+  await page.locator('[data-testid="exclude-panel"] summary').click();
+  await page.getByTestId('exclude-dka').check();
+  await page.getByTestId('exclude-m.perfusion').check();
+  await expect(page.getByTestId('dka-card')).toHaveCount(0);
+  await expect(page.getByTestId('excluded-note')).toContainText('Диабетический кетоацидоз');
+  await expect(page.getByTestId('exclude-count')).toHaveText('2');
+
+  await page.getByTestId('exclude-reset').click();
+  await expect(page.getByTestId('dka-card')).toBeVisible();
+  await expect(page.getByTestId('excluded-note')).toHaveCount(0);
+});

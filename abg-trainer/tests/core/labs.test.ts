@@ -101,7 +101,7 @@ describe('глюкоза и лактат по возрасту', () => {
     expect(codes({ ageCategory: 'child', glucose: 2.8 })).toContain('hypoglycemia_severe');
     expect(codes({ ageCategory: 'child', glucose: 3.5 })).toContain('hypoglycemia');
     expect(codes({ glucose: 2.5 })).toContain('hypoglycemia_severe');
-    expect(codes({ pH: 7.1, pCO2: 20, HCO3: 6, glucose: 25 })).toContain('dka_criteria');
+    expect(codes({ pH: 7.1, pCO2: 20, HCO3: 6, glucose: 25 })).toContain('dka_met');
     expect(codes({ glucose: 12 })).toContain('glucose_icu_high');
   });
   it('лактат', () => {

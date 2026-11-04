@@ -2,7 +2,7 @@ import type { MetricGroup } from '../../core/extended';
 import type { InterpretationResult } from '../../core/types';
 import { useT } from './useT';
 
-const GROUPS: MetricGroup[] = ['acidBase', 'electrolytes', 'oxygen', 'temperature', 'neonatal'];
+const GROUPS: MetricGroup[] = ['acidBase', 'electrolytes', 'oxygen', 'perfusion', 'ventilation', 'temperature', 'neonatal'];
 
 /** Detailed assessment: every derived value with its formula, normal range and verdict. */
 export function MetricsCard({ result }: { result: InterpretationResult }) {

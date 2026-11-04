@@ -5,10 +5,11 @@ import { compensationStep } from './compensation';
 import { osmolarStep } from './osmolar';
 import { deficits as computeDeficits } from './deficits';
 import { dkaAssessment } from './dka';
+import { excludedSet, excludedStep, flagInExcludedGroup } from './exclusions';
 import { sodiumCorrection } from './sodiumCorrection';
 import { urineAssessment } from './urine';
 import { hyperKPlan } from './hyperK';
-import { labsStep } from './labs';
+import { labsStep, type LabsOutcome } from './labs';
 import { preanalyticFlags } from './preanalytic';
 import { buildWorkings } from './workings';
 import { extendedMetrics } from './extended';
@@ -62,6 +63,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
 
   const cons = consistencyStep(input, norms);
   const ctx: Ctx = { input, settings, norms, HCO3: cons.HCO3 };
+  const off = excludedSet(settings);
   const steps: Step[] = [cons.step];
   const flags: Flag[] = [...cons.step.flags, ...generalFlags(ctx)];
 
@@ -84,8 +86,9 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
   comp.added.forEach((d) => add(d, 'secondary', 'compensation'));
 
   // Steps 5–6
-  const ag = anionGapStep(ctx);
-  const delta = deltaStep(ctx, ag);
+  // A switched-off anion gap also stops everything that builds on it (hidden HAGMA, Δ/Δ, corrected HCO3)
+  const ag = off.has('anionGap') ? ({ step: excludedStep('anionGap') } as ReturnType<typeof anionGapStep>) : anionGapStep(ctx);
+  const delta = off.has('anionGap') ? { step: excludedStep('deltaRatio') } : deltaStep(ctx, ag);
   steps.push(ag.step, delta.step);
   flags.push(...ag.step.flags);
   let acidosisType: AcidosisType | undefined;
@@ -102,22 +105,22 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
   }
 
   // Step 7
-  const osm = osmolarStep(ctx);
+  const osm = off.has('osmolar') ? { step: excludedStep('osmolar') } : osmolarStep(ctx);
   steps.push(osm.step);
   flags.push(...osm.step.flags);
 
   // Step 8
-  const st = stewartStep(ctx);
+  const st = off.has('stewart') ? { step: excludedStep('stewart') } : stewartStep(ctx);
   steps.push(st.step);
   flags.push(...st.step.flags);
 
   // Step 9
-  const oxy = oxygenationStep(ctx);
+  const oxy = off.has('oxygenation') ? { step: excludedStep('oxygenation'), values: {} } : oxygenationStep(ctx);
   steps.push(oxy.step);
   flags.push(...oxy.step.flags);
 
   // Step 10
-  const labs = labsStep(ctx);
+  const labs: LabsOutcome = off.has('labs') ? { step: excludedStep('labs') } : labsStep(ctx);
   steps.push(labs.step);
   flags.push(...labs.step.flags);
 
@@ -133,15 +136,21 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     Patm: input.Patm ?? settings.patm ?? norms.defaultPatm,
     SIDa: sida,
   });
-  flags.push(...ext.flags);
+  const metrics = ext.metrics.filter((m) => !off.has('m.' + m.group));
+  flags.push(...ext.flags.filter((f) => !flagInExcludedGroup(f, off)));
 
-  const dka = dkaAssessment(ctx, ctx.HCO3);
+  const dka = off.has('dka') ? { flags: [] as Flag[], assessment: undefined } : dkaAssessment(ctx, ctx.HCO3);
   flags.push(...dka.flags);
+  // The glucose check in step 10 only repeats the DKA module's finding (or must go with it when switched off)
+  if (off.has('dka') || dka.assessment) {
+    const i = flags.findIndex((f) => f.code === 'dka_criteria');
+    if (i >= 0) flags.splice(i, 1);
+  }
 
-  const urine = urineAssessment(ctx, disorders.map((d) => d.type), acidosisType);
+  const urine = off.has('urine') ? { flags: [] as Flag[], assessment: undefined } : urineAssessment(ctx, disorders.map((d) => d.type), acidosisType);
   flags.push(...urine.flags);
 
-  flags.push(...preanalyticFlags(ctx, oxy.step.details.PAO2 as number | undefined));
+  if (!off.has('preanalytic')) flags.push(...preanalyticFlags(ctx, oxy.step.details.PAO2 as number | undefined));
 
   flags.push(...cordFlags(input, norms));
 
@@ -172,22 +181,25 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     secondary,
     flags: dedupe(flags),
     differentials: differentials(disorderTypes, acidosisType, ag.agCorr !== undefined, input.ageCategory),
-    treatment: {
-      ...tr,
-      potassium: labs.potassium,
-      calcium: labs.calcium,
-      available: tr.available || Boolean(labs.potassium || labs.calcium),
-    },
+    treatment: off.has('treatment')
+      ? { available: false, hfoHints: [], causeHints: [] }
+      : {
+          ...tr,
+          potassium: labs.potassium,
+          calcium: labs.calcium,
+          available: tr.available || Boolean(labs.potassium || labs.calcium),
+        },
     summary: [],
     workings: [],
-    metrics: ext.metrics,
+    metrics,
     profile: deviationProfile(ctx, ag.agCorr),
     bilirubin: labs.bilirubin,
     dka: dka.assessment,
     urine: urine.assessment,
-    hyperK: hyperKPlan(ctx),
-    naCorrection: sodiumCorrection(ctx),
-    deficits: computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis'), disorderTypes.includes('metabolic_acidosis')),
+    hyperK: off.has('hyperK') ? undefined : hyperKPlan(ctx),
+    naCorrection: off.has('naCorrection') ? undefined : sodiumCorrection(ctx),
+    deficits: off.has('deficits') ? [] : computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis'), disorderTypes.includes('metabolic_acidosis')),
+    excluded: off.size ? [...off] : undefined,
     computed: { HCO3: ctx.HCO3, HCO3Calculated: input.HCO3 === undefined },
   };
   result.workings = buildWorkings(input, steps, ctx.HCO3, settings, norms, result.treatment!, result.deficits);

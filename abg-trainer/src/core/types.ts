@@ -106,6 +106,8 @@ export interface Settings {
   agNormOverride?: [number, number];
   bicarbFactor?: number;
   patm?: number;
+  /** Calculations switched off by the user (see exclusions.ts). */
+  exclude?: string[];
 }
 
 export type Severity = 'info' | 'warning' | 'critical' | 'block';
@@ -206,6 +208,8 @@ export interface InterpretationResult {
   workings: import('./workings').Working[];
   deficits: import('./deficits').Deficit[];
   bilirubin?: import('./bilirubin').BiliAssessment;
+  /** Keys of the calculations the user switched off for this result. */
+  excluded?: string[];
   dka?: import('./dka').DkaAssessment;
   urine?: import('./urine').UrineAssessment;
   hyperK?: import('./hyperK').HyperKPlan;

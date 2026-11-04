@@ -9,6 +9,14 @@ export const AGES: AgeCategory[] = ['preterm', 'term_neonate', 'child', 'adult']
 /** Example for the quick form: only the fields shown there, a metabolic acidosis with a raised anion gap. */
 export const QUICK_EXAMPLE: Record<string, string> = { pH: '7.33', pCO2: '35', pO2: '85', BE: '-7', HCO3: '18', K: '4.2', Na: '140', Cl: '110', glucose: '6', lactate: '3.1' };
 
+/** Example for the detailed form: an adult in intensive care with a raised-anion-gap acidosis, ketosis, ventilation and a paired venous sample. */
+export const ADVANCED_EXAMPLE: Record<string, string> = {
+  pH: '7.28', pCO2: '30', HCO3: '14', BE: '-10', Na: '138', K: '5.4', Cl: '106', albumin: '22', lactate: '4.2', glucose: '14', urea: '12',
+  iCa: '1.05', Mg: '0.8', phosphate: '1.4', weightKg: '70', ageYears: '55', temperature: '37.5', pO2: '92', SpO2: '96', SaO2: '96',
+  FiO2: '0.4', MAP: '12', PEEP: '6', PIP: '24', VE: '8', heightCm: '175', Hb: '105', ScvO2: '68', pvO2: '38', pvCO2: '44',
+  cardiacOutput: '5.2', bhb: '5',
+};
+
 export type Units = { gas: UnitId; albumin: UnitId; glucose: UnitId; urea: UnitId };
 export type VentMode = 'none' | 'conventional' | 'hfo';
 

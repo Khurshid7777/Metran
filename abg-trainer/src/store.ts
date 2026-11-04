@@ -18,6 +18,8 @@ export interface AppSettings {
   centerName: string;
   signatory: string;
   logoDataUrl: string;
+  /** Calculations switched off in the calculator (see core/exclusions.ts). */
+  exclude: string[];
 }
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -33,6 +35,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   centerName: '',
   signatory: '',
   logoDataUrl: '',
+  exclude: [],
 };
 
 interface State {
@@ -76,6 +79,11 @@ export const useApp = create<State>((set, get) => ({
     set({ profile });
   },
 }));
+
+/** Settings for the calculator: the core settings plus the calculations the user switched off. The trainer and exam never use them. */
+export function calcSettings(s: AppSettings) {
+  return { ...coreSettings(s), exclude: s.exclude };
+}
 
 /** Core settings derived from the app settings. */
 export function coreSettings(s: AppSettings) {

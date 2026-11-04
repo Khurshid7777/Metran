@@ -374,3 +374,4 @@ table.values td { font-variant-numeric: tabular-nums; }
 .check { display: block; margin: 6px 0; }
 .review-table tr.due th, .review-table tr.due td { background: var(--warn-soft); }
 .review-table td { white-space: nowrap; }
+.exclude-panel summary { cursor: pointer; font-weight: 600; }

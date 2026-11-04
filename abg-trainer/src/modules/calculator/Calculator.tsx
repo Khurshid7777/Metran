@@ -1,15 +1,16 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { interpret } from '../../core/interpret';
 import type { UnitId } from '../../core/units';
 import type { AgeCategory, InterpretationResult, SampleType } from '../../core/types';
-import { coreSettings, useApp } from '../../store';
+import { calcSettings, useApp } from '../../store';
 import { load, save } from '../../storage';
 import { FIELD_GROUPS } from '../common/fields';
 import { ReportButtons } from '../common/Report';
 import { ResultView } from '../common/ResultView';
 import { useT } from '../common/useT';
 import { buildInput, unitOf } from './buildInput';
-import { AGES, SAMPLES, useDraft, type Units } from './draft';
+import { ADVANCED_EXAMPLE, AGES, SAMPLES, useDraft, type Units } from './draft';
+import { ExcludePanel } from './ExcludePanel';
 import { PasteAbl } from './PasteAbl';
 import { Preanalytic } from './Preanalytic';
 import { QuickEntry } from './QuickEntry';
@@ -24,7 +25,6 @@ const UNIT_CHOICES: Record<keyof Units, UnitId[]> = {
   urea: ['mmol/L', 'mg/dL_BUN'],
 };
 
-const EXAMPLE: Record<string, string> = { pH: '7.33', pCO2: '35', HCO3: '18', Na: '140', Cl: '110', albumin: '20', lactate: '3.1', BE: '-7' };
 
 function unitKey(u: UnitId): string {
   return 'unit.' + u.replace(/[^a-zA-Z0-9]/g, '_');
@@ -53,6 +53,7 @@ export function Calculator() {
       </div>
       <PasteAbl />
       <Preanalytic />
+      <ExcludePanel />
       {mode === 'quick' ? <QuickEntry onDetails={() => setMode('full')} /> : <FullForm />}
       <SeriesCard />
     </div>
@@ -67,7 +68,7 @@ function FullForm() {
   // Opened from the quick form: show the full analysis of the same values right away
   const [result, setResult] = useState<InterpretationResult | null>(() => {
     const r = buildInput(d);
-    return r.input ? interpret(r.input, coreSettings(settings)) : null;
+    return r.input ? interpret(r.input, calcSettings(settings)) : null;
   });
   const [parseErrors, setParseErrors] = useState<string[]>([]);
   const addSeries = useSeries((s) => s.add);
@@ -88,10 +89,26 @@ function FullForm() {
 
   function calculate(e?: React.FormEvent) {
     e?.preventDefault();
-    const { input, bad } = buildInput(d);
+    const { input, bad } = buildInput(useDraft.getState());
     setParseErrors(bad);
-    setResult(input ? interpret(input, coreSettings(settings)) : null);
+    setResult(input ? interpret(input, calcSettings(settings)) : null);
   }
+
+  function example() {
+    d.setValues(ADVANCED_EXAMPLE);
+    d.setAge('adult');
+    d.setSample('arterial');
+    calculate();
+  }
+
+  // Switching calculations on or off re-runs the shown result
+  useEffect(() => {
+    setResult((prev) => {
+      const { input } = buildInput(useDraft.getState());
+      return prev && input ? interpret(input, calcSettings(settings)) : prev;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings.exclude]);
 
   const rangeErrors = result?.inputErrors ?? [];
   const errorFor = (name: string) => {
@@ -213,7 +230,7 @@ function FullForm() {
         ))}
         <div className="actions">
           <button type="submit" className="primary" data-testid="calculate">{t('calc.calculate')}</button>
-          <button type="button" onClick={() => { d.setValues(EXAMPLE); d.setSample('arterial'); d.setAge('adult'); }}>{t('calc.example')}</button>
+          <button type="button" onClick={example} data-testid="full-example">{t('calc.example')}</button>
           <button type="button" onClick={() => { d.reset(); setResult(null); setParseErrors([]); }}>{t('calc.reset')}</button>
         </div>
       </form>

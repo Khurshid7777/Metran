@@ -305,6 +305,11 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
         <h3 id="concl-h">{t('result.conclusion')}</h3>
         <SummaryText parts={result.summary} />
         <FlagList flags={result.flags} />
+        {result.excluded && (
+          <p className="flag flag-info" role="note" data-testid="excluded-note">
+            {t('exclude.note', { list: result.excluded.map((k) => t('exclude.' + k)).join('; ') })}
+          </p>
+        )}
       </section>
       <ProcessCard result={result} />
       <DeviationProfile result={result} />

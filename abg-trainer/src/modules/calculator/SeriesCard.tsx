@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { interpret } from '../../core/interpret';
 import { analyzeSeries, TREND_KEYS } from '../../core/series';
-import { coreSettings, useApp } from '../../store';
+import { calcSettings, useApp } from '../../store';
 import { AcidBaseMap, TrendChart } from '../common/Charts';
 import { FlagList } from '../common/ResultView';
 import { useT } from '../common/useT';
@@ -20,7 +20,7 @@ export function SeriesCard() {
   const { entries, setTime, remove, clear } = useSeries();
   const sorted = useMemo(() => [...entries].sort((a, b) => a.time.localeCompare(b.time)), [entries]);
   const analysis = useMemo(() => analyzeSeries(sorted), [sorted]);
-  const last = useMemo(() => (sorted.length ? interpret(sorted[sorted.length - 1].input, coreSettings(settings)) : null), [sorted, settings]);
+  const last = useMemo(() => (sorted.length ? interpret(sorted[sorted.length - 1].input, calcSettings(settings)) : null), [sorted, settings]);
   if (!sorted.length || !last || last.blocked) return null;
   return (
     <section className="card" aria-labelledby="series-h" data-testid="series">

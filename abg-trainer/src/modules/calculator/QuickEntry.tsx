@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { interpret } from '../../core/interpret';
 import type { AbgInput, InterpretationResult, SampleType } from '../../core/types';
-import { coreSettings, useApp } from '../../store';
+import { calcSettings, useApp } from '../../store';
 import { ReportButtons } from '../common/Report';
 import { FlagList, SummaryText } from '../common/ResultView';
 import { useT } from '../common/useT';
@@ -54,8 +54,17 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
     e?.preventDefault();
     const r = buildInput(useDraft.getState());
     setBad(r.bad);
-    setResult(r.input ? interpret(r.input, coreSettings(settings)) : null);
+    setResult(r.input ? interpret(r.input, calcSettings(settings)) : null);
   }
+
+  // Switching calculations on or off re-runs the shown result
+  useEffect(() => {
+    setResult((prev) => {
+      const { input } = buildInput(useDraft.getState());
+      return prev && input ? interpret(input, calcSettings(settings)) : prev;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [settings.exclude]);
 
   function example() {
     d.setValues(QUICK_EXAMPLE);
