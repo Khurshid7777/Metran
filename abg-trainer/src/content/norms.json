@@ -16,7 +16,12 @@
     "hyperK.salbutamolMg.adult",
     "hyperK.pseudo",
     "hyperK.air",
-    "hyperK.delay"
+    "hyperK.delay",
+    "crisis.Na.high",
+    "crisis.glucose.low",
+    "crisis.glucose.high",
+    "crisis.lactate.high",
+    "crisis.pH.high"
   ],
   "sources": {
     "acidBase": "Boston rules: Narins & Emmett, Medicine 1980; Berend, Rev Clin Esp 2018 (Winters, metabolic alkalosis 0.7×HCO3+21, respiratory 0.1/0.35, 0.2/0.4). Copenhagen SBE: Schlichtig, Crit Care Med 1998.",
@@ -49,7 +54,8 @@
     "urine": "Urine anion gap = UNa + UK − UCl: negative in extrarenal (GI) bicarbonate loss, positive in impaired renal acidification (Batlle, N Engl J Med 1988; Kraut & Madias, Nat Rev Nephrol 2010). Urine Cl in metabolic alkalosis: < 25 mmol/L chloride-responsive, > 40 chloride-resistant (Rose & Post). FENa = (UNa × PCr)/(PNa × UCr) × 100: < 1 % prerenal, > 2 % intrinsic (tubular) injury; FEUrea < 35 % prerenal, useful on diuretics (Carvounis, Kidney Int 2002; Kaplan & Kohn 1992). Cut-offs are recalled from standard references and were not re-checked against the full text in this build; FENa is not interpreted for neonates.",
     "naCorrection": "Adrogué & Madias, N Engl J Med 2000;342:1581: change in serum Na per litre of infusate = (infusate Na + infusate K − serum Na) / (TBW + 1). The estimate ignores ongoing losses and ADH-driven changes — measure Na every 2–4 h. Infusate electrolyte content: standard product compositions (0.9 % NaCl 154, 3 % NaCl 513, 0.45 % NaCl 77, 0.18 % NaCl 31 mmol/L Na; lactated Ringer 130 Na + 4 K; Plasma-Lyte 140 Na + 5 K; 5 % dextrose 0).",
     "hyperK": "Severity: mild 5.5–5.9, moderate 6.0–6.4, severe ≥ 6.5 mmol/L (ERC classification used by the UK Kidney Association / Renal Association hyperkalaemia guideline, 2020; checked in search excerpts). Children: calcium gluconate 10 % 0.5 mL/kg (max 20 mL) over ~10 min; regular insulin 0.1 U/kg (max 10 U) with glucose 0.5 g/kg (10 % dextrose 5 mL/kg) over 30 min, glucose every 30 min; nebulised salbutamol 2.5 mg (< 10 kg) or 5 mg (≥ 10 kg) — doses agree across several paediatric hospital guidelines (RCH Melbourne, PCH Perth, Birmingham Women's and Children's), but local protocols differ on glucose and salbutamol (excerpts). Adults: insulin 10 U with 25 g glucose and nebulised salbutamol 10–20 mg are recalled from the UKKA guideline and were not checked against the full text; the 2023 UKKA draft changes the IV calcium recommendation (10 mL calcium chloride 10 % over 5 min) — follow the local protocol. Calcium doses reuse norms.labs.iCa. Not applied to neonates (different thresholds).",
-    "preanalytic": "Sample handling: CLSI C46 (Blood gas and pH analysis and related measurements) and the Radiometer ABL800 FLEX Reference Manual — balanced heparin, expel air bubbles, mix, analyse within 30 min at room temperature; recalled, not checked against the full text. Plausibility rules: pO2 cannot exceed the alveolar PO2 (FiO2 × (Patm − 47) − pCO2/0.8); isolated hyperkalaemia without acidosis suggests haemolysis; low glucose with high lactate and K suggests in-vitro metabolism after a delay."
+    "preanalytic": "Sample handling: CLSI C46 (Blood gas and pH analysis and related measurements) and the Radiometer ABL800 FLEX Reference Manual — balanced heparin, expel air bubbles, mix, analyse within 30 min at room temperature; recalled, not checked against the full text. Plausibility rules: pO2 cannot exceed the alveolar PO2 (FiO2 × (Patm − 47) − pCO2/0.8); isolated hyperkalaemia without acidosis suggests haemolysis; low glucose with high lactate and K suggests in-vitro metabolism after a delay.",
+    "crisis": "Bands for the critical-shift board. K+: norms.labs.K (mild < 3.5, moderate < 3.0, severe < 2.5; high 5.5 / 6.0 / 6.5, ERC / UKKA). Na+: hyponatraemia mild 130–134, moderate 125–129, profound < 125 (European hyponatraemia guideline, Spasovski 2014); hypernatraemia thresholds 150 and 160 are recalled, not checked against the full text. iCa: norms.labs.iCa. Glucose: norms.labs.glucose (BAPM 2017, ISPAD 2022, ADA). Lactate: SSC 2021. pH: critical 7.0 / 7.6 from norms.critical, acidaemia 7.2 from norms.treatment; the alkalaemia 7.55 step is recalled. Action hints only point to the calculations already shown (doses, correction rate limits) and to general safety steps; they are not a protocol."
   },
   "categories": {
     "adult": {
@@ -796,6 +802,140 @@
     "delay": {
       "glucose": 2.5,
       "lactate": 4
+    }
+  },
+  "crisis": {
+    "K": {
+      "unit": "mmol",
+      "scale": [
+        2,
+        8
+      ],
+      "normal": [
+        3.5,
+        5.5
+      ],
+      "low": [
+        3.5,
+        3.0,
+        2.5
+      ],
+      "high": [
+        5.5,
+        6.0,
+        6.5
+      ]
+    },
+    "Na": {
+      "unit": "mmol",
+      "scale": [
+        110,
+        170
+      ],
+      "normal": [
+        135,
+        145
+      ],
+      "low": [
+        135,
+        130,
+        125
+      ],
+      "high": [
+        146,
+        150,
+        160
+      ]
+    },
+    "iCa": {
+      "unit": "mmol",
+      "scale": [
+        0.5,
+        1.8
+      ],
+      "normal": [
+        1.15,
+        1.3
+      ],
+      "low": [
+        1.15,
+        1.0,
+        0.8
+      ]
+    },
+    "glucose": {
+      "unit": "mmol",
+      "scale": [
+        0,
+        30
+      ],
+      "normal": [
+        3.9,
+        10
+      ],
+      "low": [
+        3.9,
+        3.5,
+        3.0
+      ],
+      "high": [
+        10,
+        11,
+        14
+      ],
+      "neonate": {
+        "normal": [
+          2.8,
+          8.3
+        ],
+        "low": [
+          2.8,
+          2.0,
+          1.0
+        ],
+        "high": [
+          8.3,
+          11,
+          14
+        ]
+      }
+    },
+    "lactate": {
+      "unit": "mmol",
+      "scale": [
+        0,
+        15
+      ],
+      "normal": [
+        0,
+        2
+      ],
+      "high": [
+        2,
+        3,
+        4
+      ]
+    },
+    "pH": {
+      "unit": "",
+      "scale": [
+        6.8,
+        7.8
+      ],
+      "normal": [
+        7.35,
+        7.45
+      ],
+      "low": [
+        7.35,
+        7.2,
+        7.0
+      ],
+      "high": [
+        7.46,
+        7.55,
+        7.6
+      ]
     }
   }
 }

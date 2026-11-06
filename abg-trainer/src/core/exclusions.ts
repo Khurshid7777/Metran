@@ -8,7 +8,7 @@ import type { Flag, Settings, Step, StepId } from './types';
 export const EXCLUDABLE = {
   steps: ['anionGap', 'osmolar', 'stewart', 'oxygenation', 'labs'] as const,
   metrics: ['acidBase', 'electrolytes', 'oxygen', 'perfusion', 'ventilation', 'temperature', 'neonatal'] as const,
-  blocks: ['dka', 'urine', 'hyperK', 'naCorrection', 'deficits', 'treatment', 'preanalytic'] as const,
+  blocks: ['dka', 'urine', 'hyperK', 'naCorrection', 'deficits', 'treatment', 'preanalytic', 'crisis'] as const,
 };
 
 /** Keys in the settings: steps and blocks as is, metric groups prefixed with `m.`. */

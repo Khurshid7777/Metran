@@ -13,6 +13,9 @@ export interface NaCorrectionItem {
 
 export interface NaCorrection {
   direction: 'raise' | 'lower';
+  /** Serum sodium now, and the edge of the normal range the correction heads for. */
+  na: number;
+  target: number;
   tbw: number;
   /** Maximum change in 24 h, mmol/L. */
   limit: number;
@@ -35,5 +38,5 @@ export function sodiumCorrection(ctx: Ctx): NaCorrection | undefined {
     const litres24h = wrongDirection ? undefined : limit / Math.abs(deltaPerL);
     return { id: inf.id, deltaPerL, litres24h, mlPerHour: litres24h === undefined ? undefined : (litres24h * 1000) / 24, wrongDirection };
   });
-  return { direction: raise ? 'raise' : 'lower', tbw, limit, items };
+  return { direction: raise ? 'raise' : 'lower', na: input.Na, target: raise ? D.naLow : D.naHigh, tbw, limit, items };
 }

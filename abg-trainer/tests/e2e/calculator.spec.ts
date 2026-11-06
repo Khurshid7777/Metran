@@ -143,3 +143,49 @@ test('подробный режим: «Пример» считает сразу,
   await expect(page.getByTestId('dka-card')).toBeVisible();
   await expect(page.getByTestId('excluded-note')).toHaveCount(0);
 });
+
+test('критические сдвиги: доска, суточный план жидкости и коридор Na⁺', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('ageCategory').selectOption('child');
+  await page.getByTestId('sampleType').selectOption('venous');
+  for (const [k, v] of Object.entries({ pH: '7,38', pCO2: '38', HCO3: '22', Na: '122', K: '2,7', glucose: '2,4', weightKg: '10' })) await page.getByTestId('in-' + k).fill(v);
+  await page.getByTestId('calculate').click();
+
+  const board = page.getByTestId('crisis-board');
+  await expect(board).toBeVisible();
+  await expect(board.getByTestId('crisis-Na')).toContainText('тяжёлая');
+  await expect(board.getByTestId('crisis-K')).toContainText('не быстрее');
+  await expect(board.getByTestId('crisis-glucose')).toContainText('Внутривенная глюкоза');
+  await expect(board.getByRole('img', { name: /Калий: 2,7/ })).toBeVisible();
+
+  const plan = page.getByTestId('fluid-plan');
+  await expect(plan.getByTestId('fluid-total')).toHaveText('960');
+  await plan.getByTestId('fluid-pct').fill('5');
+  await expect(plan.getByTestId('fluid-total')).toHaveText('1460');
+  await expect(plan.getByTestId('fluid-rate')).toHaveText('61');
+  await plan.getByTestId('fluid-losses').fill('240');
+  await expect(plan.getByTestId('fluid-total')).toHaveText('1700');
+
+  await expect(page.getByTestId('na-corridor').getByRole('img')).toBeVisible();
+  await expect(page.getByTestId('na-corridor')).toContainText('не раньше чем через 39 ч');
+
+  // исключение блока убирает доску
+  await page.locator('[data-testid="exclude-panel"] summary').click();
+  await page.getByTestId('exclude-crisis').check();
+  await expect(page.getByTestId('crisis-board')).toHaveCount(0);
+});
+
+test('быстрый режим: доска сдвигов видна в коротком заключении', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-quick').click();
+  await page.getByTestId('q-age-adult').click();
+  await page.getByTestId('q-sample-arterial').click();
+  await page.getByTestId('q-in-pH').fill('7,4');
+  await page.getByTestId('q-in-pCO2').fill('40');
+  await page.getByTestId('q-in-K').fill('6,8');
+  await page.getByTestId('q-run').click();
+  await expect(page.getByTestId('q-result').getByTestId('crisis-K')).toContainText('повышен');
+});

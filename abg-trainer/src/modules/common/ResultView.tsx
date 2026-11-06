@@ -4,6 +4,7 @@ import { StewartChart } from './StewartChart';
 import { AcidBaseMap, BilirubinChart, Davenport, DeviationProfile, Gamblegram, O2Cascade, OdcChart } from './Charts';
 import { DeficitsCard, ProcessCard, Workings } from './Workings';
 import { MetricsCard } from './MetricsCard';
+import { CrisisBoard, FluidPlanCard, SodiumCorridor } from './Crisis';
 import type { Working } from '../../core/workings';
 
 const VERDICT_PREFIX: Partial<Record<Step['id'], string>> = {
@@ -311,19 +312,25 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
           </p>
         )}
       </section>
+      <CrisisBoard result={result} />
+      {showTreatment && <FluidPlanCard result={result} />}
+      {showTreatment && <SodiumCorridor result={result} />}
       <ProcessCard result={result} />
       <DeviationProfile result={result} />
       <AcidBaseMap result={result} />
       <Davenport result={result} />
-      <section className="card" aria-labelledby="steps-h">
-        <h3 id="steps-h">{t('result.steps')}</h3>
+      <details className="card fold" data-testid="steps-fold">
+        <summary><h3 id="steps-h">{t('result.steps')}</h3></summary>
         <ol className="steps">
           {result.steps.map((s) => (
             <StepCard key={s.id} step={s} workings={result.workings.filter((w) => w.stepId === s.id)} />
           ))}
         </ol>
-      </section>
-      <MetricsCard result={result} />
+      </details>
+      <details className="fold-wrap" data-testid="metrics-fold">
+        <summary>{t('result.metricsFold')}</summary>
+        <MetricsCard result={result} />
+      </details>
       <Gamblegram result={result} />
       <OdcChart result={result} />
       <O2Cascade result={result} />

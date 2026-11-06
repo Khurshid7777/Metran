@@ -375,3 +375,43 @@ table.values td { font-variant-numeric: tabular-nums; }
 .review-table tr.due th, .review-table tr.due td { background: var(--warn-soft); }
 .review-table td { white-space: nowrap; }
 .exclude-panel summary { cursor: pointer; font-weight: 600; }
+
+/* Critical-shift board, fluid plan, sodium corridor */
+.z-normal { fill: var(--ok-soft); }
+.z-mild { fill: var(--warn-soft); }
+.z-moderate { fill: #f2b66b; }
+.z-severe { fill: #e07a6f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .z-moderate { fill: #a8681f; }
+  :root:not([data-theme='light']) .z-severe { fill: #a8392e; }
+}
+:root[data-theme='dark'] .z-moderate { fill: #a8681f; }
+:root[data-theme='dark'] .z-severe { fill: #a8392e; }
+.zonebar { width: 100%; max-width: 420px; height: auto; display: block; }
+.zone-marker { fill: var(--text); stroke: var(--surface); stroke-width: 1.5; }
+.crisis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin: 8px 0; }
+.crisis { border: 1px solid var(--border); border-left-width: 6px; border-radius: var(--radius); padding: 10px 12px; background: var(--surface); }
+.crisis-mild { border-left-color: #c98a1a; }
+.crisis-moderate { border-left-color: #d9731f; }
+.crisis-severe { border-left-color: var(--bad); }
+.crisis header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.crisis .arrow { font-size: 1.1rem; }
+.crisis-value { font-weight: 700; font-size: 1.1rem; margin-left: auto; }
+.lvl { font-size: 0.8rem; border-radius: 999px; padding: 1px 8px; background: var(--warn-soft); color: var(--warn); }
+.lvl-severe { background: var(--bad-soft); color: var(--bad); }
+.crisis ul { margin: 6px 0 0; padding-left: 18px; font-size: 0.92rem; }
+.crisis li { margin: 3px 0; }
+.conclusion .crisis-board { border: none; padding: 0; box-shadow: none; }
+.fluid-controls { display: grid; gap: 10px; margin-bottom: 8px; }
+.fluid-controls input[type='range'] { width: 100%; }
+.fluid-bar { max-width: 420px; }
+.fp-maintenance, .fp-sw-maintenance { fill: var(--accent); background: var(--accent); }
+.fp-deficit, .fp-sw-deficit { fill: #d9731f; background: #d9731f; }
+.fp-losses, .fp-sw-losses { fill: #7a5ea8; background: #7a5ea8; }
+.fluid-table .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.fluid-table tr.total th, .fluid-table tr.total td { font-weight: 700; border-top: 2px solid var(--border); }
+.corridor-forbidden { fill: var(--bad); opacity: 0.18; }
+.corridor-line { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.fold > summary { cursor: pointer; list-style-position: inside; }
+.fold > summary h3 { display: inline; margin: 0; }
+.fold-wrap > summary { cursor: pointer; margin: 10px 0; padding: 10px 14px; border: 1px dashed var(--border); border-radius: var(--radius); font-weight: 600; color: var(--accent); }

@@ -212,6 +212,8 @@ export interface InterpretationResult {
   excluded?: string[];
   dka?: import('./dka').DkaAssessment;
   urine?: import('./urine').UrineAssessment;
+  /** Critical-shift board: abnormal analytes by severity with short actions. */
+  crises: import('./crisis').Crisis[];
   hyperK?: import('./hyperK').HyperKPlan;
   naCorrection?: import('./sodiumCorrection').NaCorrection;
   /** Extended assessment: derived values with formulas and norms. */
