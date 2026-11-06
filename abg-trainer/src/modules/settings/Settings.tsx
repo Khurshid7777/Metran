@@ -93,6 +93,7 @@ export function Settings() {
           <NumberSetting k="agNormHigh" label={t('settings.agNormHigh')} />
           <NumberSetting k="bicarbFactor" label={t('settings.bicarbFactor')} />
           <NumberSetting k="patm" label={t('settings.patm')} />
+          <NumberSetting k="kclPct" label={t('settings.kclPct')} />
         </div>
         <p className="muted small">{t('settings.normsVersion', { v: normsJson.version, by: normsJson.approvedBy || t('settings.notApproved') })}</p>
         <details className="sources">

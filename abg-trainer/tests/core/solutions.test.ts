@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { planPN, type PnInput } from '../../src/core/parenteral';
-import { gir, glucoseOsm, mix, naclMmolPerL, naclOsm, rateForGir } from '../../src/core/solutions';
+import { gir, glucoseOsm, kclMmolMl, mix, naclMmolPerL, naclOsm, rateForGir } from '../../src/core/solutions';
 
 describe('растворы', () => {
   it('смешивание по правилу креста: 3 % NaCl из 23,4 % и 0,9 %', () => {
@@ -22,6 +22,12 @@ describe('растворы', () => {
     expect(mix(5, 100, 3, 0)).toMatchObject({ ok: false, reason: 'range' });
     expect(mix(3, 100, 10, 5)).toMatchObject({ ok: false, reason: 'range' });
     expect(mix(3, 0, 10, 0)).toMatchObject({ ok: false, reason: 'volume' });
+  });
+
+  it('KCl: ммоль/мл по концентрации', () => {
+    expect(kclMmolMl(4)).toBeCloseTo(0.537, 3);
+    expect(kclMmolMl(3)).toBeCloseTo(0.402, 3);
+    expect(kclMmolMl(7.5)).toBeCloseTo(1.006, 3);
   });
 
   it('ммоль/л и осмолярность', () => {
@@ -88,11 +94,19 @@ describe('концентраты при гипо-состояниях', () => {
     const c = interpret({ ...base, K: 2.7 }).concentrates.find((x) => x.id === 'K')!;
     if (c.id !== 'K') throw new Error();
     expect(c.doseMmol).toBeCloseTo(5, 6);
-    expect(c.stockMl).toBeCloseTo(5 / 1.006, 6);
+    expect(c.kclPct).toBe(4);
+    expect(c.mmolMl).toBeCloseTo(40 / 74.55, 9);
+    expect(c.stockMl).toBeCloseTo(5 / (40 / 74.55), 6);
     expect(c.peripheral.volumeMl).toBeCloseTo((5 / 40) * 1000, 6);
     expect(c.central.volumeMl).toBeCloseTo((5 / 80) * 1000, 6);
     expect(c.peripheral.maxRateMlH).toBeCloseTo((c.peripheral.maxRateMmolH / 40) * 1000, 6);
     expect(c.peripheral.diluentMl).toBeCloseTo(125 - c.stockMl, 6);
+    // другой раствор в отделении: 7,5 % — концентрата нужно вдвое меньше, объём разведения прежний
+    const c75 = interpret({ ...base, K: 2.7 }, { advanced: false, agWithK: false, kclPct: 7.5 }).concentrates.find((x) => x.id === 'K')!;
+    if (c75.id !== 'K') throw new Error();
+    expect(c75.kclPct).toBe(7.5);
+    expect(c75.stockMl).toBeCloseTo(5 / 1.006, 2);
+    expect(c75.peripheral.volumeMl).toBeCloseTo(125, 6);
   });
 
   it('натрий: потолок суток в мл 3 % и рецепт 100 мл', () => {

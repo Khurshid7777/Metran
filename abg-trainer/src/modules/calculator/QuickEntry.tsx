@@ -65,7 +65,7 @@ export function QuickEntry({ onDetails }: { onDetails: () => void }) {
       return prev && input ? interpret(input, calcSettings(settings)) : prev;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.exclude]);
+  }, [settings.exclude, settings.kclPct]);
 
   function example() {
     d.setValues(QUICK_EXAMPLE);

@@ -1,4 +1,4 @@
-import { mix, naclMmolPerL } from './solutions';
+import { kclMmolMl, mix, naclMmolPerL } from './solutions';
 import type { Ctx } from './types';
 import type { CalciumPlan, PotassiumPlan } from './labs';
 
@@ -6,6 +6,9 @@ import type { CalciumPlan, PotassiumPlan } from './labs';
 export type ConcentrateItem =
   | {
       id: 'K';
+      /** KCl solution in use, %, and its strength in mmol/mL. */
+      kclPct: number;
+      mmolMl: number;
       doseMmol: number;
       /** KCl concentrate to draw (mL) and the final volume (mL) at the peripheral and the central concentration. */
       stockMl: number;
@@ -38,14 +41,18 @@ export function concentrates(ctx: Ctx, p: ConcentratePlans): ConcentrateItem[] {
 
   if (p.potassium) {
     const k = p.potassium;
+    const kclPct = ctx.settings.kclPct && ctx.settings.kclPct > 0 ? ctx.settings.kclPct : C.kclPct;
+    const mmolMl = kclMmolMl(kclPct);
     const at = (conc: number, rateMmolH: number) => {
       const volumeMl = (k.doseMmol / conc) * 1000;
-      return { conc, volumeMl, diluentMl: volumeMl - k.doseMmol / C.kclMmolMl, maxRateMmolH: rateMmolH, maxRateMlH: (rateMmolH / conc) * 1000 };
+      return { conc, volumeMl, diluentMl: volumeMl - k.doseMmol / mmolMl, maxRateMmolH: rateMmolH, maxRateMlH: (rateMmolH / conc) * 1000 };
     };
     out.push({
       id: 'K',
+      kclPct,
+      mmolMl,
       doseMmol: k.doseMmol,
-      stockMl: k.doseMmol / C.kclMmolMl,
+      stockMl: k.doseMmol / mmolMl,
       peripheral: at(k.concPeripheral, k.maxRateMmolH),
       central: at(k.concCentral, k.maxRateIcuMmolH ?? k.maxRateMmolH),
     });

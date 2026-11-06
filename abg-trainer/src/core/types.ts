@@ -108,6 +108,8 @@ export interface Settings {
   patm?: number;
   /** Calculations switched off by the user (see exclusions.ts). */
   exclude?: string[];
+  /** KCl solution used in the unit, % (default 4). */
+  kclPct?: number;
 }
 
 export type Severity = 'info' | 'warning' | 'critical' | 'block';

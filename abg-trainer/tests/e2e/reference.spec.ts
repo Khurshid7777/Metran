@@ -83,7 +83,15 @@ test('гипо-состояния: карточка с приготовлени�
   for (const [k, v] of Object.entries({ pH: '7,38', pCO2: '38', HCO3: '22', Na: '122', K: '2,7', glucose: '2,4', iCa: '0,9', weightKg: '10' })) await page.getByTestId('in-' + k).fill(v);
   await page.getByTestId('calculate').click();
   const c = page.getByTestId('concentrates');
+  await expect(c.getByTestId('conc-K')).toContainText('Набрать KCl 4 %');
+  await expect(c.getByTestId('conc-K')).toContainText('9,3 мл');
   await expect(c.getByTestId('conc-K')).toContainText('125 мл');
+  await c.getByTestId('kcl-7.5').click();
+  await expect(c.getByTestId('conc-K')).toContainText('Набрать KCl 7,5 %');
+  await expect(c.getByTestId('conc-K')).toContainText('5 мл');
+  await c.getByTestId('kcl-other').fill('3');
+  await expect(c.getByTestId('conc-K')).toContainText('Набрать KCl 3 %');
+  await expect(c.getByTestId('conc-K')).toContainText('12,4 мл');
   await expect(c.getByTestId('conc-K')).toContainText('не более');
   await expect(c.getByTestId('conc-Na')).toContainText('9,3 мл NaCl 23,4 %');
   await expect(c.getByTestId('conc-Ca')).toContainText('0,225');

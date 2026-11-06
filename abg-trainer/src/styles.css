@@ -444,3 +444,5 @@ table.values td { font-variant-numeric: tabular-nums; }
 .segmented-wrap { flex-wrap: wrap; max-width: 100%; }
 .segmented-wrap button { padding: 8px 12px; }
 .field label .unit { margin-left: 6px; color: var(--muted); font-size: 0.85em; }
+.kcl-choice { margin: 6px 0; }
+.kcl-other { width: 110px; min-height: 40px; }

@@ -1470,8 +1470,6 @@
   "pn.stock.nacl585": "NaCl 5.85 % (1 mmol/mL)",
   "pn.stock.nacl10": "NaCl 10 % (1.71 mmol/mL)",
   "pn.stock.nacl234": "NaCl 23.4 % (4 mmol/mL)",
-  "pn.stock.kcl75": "KCl 7.5 % (1 mmol/mL)",
-  "pn.stock.kcl4": "KCl 4 % (0.54 mmol/mL)",
   "pn.err": "Fill in all fields with numbers (weight and concentrations above zero).",
   "pn.result": "Result per day",
   "pn.component": "Component",
@@ -1566,7 +1564,7 @@
   "conc.disclaimer": "Arithmetic of preparation and dosing. Route, rate and dilution follow the unit protocol with a second check.",
   "conc.share.aria": "Share of concentrate in the volume: {a} %",
   "conc.K.title": "Potassium: {dose} mmol K⁺",
-  "conc.K.draw": "Draw KCl 7.5 % (1 mmol/mL): {ml} mL and dilute to the wanted volume.",
+  "conc.K.draw": "Draw KCl {c} % ({mm} mmol/mL): {ml} mL and dilute to the wanted volume.",
   "conc.K.peripheral": "Peripheral vein",
   "conc.K.central": "Central access",
   "conc.K.final": "{conc} mmol/L — make up to {vol} mL (add {dil} mL of diluent)",
@@ -1585,5 +1583,9 @@
   "conc.glucose.title": "Glucose {c} % from a concentrate",
   "conc.glucose.recipe": "100 mL from glucose {stock} %: {s} mL + {d} mL water",
   "conc.glucose.note": "The dose and rate for hypoglycaemia follow the protocol (children and neonates by weight). Other concentrations — the “Solutions” tab.",
-  "exclude.concentrates": "Concentrated solutions for hypo-states"
+  "exclude.concentrates": "Concentrated solutions for hypo-states",
+  "conc.K.which": "KCl solution used in the unit",
+  "conc.K.other": "other, %",
+  "pn.stock.kcl": "KCl {c} % ({mm} mmol/mL)",
+  "settings.kclPct": "KCl solution used in the unit, %"
 }

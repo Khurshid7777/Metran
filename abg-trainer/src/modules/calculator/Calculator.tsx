@@ -108,7 +108,7 @@ function FullForm() {
       return prev && input ? interpret(input, calcSettings(settings)) : prev;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [settings.exclude]);
+  }, [settings.exclude, settings.kclPct]);
 
   const rangeErrors = result?.inputErrors ?? [];
   const errorFor = (name: string) => {

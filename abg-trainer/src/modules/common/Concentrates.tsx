@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import type { InterpretationResult } from '../../core/types';
+import { parseLocaleNumber } from '../../core/units';
+import { useApp } from '../../store';
 import { useT } from './useT';
 
 /** Stacked bar: share of the concentrate in the final volume. */
@@ -9,6 +12,38 @@ function Share({ stockMl, totalMl, label }: { stockMl: number; totalMl: number; 
       <rect x={8} y={4} width={304} height={14} className="fp-maintenance" />
       <rect x={8} y={4} width={Math.max(w, 1)} height={14} className="fp-deficit" />
     </svg>
+  );
+}
+
+/** The KCl solution the unit uses: quick choice plus any other %, saved in the settings. */
+function KclChoice({ pct }: { pct: number }) {
+  const { t } = useT();
+  const update = useApp((s) => s.updateSettings);
+  const [raw, setRaw] = useState('');
+  return (
+    <div className="kcl-choice">
+      <span id="kcl-l">{t('conc.K.which')}</span>
+      <div className="chip-row" role="radiogroup" aria-labelledby="kcl-l">
+        {[3, 4, 7.5].map((c) => (
+          <button key={c} type="button" role="radio" aria-checked={pct === c} className={'chip' + (pct === c ? ' on' : '')} onClick={() => { setRaw(''); update({ kclPct: c }); }} data-testid={'kcl-' + c}>
+            {String(c).replace('.', ',')} %
+          </button>
+        ))}
+        <input
+          aria-label={t('conc.K.other')}
+          placeholder={t('conc.K.other')}
+          inputMode="decimal"
+          className="kcl-other"
+          data-testid="kcl-other"
+          value={raw}
+          onChange={(e) => {
+            setRaw(e.target.value);
+            const v = parseLocaleNumber(e.target.value);
+            if (!Number.isNaN(v) && v > 0 && v <= 15) update({ kclPct: v });
+          }}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -26,7 +61,8 @@ export function ConcentratesCard({ result }: { result: InterpretationResult }) {
           return (
             <article key="K" className="treat-item" data-testid="conc-K">
               <h4>{t('conc.K.title', { dose: n(c.doseMmol, 1) })}</h4>
-              <p>{t('conc.K.draw', { ml: n(c.stockMl, 1) })}</p>
+              <KclChoice pct={c.kclPct} />
+              <p>{t('conc.K.draw', { c: n(c.kclPct, 2), mm: n(c.mmolMl, 2), ml: n(c.stockMl, 1) })}</p>
               {(['peripheral', 'central'] as const).map((line) => {
                 const x = c[line];
                 return (

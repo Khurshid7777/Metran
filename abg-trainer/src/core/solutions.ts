@@ -36,3 +36,6 @@ export function gir(pct: number, mlPerHour: number, weightKg: number): number {
 export function rateForGir(pct: number, girMgKgMin: number, weightKg: number): number {
   return (girMgKgMin * 60 * weightKg) / (pct * 10);
 }
+
+/** KCl (M = 74.55): mmol per mL of a solution of the given %. 4 % → 0.537, 7.5 % → 1.006. */
+export const kclMmolMl = (pct: number) => (pct * 10) / 74.55;

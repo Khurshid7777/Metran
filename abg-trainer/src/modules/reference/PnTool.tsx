@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import normsJson from '../../content/norms.json';
 import { planPN, type PnGroup, type PnInput } from '../../core/parenteral';
+import { kclMmolMl } from '../../core/solutions';
 import { parseLocaleNumber } from '../../core/units';
+import { useApp } from '../../store';
 import { useT } from '../common/useT';
 
 const GROUPS: PnGroup[] = ['preterm', 'term_neonate', 'child', 'adult'];
@@ -22,7 +24,7 @@ function maintenancePerKg(w: number): number {
   return Math.round(((mlh * 24) / w) * 10) / 10;
 }
 
-function defaults(group: PnGroup, weight: number): Fields {
+function defaults(group: PnGroup, weight: number, kclPct: number): Fields {
   const d = PN.defaults[group] as { aa: number; lipid: number; gir: number; fluid?: number; na: number; k: number };
   return {
     weight: String(weight),
@@ -36,7 +38,7 @@ function defaults(group: PnGroup, weight: number): Fields {
     lipidPct: String(PN.products.lipidPct),
     glucosePct: String(PN.products.glucoseStocks[0]),
     naStock: PN.stocks.na[0].id,
-    kStock: PN.stocks.k[0].id,
+    kStock: String(kclPct),
   };
 }
 
@@ -50,12 +52,14 @@ const WARN_SEVERITY: Record<string, 'flag-warning' | 'flag-info'> = { energy_low
 /** Parenteral-nutrition calculator: targets per kg → volumes of the products, energy, glucose load and limit checks. */
 export function PnTool() {
   const { t, n } = useT();
+  const kclPct = useApp((s) => s.settings.kclPct);
   const [group, setGroup] = useState<PnGroup>('term_neonate');
-  const [f, setF] = useState<Fields>(() => defaults('term_neonate', START_WEIGHT.term_neonate));
+  const [f, setF] = useState<Fields>(() => defaults('term_neonate', START_WEIGHT.term_neonate, kclPct));
+  const kclOptions = [...new Set([4, 3, 7.5, kclPct])].sort((a, b) => a - b);
   const set = (k: keyof Fields, v: string) => setF((x) => ({ ...x, [k]: v }));
   const pick = (g: PnGroup) => {
     setGroup(g);
-    setF(defaults(g, START_WEIGHT[g]));
+    setF(defaults(g, START_WEIGHT[g], kclPct));
   };
 
   const v = {
@@ -68,7 +72,7 @@ export function PnTool() {
         group, weightKg: v.weight!, aa: v.aa!, lipid: v.lipid!, gir: v.gir!, fluid: v.fluid!, na: v.na!, k: v.k!,
         aaPct: v.aaPct!, lipidPct: v.lipidPct!, glucosePct: v.glucosePct!,
         naMmolMl: PN.stocks.na.find((s) => s.id === f.naStock)!.mmolMl,
-        kMmolMl: PN.stocks.k.find((s) => s.id === f.kStock)!.mmolMl,
+        kMmolMl: kclMmolMl(Number(f.kStock)),
       }
     : null;
   const r = input ? planPN(input) : null;
@@ -129,7 +133,7 @@ export function PnTool() {
             <div className="field">
               <label htmlFor="pn-kStock">{t('pn.kStock')}</label>
               <select id="pn-kStock" value={f.kStock} onChange={(e) => set('kStock', e.target.value)}>
-                {PN.stocks.k.map((s) => <option key={s.id} value={s.id}>{t('pn.stock.' + s.id)}</option>)}
+                {kclOptions.map((c) => <option key={c} value={String(c)}>{t('pn.stock.kcl', { c: n(c, 2), mm: n(kclMmolMl(c), 2) })}</option>)}
               </select>
             </div>
           </div>

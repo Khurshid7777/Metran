@@ -20,6 +20,8 @@ export interface AppSettings {
   logoDataUrl: string;
   /** Calculations switched off in the calculator (see core/exclusions.ts). */
   exclude: string[];
+  /** KCl solution used in the unit, %: the potassium concentrate is calculated from it. */
+  kclPct: number;
 }
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
@@ -36,6 +38,7 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
   signatory: '',
   logoDataUrl: '',
   exclude: [],
+  kclPct: 4,
 };
 
 interface State {
@@ -82,7 +85,7 @@ export const useApp = create<State>((set, get) => ({
 
 /** Settings for the calculator: the core settings plus the calculations the user switched off. The trainer and exam never use them. */
 export function calcSettings(s: AppSettings) {
-  return { ...coreSettings(s), exclude: s.exclude };
+  return { ...coreSettings(s), exclude: s.exclude, kclPct: s.kclPct };
 }
 
 /** Core settings derived from the app settings. */
