@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { LANGS, type Lang } from './i18n';
+import { Approval, useApprovalSummary } from './modules/settings/Approval';
 import { Editor } from './modules/editor/Editor';
 import { Calculator } from './modules/calculator/Calculator';
 import { Exam } from './modules/exam/Exam';
@@ -35,6 +36,9 @@ function Home() {
 export function App() {
   const { t } = useT();
   const { screen, go, lang, setLang, storageOk } = useApp();
+  // recomputed on every screen change, so a sign-off made in the sheet shows at once
+  const approval = useApprovalSummary();
+  void screen;
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -78,8 +82,14 @@ export function App() {
         {screen === 'settings' && <Settings />}
         {screen === 'verify' && <Verify />}
         {screen === 'editor' && <Editor />}
+        {screen === 'approval' && <Approval />}
       </main>
-      <footer className="muted small">{t('app.footer')}</footer>
+      <footer className="muted small" data-testid="footer">
+        {t('app.footer')}{' '}
+        <button type="button" className="linklike" onClick={() => go('approval')} data-testid="footer-approval">
+          {approval.complete && approval.last ? t('appr.footer.ok', { by: approval.last.by, date: approval.last.date }) : t('appr.footer.open', { n: approval.pendingIds.length })}
+        </button>
+      </footer>
     </>
   );
 }

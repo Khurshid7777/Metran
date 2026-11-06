@@ -6,6 +6,7 @@ import { LANGS, type Lang } from '../../i18n';
 import type { Specialty } from '../../storage/records';
 import { DEFAULT_APP_SETTINGS, useApp, type AppSettings } from '../../store';
 import { bank } from '../common/bank';
+import { useApprovalSummary } from './Approval';
 import { useT } from '../common/useT';
 
 const SPECIALTIES: Specialty[] = ['neonatologist', 'pediatrician', 'anesthesiologist', 'nurse', 'student', 'resident'];
@@ -38,6 +39,7 @@ export function Settings() {
   const { t } = useT();
   const { settings, updateSettings, profile, updateProfile, lang, setLang, go } = useApp();
   const review = bank().review;
+  const approval = useApprovalSummary();
 
   function onLogo(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -95,7 +97,10 @@ export function Settings() {
           <NumberSetting k="patm" label={t('settings.patm')} />
           <NumberSetting k="kclPct" label={t('settings.kclPct')} />
         </div>
-        <p className="muted small">{t('settings.normsVersion', { v: normsJson.version, by: normsJson.approvedBy || t('settings.notApproved') })}</p>
+        <p className="muted small">{t('settings.normsVersion', { v: normsJson.version, by: approval.complete && approval.last ? `${approval.last.by}, ${approval.last.date}` : t('settings.notApproved') })}</p>
+        <div className="actions">
+          <button onClick={() => go('approval')} data-testid="open-approval">{t('appr.open')}</button>
+        </div>
         <details className="sources">
           <summary>{t('settings.sources')}</summary>
           <dl className="details">

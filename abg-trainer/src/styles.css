@@ -446,3 +446,20 @@ table.values td { font-variant-numeric: tabular-nums; }
 .field label .unit { margin-left: 6px; color: var(--muted); font-size: 0.85em; }
 .kcl-choice { margin: 6px 0; }
 .kcl-other { width: 110px; min-height: 40px; }
+.linklike { background: none; border: none; padding: 0; min-height: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+.appr-list { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 10px; }
+.appr-item { border: 1px solid var(--border); border-left-width: 6px; border-radius: var(--radius); padding: 10px 12px; }
+.appr-recalled { border-left-color: #d9731f; }
+.appr-assumed { border-left-color: #c98a1a; }
+.appr-missing { border-left-color: var(--bad); }
+.appr-checked { border-left-color: var(--ok); }
+.appr-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.appr-badge-recalled { background: var(--warn-soft); color: var(--warn); }
+.appr-badge-assumed { background: var(--warn-soft); color: var(--warn); }
+.appr-badge-missing { background: var(--bad-soft); color: var(--bad); }
+.appr-badge-checked { background: var(--ok-soft); color: var(--ok); }
+.appr-values { list-style: none; padding: 0; margin: 4px 0; font-size: 0.85rem; overflow-wrap: anywhere; }
+.appr-sign { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.appr-sign input { flex: 1; min-width: 160px; }
+progress { width: 100%; height: 12px; }
+@media print { footer { display: none; } }
