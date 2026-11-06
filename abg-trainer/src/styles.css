@@ -415,3 +415,32 @@ table.values td { font-variant-numeric: tabular-nums; }
 .fold > summary { cursor: pointer; list-style-position: inside; }
 .fold > summary h3 { display: inline; margin: 0; }
 .fold-wrap > summary { cursor: pointer; margin: 10px 0; padding: 10px 14px; border: 1px dashed var(--border); border-radius: var(--radius); font-weight: 600; color: var(--accent); }
+
+/* Orientation, guide, solutions, parenteral nutrition */
+.path { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 6px 0 10px; }
+.path li { display: flex; flex-direction: column; gap: 2px; padding: 6px 10px; border-radius: 10px; background: var(--accent-soft); min-width: 96px; position: relative; }
+.path li.unknown { background: var(--surface); border: 1px dashed var(--border); color: var(--muted); }
+.path li:not(:last-child)::after { content: '›'; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1.2rem; }
+.path .path-step { font-size: 0.75rem; color: var(--muted); }
+.orient-lines { margin: 6px 0 0; padding-left: 18px; }
+.orient-lines li { margin: 4px 0; }
+.guide-steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.guide-steps li { display: flex; gap: 10px; align-items: flex-start; }
+.guide-n { flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: var(--accent-contrast); display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+.guide-steps p { margin: 2px 0 0; }
+.guide-table th, .guide-table td { vertical-align: top; }
+.mix-result { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 4px; }
+.mix-part { display: flex; flex-direction: column; padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; min-width: 110px; }
+.mix-part strong { font-size: 1.2rem; }
+.mixbar { max-width: 420px; }
+.pn-aa, .pn-sw-aa { fill: #3b7ddd; background: #3b7ddd; }
+.pn-glucose, .pn-sw-glucose { fill: #d9731f; background: #d9731f; }
+.pn-lipid, .pn-sw-lipid { fill: #e0b400; background: #e0b400; }
+.pn-table .sw { display: inline-block; width: 10px; height: 10px; border-radius: 2px; }
+.pn-table tr.total th, .pn-table tr.total td { font-weight: 700; border-top: 2px solid var(--border); }
+.pn-table tr.bad-row td { color: var(--bad); font-weight: 700; }
+.calc-lines { padding-left: 18px; }
+.fluid-calc .formula { margin: 4px 0; }
+.segmented-wrap { flex-wrap: wrap; max-width: 100%; }
+.segmented-wrap button { padding: 8px 12px; }
+.field label .unit { margin-left: 6px; color: var(--muted); font-size: 0.85em; }

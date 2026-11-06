@@ -127,6 +127,11 @@ export function FluidPlanCard({ result }: { result: InterpretationResult }) {
           </tr>
         </tbody>
       </table>
+      <div className="fluid-calc" data-testid="fluid-calc">
+        <p className="formula">{t('fluid.calc.deficit', { p: pct, w: n(w, 1), d: Math.round(pct * w * 10), h: hours, d24: Math.round(f.deficitMl) })}</p>
+        <p className="formula">{t('fluid.calc.maint', { m: n(m.amount, 1), mm: Math.round(f.maintenanceMl) })}</p>
+        <p className="formula">{t('fluid.calc.total', { mm: Math.round(f.maintenanceMl), d24: Math.round(f.deficitMl), l: Math.round(f.lossesMl), tot: Math.round(total), r: n(f.mlPerHour, 0) })}</p>
+      </div>
       <p className="muted small">{t('fluid.perKg', { v: Math.round(f.mlPerKgDay) })} {t('fluid.formula')}</p>
       {water?.first24h !== undefined && <p className="flag flag-info">{t('fluid.freeWater', { l: Math.round(water.first24h * 100) / 100 })}</p>}
       <p className="muted small">{t('fluid.note')}</p>
