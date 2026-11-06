@@ -5,6 +5,7 @@ import { AcidBaseMap, BilirubinChart, Davenport, DeviationProfile, Gamblegram, O
 import { DeficitsCard, ProcessCard, Workings } from './Workings';
 import { MetricsCard } from './MetricsCard';
 import { CrisisBoard, FluidPlanCard, SodiumCorridor } from './Crisis';
+import { ConcentratesCard } from './Concentrates';
 import { OrientationCard } from './Orientation';
 import type { Working } from '../../core/workings';
 
@@ -315,6 +316,7 @@ export function ResultView({ result, showTreatment = true }: { result: Interpret
       </section>
       <OrientationCard result={result} />
       <CrisisBoard result={result} />
+      {showTreatment && <ConcentratesCard result={result} />}
       {showTreatment && <FluidPlanCard result={result} />}
       {showTreatment && <SodiumCorridor result={result} />}
       <ProcessCard result={result} />

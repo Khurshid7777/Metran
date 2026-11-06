@@ -214,6 +214,8 @@ export interface InterpretationResult {
   urine?: import('./urine').UrineAssessment;
   /** Critical-shift board: abnormal analytes by severity with short actions. */
   crises: import('./crisis').Crisis[];
+  /** Concentrated solutions to prepare for the hypo-states present. */
+  concentrates: import('./concentrates').ConcentrateItem[];
   hyperK?: import('./hyperK').HyperKPlan;
   naCorrection?: import('./sodiumCorrection').NaCorrection;
   /** Extended assessment: derived values with formulas and norms. */

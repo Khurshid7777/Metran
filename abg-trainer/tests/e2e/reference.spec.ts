@@ -73,3 +73,19 @@ test('результат: ориентир по КЩС и формулы сут�
   await expect(plan.getByTestId('fluid-calc')).toContainText('Дефицит = 5 % × 70 кг × 10 = 3500 мл');
   await expect(plan.getByTestId('fluid-calc')).toContainText('Поддерживающая (4-2-1)');
 });
+
+test('гипо-состояния: карточка с приготовлением концентратов', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('mode-calculator').click();
+  await page.getByTestId('calc-mode-full').click();
+  await page.getByTestId('ageCategory').selectOption('child');
+  await page.getByTestId('sampleType').selectOption('venous');
+  for (const [k, v] of Object.entries({ pH: '7,38', pCO2: '38', HCO3: '22', Na: '122', K: '2,7', glucose: '2,4', iCa: '0,9', weightKg: '10' })) await page.getByTestId('in-' + k).fill(v);
+  await page.getByTestId('calculate').click();
+  const c = page.getByTestId('concentrates');
+  await expect(c.getByTestId('conc-K')).toContainText('125 мл');
+  await expect(c.getByTestId('conc-K')).toContainText('не более');
+  await expect(c.getByTestId('conc-Na')).toContainText('9,3 мл NaCl 23,4 %');
+  await expect(c.getByTestId('conc-Ca')).toContainText('0,225');
+  await expect(c.getByTestId('conc-glucose')).toContainText('20 мл + 80 мл воды');
+});

@@ -78,3 +78,40 @@ describe('парентеральное питание', () => {
     expect(planPN(child).warnings).toContain('energy_low');
   });
 });
+
+import { interpret } from '../../src/core/interpret';
+
+describe('концентраты при гипо-состояниях', () => {
+  const base = { pH: 7.4, pCO2: 40, HCO3: 24, sampleType: 'venous' as const, ageCategory: 'child' as const, weightKg: 10 };
+
+  it('калий: объём концентрата и разведение при периферической и центральной концентрации', () => {
+    const c = interpret({ ...base, K: 2.7 }).concentrates.find((x) => x.id === 'K')!;
+    if (c.id !== 'K') throw new Error();
+    expect(c.doseMmol).toBeCloseTo(5, 6);
+    expect(c.stockMl).toBeCloseTo(5 / 1.006, 6);
+    expect(c.peripheral.volumeMl).toBeCloseTo((5 / 40) * 1000, 6);
+    expect(c.central.volumeMl).toBeCloseTo((5 / 80) * 1000, 6);
+    expect(c.peripheral.maxRateMlH).toBeCloseTo((c.peripheral.maxRateMmolH / 40) * 1000, 6);
+    expect(c.peripheral.diluentMl).toBeCloseTo(125 - c.stockMl, 6);
+  });
+
+  it('натрий: потолок суток в мл 3 % и рецепт 100 мл', () => {
+    const c = interpret({ ...base, Na: 122 }).concentrates.find((x) => x.id === 'Na')!;
+    if (c.id !== 'Na') throw new Error();
+    expect(c.mmol24h).toBeCloseTo(0.6 * 10 * 8, 6);
+    expect(c.ml3pct).toBeCloseTo(c.mmol24h / 0.5133, 0);
+    expect(c.recipe100.stockMl).toBeCloseTo(9.333, 3);
+    expect(c.recipe100.stockMl + c.recipe100.diluentMl).toBeCloseTo(100, 9);
+  });
+
+  it('кальций и глюкоза; без гипо-состояний — пусто', () => {
+    const ca = interpret({ ...base, iCa: 0.9 }).concentrates.find((x) => x.id === 'Ca')!;
+    if (ca.id !== 'Ca') throw new Error();
+    expect(ca.mmol).toBeCloseTo(ca.gluconateMl * 0.225, 9);
+    const g = interpret({ ...base, glucose: 2.4 }).concentrates.find((x) => x.id === 'glucose')!;
+    if (g.id !== 'glucose') throw new Error();
+    expect(g.recipes.map((r) => [r.stockPct, Math.round(r.stockMl)])).toEqual([[50, 20], [40, 25]]);
+    expect(interpret({ ...base, K: 4.2, Na: 140, glucose: 5 }).concentrates).toEqual([]);
+    expect(interpret({ ...base, K: 2.7 }, { advanced: false, agWithK: false, exclude: ['concentrates'] }).concentrates).toEqual([]);
+  });
+});

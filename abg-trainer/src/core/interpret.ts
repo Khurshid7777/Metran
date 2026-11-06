@@ -4,6 +4,7 @@ import { anionGapStep, deltaStep } from './anionGap';
 import { compensationStep } from './compensation';
 import { osmolarStep } from './osmolar';
 import { deficits as computeDeficits } from './deficits';
+import { concentrates } from './concentrates';
 import { crises } from './crisis';
 import { dkaAssessment } from './dka';
 import { excludedSet, excludedStep, flagInExcludedGroup } from './exclusions';
@@ -59,6 +60,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
       metrics: [],
       profile: [],
       crises: [],
+      concentrates: [],
       computed: { HCO3: NaN, HCO3Calculated: input.HCO3 === undefined },
     };
   }
@@ -199,6 +201,7 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
     dka: dka.assessment,
     urine: urine.assessment,
     crises: [],
+    concentrates: [],
     hyperK: off.has('hyperK') ? undefined : hyperKPlan(ctx),
     naCorrection: off.has('naCorrection') ? undefined : sodiumCorrection(ctx),
     deficits: off.has('deficits') ? [] : computeDeficits(ctx, disorderTypes.includes('metabolic_alkalosis'), disorderTypes.includes('metabolic_acidosis')),
@@ -215,6 +218,16 @@ export function interpret(input: AbgInput, settings: Settings = DEFAULT_SETTINGS
       sodium24h: sodium?.first24h,
       freeWater24h: water?.first24h,
       naLimit: sodium ? norms.deficits.naMaxRise24h : water ? norms.deficits.naMaxFall24h : undefined,
+    });
+  }
+  if (!off.has('concentrates')) {
+    const sodium = result.deficits.find((d) => d.id === 'sodium');
+    result.concentrates = concentrates(ctx, {
+      potassium: result.treatment?.potassium,
+      calcium: result.treatment?.calcium,
+      sodium24h: sodium?.first24h,
+      naLimit: norms.deficits.naMaxRise24h,
+      glucoseLow: result.crises.some((c) => c.id === 'glucose' && c.dir === 'low'),
     });
   }
   result.workings = buildWorkings(input, steps, ctx.HCO3, settings, norms, result.treatment!, result.deficits);
