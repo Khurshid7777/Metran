@@ -66,3 +66,13 @@ describe('суточный план жидкости и коридор Na', () =
     expect(sodiumCorridor(140, 8, [135, 145]).hours).toBe(0);
   });
 });
+
+describe('магний и фосфат', () => {
+  it('гипомагниемия и гипофосфатемия у взрослого; фосфат у детей не оценивается', () => {
+    expect(crisis({ Mg: 0.45 })[0]).toMatchObject({ id: 'Mg', dir: 'low', level: 'severe' });
+    expect(crisis({ Mg: 1.6 })[0]).toMatchObject({ id: 'Mg', dir: 'high', level: 'moderate' });
+    expect(crisis({ phosphate: 0.5 })[0]).toMatchObject({ id: 'phosphate', dir: 'low', level: 'moderate' });
+    expect(crisis({ phosphate: 0.5, ageCategory: 'child', weightKg: 20 })).toEqual([]);
+    expect(crisis({ Mg: 0.85, phosphate: 1.1 })).toEqual([]);
+  });
+});

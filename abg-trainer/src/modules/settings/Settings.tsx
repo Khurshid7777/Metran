@@ -7,6 +7,7 @@ import type { Specialty } from '../../storage/records';
 import { DEFAULT_APP_SETTINGS, useApp, type AppSettings } from '../../store';
 import { bank } from '../common/bank';
 import { useApprovalSummary } from './Approval';
+import { Backup } from './Backup';
 import { useT } from '../common/useT';
 
 const SPECIALTIES: Specialty[] = ['neonatologist', 'pediatrician', 'anesthesiologist', 'nurse', 'student', 'resident'];
@@ -163,6 +164,7 @@ export function Settings() {
           </ul>
         )}
       </section>
+      <Backup />
     </div>
   );
 }

@@ -28,7 +28,9 @@
     "pn.osm",
     "infusion.adultMlKgDay",
     "infusion.adultBolusMl",
-    "infusion.feverPctPerDeg"
+    "infusion.feverPctPerDeg",
+    "crisis.Mg",
+    "crisis.phosphate"
   ],
   "sources": {
     "acidBase": "Boston rules: Narins & Emmett, Medicine 1980; Berend, Rev Clin Esp 2018 (Winters, metabolic alkalosis 0.7×HCO3+21, respiratory 0.1/0.35, 0.2/0.4). Copenhagen SBE: Schlichtig, Crit Care Med 1998.",
@@ -62,7 +64,7 @@
     "naCorrection": "Adrogué & Madias, N Engl J Med 2000;342:1581: change in serum Na per litre of infusate = (infusate Na + infusate K − serum Na) / (TBW + 1). The estimate ignores ongoing losses and ADH-driven changes — measure Na every 2–4 h. Infusate electrolyte content: standard product compositions (0.9 % NaCl 154, 3 % NaCl 513, 0.45 % NaCl 77, 0.18 % NaCl 31 mmol/L Na; lactated Ringer 130 Na + 4 K; Plasma-Lyte 140 Na + 5 K; 5 % dextrose 0).",
     "hyperK": "Severity: mild 5.5–5.9, moderate 6.0–6.4, severe ≥ 6.5 mmol/L (ERC classification used by the UK Kidney Association / Renal Association hyperkalaemia guideline, 2020; checked in search excerpts). Children: calcium gluconate 10 % 0.5 mL/kg (max 20 mL) over ~10 min; regular insulin 0.1 U/kg (max 10 U) with glucose 0.5 g/kg (10 % dextrose 5 mL/kg) over 30 min, glucose every 30 min; nebulised salbutamol 2.5 mg (< 10 kg) or 5 mg (≥ 10 kg) — doses agree across several paediatric hospital guidelines (RCH Melbourne, PCH Perth, Birmingham Women's and Children's), but local protocols differ on glucose and salbutamol (excerpts). Adults: insulin 10 U with 25 g glucose and nebulised salbutamol 10–20 mg are recalled from the UKKA guideline and were not checked against the full text; the 2023 UKKA draft changes the IV calcium recommendation (10 mL calcium chloride 10 % over 5 min) — follow the local protocol. Calcium doses reuse norms.labs.iCa. Not applied to neonates (different thresholds).",
     "preanalytic": "Sample handling: CLSI C46 (Blood gas and pH analysis and related measurements) and the Radiometer ABL800 FLEX Reference Manual — balanced heparin, expel air bubbles, mix, analyse within 30 min at room temperature; recalled, not checked against the full text. Plausibility rules: pO2 cannot exceed the alveolar PO2 (FiO2 × (Patm − 47) − pCO2/0.8); isolated hyperkalaemia without acidosis suggests haemolysis; low glucose with high lactate and K suggests in-vitro metabolism after a delay.",
-    "crisis": "Bands for the critical-shift board. K+: norms.labs.K (mild < 3.5, moderate < 3.0, severe < 2.5; high 5.5 / 6.0 / 6.5, ERC / UKKA). Na+: hyponatraemia mild 130–134, moderate 125–129, profound < 125 (European hyponatraemia guideline, Spasovski 2014); hypernatraemia thresholds 150 and 160 are recalled, not checked against the full text. iCa: norms.labs.iCa. Glucose: norms.labs.glucose (BAPM 2017, ISPAD 2022, ADA). Lactate: SSC 2021. pH: critical 7.0 / 7.6 from norms.critical, acidaemia 7.2 from norms.treatment; the alkalaemia 7.55 step is recalled. Action hints only point to the calculations already shown (doses, correction rate limits) and to general safety steps; they are not a protocol.",
+    "crisis": "Bands for the critical-shift board. K+: norms.labs.K (mild < 3.5, moderate < 3.0, severe < 2.5; high 5.5 / 6.0 / 6.5, ERC / UKKA). Na+: hyponatraemia mild 130–134, moderate 125–129, profound < 125 (European hyponatraemia guideline, Spasovski 2014); hypernatraemia thresholds 150 and 160 are recalled, not checked against the full text. iCa: norms.labs.iCa. Glucose: norms.labs.glucose (BAPM 2017, ISPAD 2022, ADA). Lactate: SSC 2021. pH: critical 7.0 / 7.6 from norms.critical, acidaemia 7.2 from norms.treatment; the alkalaemia 7.55 step is recalled. Action hints only point to the calculations already shown (doses, correction rate limits) and to general safety steps; they are not a protocol. Magnesium (normal 0.7–1.0, low 0.6 / 0.5, high 1.5 / 2.0) and adult phosphate (normal 0.8–1.5, low 0.6 / 0.3 mmol/L) bands are recalled, not verified; phosphate is shown for adults only (children have higher, age-dependent ranges); no doses are given.",
     "solutions": "Mixing: C1·V1 + C2·V2 = C3·V3 (dilution / alligation). NaCl: 1 % = 10 g/L = 171.1 mmol/L (M = 58.44), osmolarity = 2 × mmol/L. Dextrose: 1 % = 10 g/L; osmolarity 5.05 mOsm/g (dextrose monohydrate; 5 % ≈ 252 mOsm/L); 3.4 kcal/g. Glucose infusion rate GIR (mg/kg/min) = concentration % × 10 × rate mL/h / (60 × weight). Textbook arithmetic; concentrated solutions are given by the local protocol.",
     "pn": "Checked in search excerpts: ESPEN ICU guideline, Singer et al., Clin Nutr 2019;38:48–79 — glucose ≤ 5 mg/kg/min, lipids ≤ 1.5 g/kg/day (including non-nutritional lipid), protein 1.3 g/kg/day built up progressively. ESPGHAN/ESPEN/ESPR/CSPEN 2018 (Clin Nutr 37:2315–2353) — parenteral amino acids in preterm infants not above 3.5 g/kg/day outside trials; lipids in children max 3 g/kg/day; energy 90–120 kcal/kg/day for children dependent on PN; glucose delivery should not exceed maximal oxidation, about 12 mg/kg/min. NOT verified (recalled or standard product data): starting targets per age group, fluid volumes, electrolyte doses, the peripheral limits (osmolarity 900 mOsm/L, glucose 12.5 %), energy values of emulsions (20 % = 2 kcal/mL), 10 mOsm/g of amino acids. Defaults are starting values for the clinician to edit, not recommendations.",
     "concentrates": "Preparation of concentrated solutions for hypo-states. Potassium: dose, maximum rate and concentration limits (≤ 40 mmol/L peripheral, ≤ 80 mmol/L central) are those of norms.labs.K (NSW ANMF, PCH Perth, UK SPC); KCl concentration is set per unit (default 4 %): mmol/mL = % × 10 / 74.55, so 3 % = 0.402, 4 % = 0.537, 7.5 % = 1.006. Sodium: the amount is the 24-h ceiling of the sodium deficit (rise ≤ 8 mmol/L per 24 h, Adrogué & Madias), expressed as 3 % NaCl (0.513 mmol/mL) prepared from 23.4 % NaCl (4 mmol/mL) and 0.9 % NaCl by the mixing rule; bolus doses for symptomatic hyponatraemia are NOT given here (protocol). Calcium: dose from norms.labs.iCa; calcium gluconate 10 % contains about 0.225 mmol Ca/mL (product data). Glucose: 10 % prepared from 50 % or 40 % by the mixing rule; no hypoglycaemia dose is given (protocol). Magnesium and phosphate are not covered.",
@@ -946,6 +948,43 @@
         7.46,
         7.55,
         7.6
+      ]
+    },
+    "Mg": {
+      "unit": "mmol",
+      "scale": [
+        0.2,
+        1.6
+      ],
+      "normal": [
+        0.7,
+        1.0
+      ],
+      "low": [
+        0.7,
+        0.6,
+        0.5
+      ],
+      "high": [
+        1.05,
+        1.5,
+        2.0
+      ]
+    },
+    "phosphate": {
+      "unit": "mmol",
+      "scale": [
+        0.1,
+        2.5
+      ],
+      "normal": [
+        0.8,
+        1.5
+      ],
+      "low": [
+        0.8,
+        0.6,
+        0.3
       ]
     }
   },

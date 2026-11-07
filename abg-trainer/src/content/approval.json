@@ -326,5 +326,15 @@
       "infusion.feverFrom"
     ],
     "source": "infusion"
+  },
+  {
+    "id": "crisisMgP",
+    "area": "crisis",
+    "status": "recalled",
+    "paths": [
+      "crisis.Mg",
+      "crisis.phosphate"
+    ],
+    "source": "crisis"
   }
 ]

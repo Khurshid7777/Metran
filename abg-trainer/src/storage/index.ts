@@ -41,3 +41,29 @@ export function remove(key: string): void {
     /* storage unavailable */
   }
 }
+
+/** Everything the app keeps in this browser, as one object (for a backup file). */
+export function exportAll(): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  try {
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const k = window.localStorage.key(i);
+      if (!k || !k.startsWith(PREFIX) || k === PREFIX + '__probe') continue;
+      try {
+        out[k.slice(PREFIX.length)] = JSON.parse(window.localStorage.getItem(k) ?? 'null');
+      } catch {
+        /* unreadable entry skipped */
+      }
+    }
+  } catch {
+    /* storage unavailable */
+  }
+  return out;
+}
+
+/** Restores a backup made by exportAll; returns the number of keys written. */
+export function importAll(data: Record<string, unknown>): number {
+  let n = 0;
+  for (const [k, v] of Object.entries(data)) if (/^[\w.-]+$/.test(k) && save(k, v)) n++;
+  return n;
+}

@@ -2,7 +2,7 @@ import type { Ctx } from './types';
 import type { HyperKPlan } from './hyperK';
 import type { CalciumPlan, PotassiumPlan } from './labs';
 
-export type CrisisId = 'K' | 'Na' | 'iCa' | 'glucose' | 'lactate' | 'pH';
+export type CrisisId = 'K' | 'Na' | 'iCa' | 'Mg' | 'phosphate' | 'glucose' | 'lactate' | 'pH';
 export type CrisisLevel = 'mild' | 'moderate' | 'severe';
 
 /** A coloured stretch of the value axis. */
@@ -148,6 +148,26 @@ export function crises(ctx: Ctx, plans: CrisisPlans): Crisis[] {
           { key: 'crisis.iCa.low.line' },
           { key: 'crisis.iCa.low.ph' },
         ],
+      });
+    }
+  }
+
+  if (input.Mg !== undefined && !neonate) {
+    const m = C.Mg;
+    const lo = levelLow(input.Mg, m.low as unknown as Cuts);
+    const hi = levelHigh(input.Mg, m.high as unknown as Cuts);
+    const base = { id: 'Mg' as const, value: input.Mg, normal: m.normal as [number, number], scale: m.scale as [number, number], low: m.low as unknown as Cuts, high: m.high as unknown as Cuts };
+    if (lo) push({ ...base, dir: 'low', level: lo, actions: [{ key: 'crisis.Mg.low.ecg' }, { key: 'crisis.Mg.low.kca' }, { key: 'crisis.Mg.low.cause' }] });
+    else if (hi) push({ ...base, dir: 'high', level: hi, actions: [{ key: 'crisis.Mg.high.signs' }, { key: 'crisis.Mg.high.cause' }] });
+  }
+
+  if (input.phosphate !== undefined && input.ageCategory === 'adult') {
+    const ph = C.phosphate;
+    const lo = levelLow(input.phosphate, ph.low as unknown as Cuts);
+    if (lo) {
+      push({
+        id: 'phosphate', dir: 'low', level: lo, value: input.phosphate, normal: ph.normal as [number, number], scale: ph.scale as [number, number], low: ph.low as unknown as Cuts,
+        actions: [{ key: 'crisis.phosphate.low.refeeding' }, { key: 'crisis.phosphate.low.signs' }, { key: 'crisis.phosphate.low.treat' }],
       });
     }
   }

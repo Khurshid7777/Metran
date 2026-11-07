@@ -13,7 +13,7 @@ function ZoneBar({ c }: { c: Crisis }) {
   const { t, n } = useT();
   const [min, max] = c.scale;
   const x = (v: number) => PAD_X + ((Math.min(max, Math.max(min, v)) - min) / (max - min)) * (BAR_W - 2 * PAD_X);
-  const digits = c.id === 'pH' ? 2 : c.id === 'iCa' ? 2 : c.id === 'K' ? 1 : 0;
+  const digits = ['pH', 'iCa', 'Mg', 'phosphate'].includes(c.id) ? 2 : c.id === 'K' ? 1 : 0;
   // Tick labels: keep the normal range and the cut-offs, dropping any that would touch the previous label
   const cuts: number[] = [];
   for (const v of [...new Set(c.zones.slice(1).map((z) => z.from))].sort((a, b) => a - b)) {
@@ -44,7 +44,7 @@ export function CrisisBoard({ result }: { result: InterpretationResult }) {
               <span className="arrow" aria-hidden="true">{c.dir === 'low' ? '▼' : '▲'}</span>
               <strong>{t('crisis.name.' + c.id)}</strong>
               <span className="crisis-value">
-                {n(c.value, c.id === 'pH' || c.id === 'iCa' ? 2 : 1)} {c.id !== 'pH' && <span className="unit">{t('unit.mmol')}</span>}
+                {n(c.value, ['pH', 'iCa', 'Mg', 'phosphate'].includes(c.id) ? 2 : 1)} {c.id !== 'pH' && <span className="unit">{t('unit.mmol')}</span>}
               </span>
               <span className={'lvl lvl-' + c.level}>{t('crisis.' + c.dir)} · {t('crisis.level.' + c.level)}</span>
             </header>

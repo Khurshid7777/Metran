@@ -473,3 +473,7 @@ progress { width: 100%; height: 12px; }
 .inf-fever, .inf-sw-fever { fill: #c0392b; background: #c0392b; }
 .inf-deficit, .inf-sw-deficit { fill: #d9731f; background: #d9731f; }
 .inf-losses, .inf-sw-losses { fill: #7a5ea8; background: #7a5ea8; }
+.button-like { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); cursor: pointer; }
+.button-like:focus-within { box-shadow: var(--focus); }
+.handoff-box { flex-basis: 100%; }
+.handoff-box textarea { width: 100%; box-sizing: border-box; font-size: 0.85rem; }
