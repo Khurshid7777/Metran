@@ -8,6 +8,7 @@ import { Progress } from './modules/progress/Progress';
 import { Reference } from './modules/reference/Reference';
 import { Settings } from './modules/settings/Settings';
 import { Verify } from './modules/settings/Verify';
+import { PwaBar } from './modules/common/PwaBar';
 import { Trainer } from './modules/trainer/Trainer';
 import { useT } from './modules/common/useT';
 import { useApp, type Screen } from './store';
@@ -71,6 +72,7 @@ export function App() {
           </ul>
         </nav>
       </header>
+      <PwaBar />
       {!storageOk && <p className="flag flag-warning storage-warning" role="alert">{t('app.noStorage')}</p>}
       <main id="main" tabIndex={-1}>
         {screen === 'home' && <Home />}

@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import './styles.css';
+import { registerServiceWorker } from './pwa';
 
 // Older iOS Safari (< 15.4) lacks Array.prototype.at, which a bundled library uses
 if (!Array.prototype.at) {
@@ -20,3 +21,5 @@ createRoot(document.getElementById('root')!).render(
     <App />
   </StrictMode>,
 );
+
+registerServiceWorker();

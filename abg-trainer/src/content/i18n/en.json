@@ -1737,5 +1737,13 @@
   "appr.item.crisisMgP": "Magnesium scale (0.7–1.0; 0.6 / 0.5) and adult phosphate (0.8–1.5; 0.6 / 0.3) — from memory.",
   "backup.count": "records in the file: {n}",
   "backup.apply": "Restore",
-  "backup.cancel": "Cancel"
+  "backup.cancel": "Cancel",
+  "pwa.label": "Install and update",
+  "pwa.update": "A new version of the app is available.",
+  "pwa.updateNow": "Update",
+  "pwa.install": "Install the app on this device?",
+  "pwa.installNow": "Install",
+  "pwa.later": "Not now",
+  "pwa.ios": "To install on iPhone or iPad: tap Share (the square with an arrow) in Safari → “Add to Home Screen”.",
+  "pwa.gotIt": "Got it"
 }

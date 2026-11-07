@@ -1738,5 +1738,13 @@
   "appr.item.crisisMgP": "Magniy shkalasi (0,7–1,0; 0,6 / 0,5) va kattalarda fosfat (0,8–1,5; 0,6 / 0,3) — xotiradan.",
   "backup.count": "fayldagi yozuvlar: {n}",
   "backup.apply": "Tiklash",
-  "backup.cancel": "Bekor qilish"
+  "backup.cancel": "Bekor qilish",
+  "pwa.label": "O‘rnatish va yangilash",
+  "pwa.update": "Ilovaning yangi versiyasi mavjud.",
+  "pwa.updateNow": "Yangilash",
+  "pwa.install": "Ilovani qurilmaga o‘rnatasizmi?",
+  "pwa.installNow": "O‘rnatish",
+  "pwa.later": "Hozir emas",
+  "pwa.ios": "iPhone yoki iPad ga o‘rnatish uchun: Safari’da «Ulashish» (o‘qli kvadrat) → «Bosh ekranga qo‘shish» ni bosing.",
+  "pwa.gotIt": "Tushunarli"
 }
