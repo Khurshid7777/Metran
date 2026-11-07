@@ -1,30 +1,330 @@
 [
-  { "id": "preterm", "area": "categories", "status": "assumed", "paths": ["categories.preterm.HCO3", "categories.preterm.BE"], "source": "preterm" },
-  { "id": "ventRates", "area": "categories", "status": "assumed", "paths": ["ventilation.rateLimits"], "source": null },
-  { "id": "dkaChild", "area": "dka", "status": "recalled", "paths": ["dka.child.glucose", "dka.child.pH", "dka.child.HCO3", "dka.child.severity"], "source": "dka" },
-  { "id": "dkaDextrose", "area": "dka", "status": "recalled", "paths": ["dka.child.dextrose"], "source": "dka" },
-  { "id": "dkaOsm", "area": "dka", "status": "recalled", "paths": ["dka.effOsmHigh"], "source": "dka" },
-  { "id": "dkaAdultSev", "area": "dka", "status": "recalled", "paths": ["dka.adult.severity"], "source": "dka" },
-  { "id": "dkaChild2", "area": "dka", "status": "checked", "paths": ["dka.child.insulinRate", "dka.child.insulinLowRatePH", "dka.child.kDeferInsulin", "dka.child.kDeferK"], "source": "dka" },
-  { "id": "dkaAdultCrit", "area": "dka", "status": "checked", "paths": ["dka.adult.glucose", "dka.adult.bhb", "dka.adult.pH", "dka.adult.HCO3", "dka.adult.bhbResolved"], "source": "dka" },
-  { "id": "hkBands", "area": "hyperK", "status": "checked", "paths": ["labs.K.mild", "labs.K.moderate", "labs.K.severe", "labs.K.hyperMild", "labs.K.hyperModerate", "labs.K.hyperSevere"], "source": "hyperK" },
-  { "id": "hkChild", "area": "hyperK", "status": "checked", "paths": ["hyperK.insulin.child", "hyperK.salbutamolMg.child", "hyperK.glucoseCheckMin"], "source": "hyperK" },
-  { "id": "hkAdult", "area": "hyperK", "status": "recalled", "paths": ["hyperK.insulin.adult", "hyperK.salbutamolMg.adult"], "source": "hyperK" },
-  { "id": "preanalytic", "area": "hyperK", "status": "assumed", "paths": ["hyperK.pseudo", "hyperK.air", "hyperK.delay"], "source": "preanalytic" },
-  { "id": "crisisNa", "area": "crisis", "status": "recalled", "paths": ["crisis.Na"], "source": "crisis" },
-  { "id": "crisisKCa", "area": "crisis", "status": "checked", "paths": ["crisis.K", "crisis.iCa"], "source": "crisis" },
-  { "id": "crisisGlucose", "area": "crisis", "status": "recalled", "paths": ["crisis.glucose"], "source": "crisis" },
-  { "id": "crisisLactate", "area": "crisis", "status": "recalled", "paths": ["crisis.lactate"], "source": "crisis" },
-  { "id": "crisisPH", "area": "crisis", "status": "recalled", "paths": ["crisis.pH"], "source": "crisis" },
-  { "id": "urine", "area": "urine", "status": "recalled", "paths": ["urine"], "source": "urine" },
-  { "id": "naLimits", "area": "fluids", "status": "checked", "paths": ["deficits.naMaxRise24h", "deficits.naMaxFall24h", "deficits.tbw"], "source": "deficits" },
-  { "id": "infusates", "area": "fluids", "status": "assumed", "paths": ["deficits.infusates"], "source": "naCorrection" },
-  { "id": "concK", "area": "fluids", "status": "checked", "paths": ["labs.K.pedDoseMmolKg", "labs.K.pedMaxRate", "labs.K.pedMaxRateICU", "labs.K.concPeripheral", "labs.K.concCentral", "labs.K.adultDoseMmol", "labs.K.adultRatePeripheral", "labs.K.adultRateCentral", "concentrates.kclPct"], "source": "concentrates" },
-  { "id": "concOther", "area": "fluids", "status": "assumed", "paths": ["concentrates.naclTarget", "concentrates.naclStock", "concentrates.caGluconateMmolMl", "concentrates.glucoseTarget", "concentrates.glucoseStocks"], "source": "concentrates" },
-  { "id": "pnLimits", "area": "pn", "status": "checked", "paths": ["pn.limits", "pn.energyChildPN"], "source": "pn" },
-  { "id": "pnDefaults", "area": "pn", "status": "assumed", "paths": ["pn.defaults"], "source": "pn" },
-  { "id": "pnPeripheral", "area": "pn", "status": "recalled", "paths": ["pn.peripheral", "pn.osm", "pn.emulsionKcalMl", "pn.kcal"], "source": "pn" },
-  { "id": "glucoseLab", "area": "labs", "status": "checked", "paths": ["labs.glucose", "labs.lactate"], "source": "glucose" },
-  { "id": "bilirubinAAP", "area": "labs", "status": "missing", "paths": ["labs.bilirubinAAP2022.verified"], "source": "bilirubin" },
-  { "id": "series", "area": "labs", "status": "checked", "paths": ["series"], "source": "series" }
+  {
+    "id": "preterm",
+    "area": "categories",
+    "status": "assumed",
+    "paths": [
+      "categories.preterm.HCO3",
+      "categories.preterm.BE"
+    ],
+    "source": "preterm"
+  },
+  {
+    "id": "ventRates",
+    "area": "categories",
+    "status": "assumed",
+    "paths": [
+      "ventilation.rateLimits"
+    ],
+    "source": null
+  },
+  {
+    "id": "dkaChild",
+    "area": "dka",
+    "status": "recalled",
+    "paths": [
+      "dka.child.glucose",
+      "dka.child.pH",
+      "dka.child.HCO3",
+      "dka.child.severity"
+    ],
+    "source": "dka"
+  },
+  {
+    "id": "dkaDextrose",
+    "area": "dka",
+    "status": "recalled",
+    "paths": [
+      "dka.child.dextrose"
+    ],
+    "source": "dka"
+  },
+  {
+    "id": "dkaOsm",
+    "area": "dka",
+    "status": "recalled",
+    "paths": [
+      "dka.effOsmHigh"
+    ],
+    "source": "dka"
+  },
+  {
+    "id": "dkaAdultSev",
+    "area": "dka",
+    "status": "recalled",
+    "paths": [
+      "dka.adult.severity"
+    ],
+    "source": "dka"
+  },
+  {
+    "id": "dkaChild2",
+    "area": "dka",
+    "status": "checked",
+    "paths": [
+      "dka.child.insulinRate",
+      "dka.child.insulinLowRatePH",
+      "dka.child.kDeferInsulin",
+      "dka.child.kDeferK"
+    ],
+    "source": "dka"
+  },
+  {
+    "id": "dkaAdultCrit",
+    "area": "dka",
+    "status": "checked",
+    "paths": [
+      "dka.adult.glucose",
+      "dka.adult.bhb",
+      "dka.adult.pH",
+      "dka.adult.HCO3",
+      "dka.adult.bhbResolved"
+    ],
+    "source": "dka"
+  },
+  {
+    "id": "hkBands",
+    "area": "hyperK",
+    "status": "checked",
+    "paths": [
+      "labs.K.mild",
+      "labs.K.moderate",
+      "labs.K.severe",
+      "labs.K.hyperMild",
+      "labs.K.hyperModerate",
+      "labs.K.hyperSevere"
+    ],
+    "source": "hyperK"
+  },
+  {
+    "id": "hkChild",
+    "area": "hyperK",
+    "status": "checked",
+    "paths": [
+      "hyperK.insulin.child",
+      "hyperK.salbutamolMg.child",
+      "hyperK.glucoseCheckMin"
+    ],
+    "source": "hyperK"
+  },
+  {
+    "id": "hkAdult",
+    "area": "hyperK",
+    "status": "recalled",
+    "paths": [
+      "hyperK.insulin.adult",
+      "hyperK.salbutamolMg.adult"
+    ],
+    "source": "hyperK"
+  },
+  {
+    "id": "preanalytic",
+    "area": "hyperK",
+    "status": "assumed",
+    "paths": [
+      "hyperK.pseudo",
+      "hyperK.air",
+      "hyperK.delay"
+    ],
+    "source": "preanalytic"
+  },
+  {
+    "id": "crisisNa",
+    "area": "crisis",
+    "status": "recalled",
+    "paths": [
+      "crisis.Na"
+    ],
+    "source": "crisis"
+  },
+  {
+    "id": "crisisKCa",
+    "area": "crisis",
+    "status": "checked",
+    "paths": [
+      "crisis.K",
+      "crisis.iCa"
+    ],
+    "source": "crisis"
+  },
+  {
+    "id": "crisisGlucose",
+    "area": "crisis",
+    "status": "recalled",
+    "paths": [
+      "crisis.glucose"
+    ],
+    "source": "crisis"
+  },
+  {
+    "id": "crisisLactate",
+    "area": "crisis",
+    "status": "recalled",
+    "paths": [
+      "crisis.lactate"
+    ],
+    "source": "crisis"
+  },
+  {
+    "id": "crisisPH",
+    "area": "crisis",
+    "status": "recalled",
+    "paths": [
+      "crisis.pH"
+    ],
+    "source": "crisis"
+  },
+  {
+    "id": "urine",
+    "area": "urine",
+    "status": "recalled",
+    "paths": [
+      "urine"
+    ],
+    "source": "urine"
+  },
+  {
+    "id": "naLimits",
+    "area": "fluids",
+    "status": "checked",
+    "paths": [
+      "deficits.naMaxRise24h",
+      "deficits.naMaxFall24h",
+      "deficits.tbw"
+    ],
+    "source": "deficits"
+  },
+  {
+    "id": "infusates",
+    "area": "fluids",
+    "status": "assumed",
+    "paths": [
+      "deficits.infusates"
+    ],
+    "source": "naCorrection"
+  },
+  {
+    "id": "concK",
+    "area": "fluids",
+    "status": "checked",
+    "paths": [
+      "labs.K.pedDoseMmolKg",
+      "labs.K.pedMaxRate",
+      "labs.K.pedMaxRateICU",
+      "labs.K.concPeripheral",
+      "labs.K.concCentral",
+      "labs.K.adultDoseMmol",
+      "labs.K.adultRatePeripheral",
+      "labs.K.adultRateCentral",
+      "concentrates.kclPct"
+    ],
+    "source": "concentrates"
+  },
+  {
+    "id": "concOther",
+    "area": "fluids",
+    "status": "assumed",
+    "paths": [
+      "concentrates.naclTarget",
+      "concentrates.naclStock",
+      "concentrates.caGluconateMmolMl",
+      "concentrates.glucoseTarget",
+      "concentrates.glucoseStocks"
+    ],
+    "source": "concentrates"
+  },
+  {
+    "id": "pnLimits",
+    "area": "pn",
+    "status": "checked",
+    "paths": [
+      "pn.limits",
+      "pn.energyChildPN"
+    ],
+    "source": "pn"
+  },
+  {
+    "id": "pnDefaults",
+    "area": "pn",
+    "status": "assumed",
+    "paths": [
+      "pn.defaults"
+    ],
+    "source": "pn"
+  },
+  {
+    "id": "pnPeripheral",
+    "area": "pn",
+    "status": "recalled",
+    "paths": [
+      "pn.peripheral",
+      "pn.osm",
+      "pn.emulsionKcalMl",
+      "pn.kcal"
+    ],
+    "source": "pn"
+  },
+  {
+    "id": "glucoseLab",
+    "area": "labs",
+    "status": "checked",
+    "paths": [
+      "labs.glucose",
+      "labs.lactate"
+    ],
+    "source": "glucose"
+  },
+  {
+    "id": "bilirubinAAP",
+    "area": "labs",
+    "status": "missing",
+    "paths": [
+      "labs.bilirubinAAP2022.verified"
+    ],
+    "source": "bilirubin"
+  },
+  {
+    "id": "series",
+    "area": "labs",
+    "status": "checked",
+    "paths": [
+      "series"
+    ],
+    "source": "series"
+  },
+  {
+    "id": "infusionChild",
+    "area": "fluids",
+    "status": "checked",
+    "paths": [
+      "infusion.hsPerDay",
+      "infusion.bolusMlKg",
+      "infusion.bolusMinutes",
+      "infusion.isotonicNa"
+    ],
+    "source": "infusion"
+  },
+  {
+    "id": "infusionAdult",
+    "area": "fluids",
+    "status": "recalled",
+    "paths": [
+      "infusion.adultMlKgDay",
+      "infusion.adultBolusMl",
+      "infusion.adultBolusMinutes",
+      "infusion.adultElectrolytesMmolKg",
+      "infusion.adultGlucoseG"
+    ],
+    "source": "infusion"
+  },
+  {
+    "id": "infusionFever",
+    "area": "fluids",
+    "status": "recalled",
+    "paths": [
+      "infusion.feverPctPerDeg",
+      "infusion.feverFrom"
+    ],
+    "source": "infusion"
+  }
 ]

@@ -97,3 +97,23 @@ test('гипо-состояния: карточка с приготовлени�
   await expect(c.getByTestId('conc-Ca')).toContainText('0,225');
   await expect(c.getByTestId('conc-glucose')).toContainText('20 мл + 80 мл воды');
 });
+
+test('справочник: инфузия — Холлидей–Сегар по шагам, ограничение, лихорадка, болюс', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('nav-reference').click();
+  await page.getByTestId('ref-tab-infusion').click();
+  await expect(page.getByTestId('inf-total')).toHaveText('1560');
+  await expect(page.getByTestId('inf-rate')).toHaveText('65');
+  await expect(page.getByTestId('inf-calc')).toContainText('10 кг × 100 + 10 кг × 50 + 3 кг × 20 = 1560 мл');
+  await expect(page.getByTestId('inf-bolus')).toContainText('230 мл (10 мл/кг)');
+
+  await page.getByTestId('inf-w').fill('10');
+  await page.getByTestId('inf-restrict').fill('70');
+  await page.getByTestId('inf-temp').fill('39');
+  await expect(page.getByTestId('inf-calc')).toContainText('1000 мл × 70 % = 700 мл');
+  await expect(page.getByTestId('inf-calc')).toContainText('+140 мл');
+  await expect(page.getByTestId('inf-total')).toHaveText('840');
+
+  await page.getByTestId('inf-g-adult').click();
+  await expect(page.getByTestId('inf-calc')).toContainText('25 мл/кг/сут × 70 кг = 1750 мл');
+});

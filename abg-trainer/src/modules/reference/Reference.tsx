@@ -3,11 +3,12 @@ import formulas from '../../content/formulas.json';
 import { load, save } from '../../storage';
 import { useT } from '../common/useT';
 import { AcidBaseGuide } from './AcidBaseGuide';
+import { InfusionTool } from './InfusionTool';
 import { PnTool } from './PnTool';
 import { SolutionsTool } from './SolutionsTool';
 
-type Tab = 'formulas' | 'guide' | 'solutions' | 'pn';
-const TABS: Tab[] = ['formulas', 'guide', 'solutions', 'pn'];
+type Tab = 'formulas' | 'guide' | 'infusion' | 'solutions' | 'pn';
+const TABS: Tab[] = ['formulas', 'guide', 'infusion', 'solutions', 'pn'];
 
 /** Reference: formula sheet, acid–base algorithm, solution preparation and parenteral-nutrition calculators. */
 export function Reference() {
@@ -35,6 +36,7 @@ export function Reference() {
         </div>
       </div>
       {tab === 'guide' && <AcidBaseGuide />}
+      {tab === 'infusion' && <InfusionTool />}
       {tab === 'solutions' && <SolutionsTool />}
       {tab === 'pn' && <PnTool />}
       {tab === 'formulas' && (
