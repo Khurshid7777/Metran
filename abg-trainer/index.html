@@ -4,11 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="format-detection" content="telephone=no" />
     <title>Тренажёр КЩС</title>
     <meta name="claude:viewport-fit-sides" content="cover" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="boot-fallback" style="font:16px/1.5 -apple-system,system-ui,sans-serif;max-width:640px;margin:24px auto;padding:16px;color:#15202b;background:#fff4dc;border:1px solid #e0b25c;border-radius:10px">
+        <h1 style="font-size:20px;margin:0 0 8px">Тренажёр КЩС не запустился</h1>
+        <p style="margin:0 0 8px">Файл открыт в режиме предпросмотра, где программы на странице не работают. Так бывает на iPhone и iPad при открытии из «Файлов», почты или мессенджера.</p>
+        <ul style="margin:0 0 8px;padding-left:20px">
+          <li>Откройте ссылку на приложение в Safari (нужен интернет).</li>
+          <li>Или откройте файл в приложении-браузере для локальных HTML-файлов с поддержкой JavaScript.</li>
+          <li>На компьютере: откройте файл двойным нажатием в Chrome, Edge, Firefox или Safari.</li>
+        </ul>
+        <p style="margin:0;color:#4d5b66;font-size:14px">The app did not start: the file was opened in a preview that does not run scripts (iPhone/iPad Files, mail, messengers). Open the link in Safari or the file in a browser. · Ilova ishga tushmadi: fayl skriptlarsiz oldindan ko‘rish rejimida ochilgan. Havolani Safari’da yoki faylni brauzerda oching.</p>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
