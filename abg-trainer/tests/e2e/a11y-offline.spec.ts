@@ -4,6 +4,8 @@ import { resolve } from 'node:path';
 
 test('навигация с клавиатуры', async ({ page }) => {
   await page.goto('/');
+  // wait until React has replaced the boot fallback, otherwise the first Tab races with the render
+  await expect(page.getByTestId('disclaimer')).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.locator('.skip')).toBeFocused();
   const nav = page.getByTestId('nav-calculator');
